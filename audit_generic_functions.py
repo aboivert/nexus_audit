@@ -1,5 +1,22 @@
 import pandas as pd
 from audit_models import CheckResult
+import re
+from urllib.parse import urlparse
+from datetime import datetime
+
+
+def is_truly_empty(value):
+    """Vérifie si une valeur est vraiment vide (NaN, None, '', 'nan', etc.)"""
+    if pd.isna(value):
+        return True
+    
+    str_value = str(value).strip().lower()
+    
+    # Valeurs considérées comme vides
+    empty_values = {'', 'nan', 'none', 'null', 'n/a', 'na', '#n/a'}
+    
+    return str_value in empty_values
+
 
 def check_id_presence(df: pd.DataFrame, field: str, weight: float = 1.0) -> CheckResult:
     
