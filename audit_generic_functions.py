@@ -59,43 +59,55 @@ def check_id_presence(df: pd.DataFrame, field: str, weight: float = 1.0) -> Chec
     )
 
 
-def check_id_unicity(df: pd.DataFrame, field: str, weight: float = 1.0) -> CheckResult:
+def check_id_unicity(df: pd.DataFrame, fields: str | list[str], weight: float = 1.0) -> CheckResult:
     
-    # Colonne absente → non vérifiable
-    if field not in df.columns:
+    # Normalisation : on travaille toujours avec une liste
+    fields_list = [fields] if isinstance(fields, str) else fields
+    label_fields = ", ".join(fields_list)
+
+    # Colonnes absentes
+    missing_cols = [f for f in fields_list if f not in df.columns]
+    if missing_cols:
         return CheckResult(
-            check_id = f"mandatory.{field}_unicity",
-            label    = f"Unicité des {field}",
+            check_id = f"mandatory.{'_'.join(fields_list)}_unicity",
+            label    = f"Unicité des {label_fields}",
             category = "mandatory",
             status   = "skip",
             weight   = weight,
-            message  = f"Colonne {field} absente, unicité non vérifiable",
+            message  = f"Colonne(s) absente(s) : {', '.join(missing_cols)}, unicité non vérifiable",
         )
-    
+
     # Doublons
-    duplicates = df[df.duplicated(field, keep=False) & df[field].notna()]
+    duplicates = df[df.duplicated(fields_list, keep=False)]
     if not duplicates.empty:
-        duplicate_ids = duplicates[field].unique().tolist()
+        # Pour les affected_ids on concatène les valeurs des champs concernés
+        affected_ids = (
+            duplicates[fields_list]
+            .astype(str)
+            .agg(":".join, axis=1)
+            .unique()
+            .tolist()
+        )
         return CheckResult(
-            check_id       = f"mandatory.{field}_unicity",
-            label          = f"Unicité des {field}",
+            check_id       = f"mandatory.{'_'.join(fields_list)}_unicity",
+            label          = f"Unicité des {label_fields}",
             category       = "mandatory",
             status         = "error",
             weight         = weight,
-            message        = f"{len(duplicate_ids)} {field} en doublon",
-            affected_ids   = [str(i) for i in duplicate_ids],
-            affected_count = len(duplicate_ids),
-            total_count    = df[field].notna().sum(),
+            message        = f"{len(affected_ids)} doublon(s) détecté(s) sur ({label_fields})",
+            affected_ids   = affected_ids,
+            affected_count = len(affected_ids),
+            total_count    = len(df),
         )
-    
+
     return CheckResult(
-        check_id    = f"mandatory.{field}_unicity",
-        label       = f"Unicité des {field}",
+        check_id    = f"mandatory.{'_'.join(fields_list)}_unicity",
+        label       = f"Unicité des {label_fields}",
         category    = "mandatory",
         status      = "pass",
         weight      = weight,
-        message     = f"Tous les {field} sont uniques",
-        total_count = df[field].notna().sum(),
+        message     = f"Tous les {label_fields} sont uniques",
+        total_count = len(df),
     )
 
 
@@ -142,6 +154,65 @@ def check_field_presence(df: pd.DataFrame, field: str, id_field: str, weight: fl
         status      = "pass",
         weight      = weight,
         message     = f"Toutes les valeurs {field} sont présentes",
+        total_count = len(df),
+    )
+
+
+def check_at_least_one_field_presence(df: pd.DataFrame, fields: list[str], id_field: str, weight: float = 1.0) -> CheckResult:
+    """
+    Vérifie qu'au moins un champ parmi la liste est renseigné pour chaque ligne.
+    Ex : au moins route_short_name ou route_long_name pour chaque route.
+    """
+    label_fields = ", ".join(fields)
+
+    # Aucune des colonnes n'existe
+    existing_cols = [f for f in fields if f in df.columns]
+    if not existing_cols:
+        return CheckResult(
+            check_id       = f"mandatory.{'_or_'.join(fields)}_presence",
+            label          = f"Présence d'au moins un champ parmi {label_fields}",
+            category       = "mandatory",
+            status         = "error",
+            weight         = weight,
+            message        = f"Aucune des colonnes ({label_fields}) n'est présente",
+            total_count    = len(df),
+            affected_count = len(df),
+        )
+
+    # Lignes où tous les champs existants sont vides
+    def all_empty(row):
+        return all(
+            pd.isna(row[f]) or str(row[f]).strip() == ""
+            for f in existing_cols
+        )
+
+    problematic = df[df.apply(all_empty, axis=1)]
+
+    if not problematic.empty:
+        affected_ids = (
+            problematic[id_field].astype(str).tolist()
+            if id_field in df.columns
+            else problematic.index.astype(str).tolist()
+        )
+        return CheckResult(
+            check_id       = f"mandatory.{'_or_'.join(fields)}_presence",
+            label          = f"Présence d'au moins un champ parmi {label_fields}",
+            category       = "mandatory",
+            status         = "error",
+            weight         = weight,
+            message        = f"{len(problematic)} ligne(s) sans aucune valeur parmi ({label_fields})",
+            affected_ids   = affected_ids,
+            affected_count = len(problematic),
+            total_count    = len(df),
+        )
+
+    return CheckResult(
+        check_id    = f"mandatory.{'_or_'.join(fields)}_presence",
+        label       = f"Présence d'au moins un champ parmi {label_fields}",
+        category    = "mandatory",
+        status      = "pass",
+        weight      = weight,
+        message     = f"Chaque ligne a au moins un champ renseigné parmi ({label_fields})",
         total_count = len(df),
     )
 
