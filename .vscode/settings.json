@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "result_models"
+        "result_models",
+        "audit_functions"
     ]
 }
