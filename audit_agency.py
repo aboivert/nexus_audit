@@ -1,6 +1,6 @@
 import pandas as pd
 from audit_models import CheckResult
-from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field
+from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids, check_unused_ids
 import pytz
 import re
 
@@ -66,4 +66,11 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
         check_format_field(df, "agency_email",    format["agency_email"],    "agency_id", weight=1.0),
         check_format_field(df, "agency_timezone", format["agency_timezone"], "agency_id", weight=1.0),
         check_format_field(df, "agency_url",      format["agency_url"],      "agency_id", weight=1.0),
+    ]
+
+
+def _check_data_consistency(df: pd.DataFrame, routes_df: pd.DataFrame) -> list[CheckResult]:
+    return [
+        check_orphan_ids(df, "agency_id", routes_df, "agency_id", weight=2.0),
+        check_unused_ids(df, "agency_id", routes_df, "agency_id", weight=2.0),
     ]
