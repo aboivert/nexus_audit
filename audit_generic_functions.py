@@ -338,7 +338,7 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
     )
 
 
-def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0) -> CheckResult:
+def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0, category: str = "consistency") -> CheckResult:
     """
     Vérifie qu'il n'y a pas d'IDs orphelins.
     Orphelin = ID référencé dans ref_df mais absent de df.
@@ -350,7 +350,7 @@ def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
         return CheckResult(
             check_id = f"consistency.{id_field}_no_orphan",
             label    = f"Absence d'orphelins {id_field}",
-            category = "consistency",
+            category = category,
             status   = "skip",
             weight   = weight,
             message  = f"Impossible de vérifier : colonne {id_field} ou {ref_field} absente",
@@ -364,7 +364,7 @@ def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
         return CheckResult(
             check_id       = f"consistency.{id_field}_no_orphan",
             label          = f"Absence d'orphelins {id_field}",
-            category       = "consistency",
+            category       = category,
             status         = "error",
             weight         = weight,
             message        = f"{len(orphans)} {id_field} référencés mais absents",
@@ -376,7 +376,7 @@ def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
     return CheckResult(
         check_id    = f"consistency.{id_field}_no_orphan",
         label       = f"Absence d'orphelins {id_field}",
-        category    = "consistency",
+        category    = category,
         status      = "pass",
         weight      = weight,
         message     = f"Tous les {id_field} référencés existent",
@@ -384,7 +384,7 @@ def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
     )
 
 
-def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0) -> CheckResult:
+def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0, category: str = "consistency") -> CheckResult:
     """
     Vérifie qu'il n'y a pas d'IDs non utilisés.
     Non utilisé = ID présent dans df mais jamais référencé dans ref_df.
@@ -396,7 +396,7 @@ def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
         return CheckResult(
             check_id = f"consistency.{id_field}_no_unused",
             label    = f"Absence de {id_field} non utilisés",
-            category = "consistency",
+            category = category,
             status   = "skip",
             weight   = weight,
             message  = f"Impossible de vérifier : colonne {id_field} ou {ref_field} absente",
@@ -410,7 +410,7 @@ def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
         return CheckResult(
             check_id       = f"consistency.{id_field}_no_unused",
             label          = f"Absence de {id_field} non utilisés",
-            category       = "consistency",
+            category       = category,
             status         = "warning",
             weight         = weight,
             message        = f"{len(unused)} {id_field} définis mais jamais utilisés",
@@ -422,7 +422,7 @@ def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
     return CheckResult(
         check_id    = f"consistency.{id_field}_no_unused",
         label       = f"Absence de {id_field} non utilisés",
-        category    = "consistency",
+        category    = category,
         status      = "pass",
         weight      = weight,
         message     = f"Tous les {id_field} sont utilisés",
