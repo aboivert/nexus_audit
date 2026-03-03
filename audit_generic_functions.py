@@ -111,7 +111,7 @@ def check_id_unicity(df: pd.DataFrame, fields: str | list[str], weight: float = 
     )
 
 
-def check_field_presence(df: pd.DataFrame, field: str, id_field: str, weight: float = 1.0) -> CheckResult:
+def check_field_presence(df: pd.DataFrame, field: str, id_field: str | list[str], weight: float = 1.0) -> CheckResult:
     
     # Colonne absente
     if field not in df.columns:
@@ -129,9 +129,10 @@ def check_field_presence(df: pd.DataFrame, field: str, id_field: str, weight: fl
     # Valeurs vides
     missing = df[df[field].isna() | (df[field] == "")]
     if not missing.empty:
+        id_fields = [id_field] if isinstance(id_field, str) else id_field
         affected_ids = (
-            missing[id_field].astype(str).tolist()
-            if id_field in df.columns
+            missing[id_fields].astype(str).agg(":".join, axis=1).tolist()
+            if all(f in df.columns for f in id_fields)
             else missing.index.astype(str).tolist()
         )
         return CheckResult(
@@ -217,7 +218,7 @@ def check_at_least_one_field_presence(df: pd.DataFrame, fields: list[str], id_fi
     )
 
 
-def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_field: str, weight: float = 1.0) -> CheckResult:
+def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_field: str | list[str], weight: float = 1.0) -> CheckResult:
     """
     Vérifie la validité du format d'un champ.
     Supporte les types : listing, url, regex, coordinates, date, time.
@@ -251,7 +252,9 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
 
     # Détection des anomalies (ta logique existante, inchangée)
     for idx, data in df[field].items():
-        problematic_id = str(df.loc[idx, id_field]) if id_field in df.columns else str(idx)
+        id_fields = [id_field] if isinstance(id_field, str) else id_field
+        parts = [str(df.loc[idx, f]) if f in df.columns else "N/A" for f in id_fields]
+        problematic_id = ":".join(parts)
 
         if is_truly_empty(data):
             empty_ids.append(problematic_id)
@@ -332,4 +335,96 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
         weight      = weight,
         message     = f"Tous les formats {field} sont valides",
         total_count = total,
+    )
+
+
+def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0) -> CheckResult:
+    """
+    Vérifie qu'il n'y a pas d'IDs orphelins.
+    Orphelin = ID référencé dans ref_df mais absent de df.
+    Ex : agency_id dans routes.txt qui n'existe pas dans agency.txt.
+    --> quand un fichier référence des IDs qui doivent exister ailleurs. C'est une erreur critique car ça casse les liaisons entre fichiers.
+    """
+
+    if id_field not in df.columns or ref_field not in ref_df.columns:
+        return CheckResult(
+            check_id = f"consistency.{id_field}_no_orphan",
+            label    = f"Absence d'orphelins {id_field}",
+            category = "consistency",
+            status   = "skip",
+            weight   = weight,
+            message  = f"Impossible de vérifier : colonne {id_field} ou {ref_field} absente",
+        )
+
+    source_ids = set(df[id_field].dropna().unique())
+    ref_ids    = set(ref_df[ref_field].dropna().unique())
+    orphans    = ref_ids - source_ids
+
+    if orphans:
+        return CheckResult(
+            check_id       = f"consistency.{id_field}_no_orphan",
+            label          = f"Absence d'orphelins {id_field}",
+            category       = "consistency",
+            status         = "error",
+            weight         = weight,
+            message        = f"{len(orphans)} {id_field} référencés mais absents",
+            affected_ids   = [str(i) for i in orphans],
+            affected_count = len(orphans),
+            total_count    = len(ref_ids),
+        )
+
+    return CheckResult(
+        check_id    = f"consistency.{id_field}_no_orphan",
+        label       = f"Absence d'orphelins {id_field}",
+        category    = "consistency",
+        status      = "pass",
+        weight      = weight,
+        message     = f"Tous les {id_field} référencés existent",
+        total_count = len(ref_ids),
+    )
+
+
+def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0) -> CheckResult:
+    """
+    Vérifie qu'il n'y a pas d'IDs non utilisés.
+    Non utilisé = ID présent dans df mais jamais référencé dans ref_df.
+    Ex : agency_id dans agency.txt jamais utilisé dans routes.txt.
+    -->  quand un fichier définit des IDs qui ne sont jamais utilisés ailleurs. C'est un warning — la donnée est inutile mais ne casse rien.
+    """
+
+    if id_field not in df.columns or ref_field not in ref_df.columns:
+        return CheckResult(
+            check_id = f"consistency.{id_field}_no_unused",
+            label    = f"Absence de {id_field} non utilisés",
+            category = "consistency",
+            status   = "skip",
+            weight   = weight,
+            message  = f"Impossible de vérifier : colonne {id_field} ou {ref_field} absente",
+        )
+
+    source_ids = set(df[id_field].dropna().unique())
+    ref_ids    = set(ref_df[ref_field].dropna().unique())
+    unused     = source_ids - ref_ids
+
+    if unused:
+        return CheckResult(
+            check_id       = f"consistency.{id_field}_no_unused",
+            label          = f"Absence de {id_field} non utilisés",
+            category       = "consistency",
+            status         = "warning",
+            weight         = weight,
+            message        = f"{len(unused)} {id_field} définis mais jamais utilisés",
+            affected_ids   = [str(i) for i in unused],
+            affected_count = len(unused),
+            total_count    = len(source_ids),
+        )
+
+    return CheckResult(
+        check_id    = f"consistency.{id_field}_no_unused",
+        label       = f"Absence de {id_field} non utilisés",
+        category    = "consistency",
+        status      = "pass",
+        weight      = weight,
+        message     = f"Tous les {id_field} sont utilisés",
+        total_count = len(source_ids),
     )
