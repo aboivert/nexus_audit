@@ -15,21 +15,13 @@ format = {'monday':{'genre':'required','description':"Validité du champ monday"
 }
 
 
-def _check_calendar_id(df: pd.DataFrame) -> list[CheckResult]:
-    """
-    Vérification de la présence et de l'unicité des service_id
-    """
-   
-    return [
-        check_id_presence(df, "service_id", weight=3.0),
-        check_id_unicity(df,  "service_id", weight=3.0),
-    ]
-
 def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
     """
     Vérifie la présence des champs obligatoires de dates et de jours
     """
     return [
+        check_id_presence(df, "service_id", weight=3.0),
+        check_id_unicity(df,  "service_id", weight=3.0),
         check_field_presence(df, "monday", "service_id", weight=1.0),
         check_field_presence(df, "tuesday", "service_id", weight=1.0),
         check_field_presence(df, "wednesday", "service_id", weight=1.0),

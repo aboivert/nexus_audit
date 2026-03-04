@@ -12,18 +12,13 @@ format = {'route_type':{'genre':'required','description':"Validité des types de
 }
 
 
-def _check_route_id(df: pd.DataFrame) -> list[CheckResult]:
-
-    return [
-        check_id_presence(df, "route_id", weight=3.0),
-        check_id_unicity(df,  "route_id", weight=3.0),
-    ]
-
 def _check_mandatory_fields(df: pd.DataFrame, agency_df: pd.DataFrame) -> list[CheckResult]:
     """
     Vérifie la présence des champs obligatoires route_id, trip_id.
     """
     return [
+        check_id_presence(df, "route_id", weight=3.0),
+        check_id_unicity(df,  "route_id", weight=3.0),
         check_at_least_one_field_presence(df, ["route_short_name", "route_long_name"], "route_id", weight=3.0),
         check_field_presence(df, "route_type", "route_id", weight=1.0),
         _check_agency_id_presence(df, agency_df),

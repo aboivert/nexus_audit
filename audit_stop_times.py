@@ -10,19 +10,14 @@ format = {'pickup_type':{'genre':'optional','description':"Validité du champ pi
 }
 
 
-def _check_trip_id(df: pd.DataFrame) -> list[CheckResult]:
-
-    return [
-        check_id_presence(df, "trip_id", weight=3.0),
-        check_id_presence(df, "stop_sequence", weight=3.0),
-        check_id_unicity(df,  ["trip_id", "stop_sequence"], weight=3.0),
-    ]
-
 def _check_mandatory_fields(df: pd.DataFrame, trips_df: pd.DataFrame, stops_df: pd.DataFrame) -> list[CheckResult]:
     """
     Vérifie la présence des champs obligatoires route_id, trip_id.
     """
     return [
+        check_id_presence(df, "trip_id", weight=3.0),
+        check_id_presence(df, "stop_sequence", weight=3.0),
+        check_id_unicity(df,  ["trip_id", "stop_sequence"], weight=3.0),
         check_orphan_ids(trips_df, "trip_id", df, "trip_id", weight=3.0, category="mandatory"),
         check_field_presence(df, "stop_id", ["trip_id", "stop_sequence"], weight=1.0),
         check_field_presence(df, "departure_time", ["trip_id", "stop_sequence"], weight=1.0),

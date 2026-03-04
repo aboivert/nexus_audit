@@ -10,18 +10,13 @@ format = {'cars_allowed':{'genre':'optional','description':"Validité de l'autor
 }
 
 
-def _check_trip_id(df: pd.DataFrame) -> list[CheckResult]:
-
-    return [
-        check_id_presence(df, "trip_id", weight=3.0),
-        check_id_unicity(df,  "trip_id", weight=3.0),
-    ]
-
 def _check_mandatory_fields(df: pd.DataFrame, routes_df: pd.DataFrame, calendar_df: pd.DataFrame, calendar_dates_df: pd.DataFrame) -> list[CheckResult]:
     """
     Vérifie la présence des champs obligatoires route_id, trip_id.
     """
     return [
+        check_id_presence(df, "trip_id", weight=3.0),
+        check_id_unicity(df,  "trip_id", weight=3.0),
         check_field_presence(df, "route_id", "trip_id", weight=1.0),
         check_field_presence(df, "service_id", "trip_id", weight=1.0),
         check_orphan_ids(routes_df, "route_id", df, "route_id", weight=3.0, category = "mandatory"),

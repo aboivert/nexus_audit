@@ -12,18 +12,13 @@ format = {'stop_timezone':{'genre':'optional','description':"Validité des fusea
 }
 
 
-def _check_stop_id(df: pd.DataFrame) -> list[CheckResult]:
-
-    return [
-        check_id_presence(df, "stop_id", weight=3.0),
-        check_id_unicity(df,  "stop_id", weight=3.0),
-    ]
-
 def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
     """
     Vérifie la présence des champs obligatoires agency_name, agency_url, agency_timezone.
     """
     return [
+        check_id_presence(df, "stop_id", weight=3.0),
+        check_id_unicity(df,  "stop_id", weight=3.0),
         check_field_presence(df, "stop_name", "stop_id", weight=1.0),
         check_field_presence(df, "stop_lat", "stop_id", weight=1.0),
         check_field_presence(df, "stop_lon", "stop_id", weight=1.0),
