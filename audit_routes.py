@@ -46,6 +46,8 @@ def _check_data_consistency(df: pd.DataFrame, trips_df: pd.DataFrame) -> list[Ch
     return [
         check_orphan_ids(df, "route_id", trips_df, "route_id", weight=2.0),
         check_unused_ids(df, "route_id", trips_df, "route_id", weight=2.0),
+        _check_duplicate_route_names(df, "route_short_name"),
+        _check_duplicate_route_names(df, "route_long_name"),
     ]
 
 
@@ -109,3 +111,64 @@ def _check_agency_id_existence(df: pd.DataFrame, agency_df: pd.DataFrame | None)
         )
 
     return check_orphan_ids(agency_df, "agency_id", df, "agency_id", weight=3.0, category="mandatory")
+
+
+def _check_duplicate_route_names(df: pd.DataFrame, field: str) -> CheckResult:
+    """
+    Détecte les noms de routes dupliqués par agence pour un champ donné.
+    (route_short_name ou route_long_name)
+    """
+    if field not in df.columns:
+        return CheckResult(
+            check_id = f"routes.consistency.duplicate_{field}",
+            label    = f"Absence de {field} dupliqués par agence",
+            category = "consistency",
+            status   = "skip",
+            weight   = 1.0,
+            message  = f"Colonne {field} absente",
+        )
+
+    # Normalisation sans copie du DataFrame
+    normalized = df[field].astype(str).str.strip()
+
+    # Clé de groupement : agency_id + field ou uniquement field
+    if "agency_id" in df.columns:
+        group_key = df["agency_id"].astype(str) + "||" + normalized
+    else:
+        group_key = normalized
+
+    # Détection des doublons en excluant les valeurs vides
+    duplicates = df[
+        group_key.duplicated(keep=False) &
+        normalized.notna() &
+        (normalized != "") &
+        (normalized != "nan")
+    ]
+
+    if not duplicates.empty:
+        affected_ids = (
+            duplicates["route_id"].astype(str).tolist()
+            if "route_id" in df.columns
+            else duplicates.index.astype(str).tolist()
+        )
+        return CheckResult(
+            check_id       = f"routes.consistency.duplicate_{field}",
+            label          = f"Absence de {field} dupliqués par agence",
+            category       = "consistency",
+            status         = "warning",
+            weight         = 1.0,
+            message        = f"{len(duplicates)} route(s) avec un {field} dupliqué au sein d'une même agence",
+            affected_ids   = affected_ids,
+            affected_count = len(duplicates),
+            total_count    = len(df),
+        )
+
+    return CheckResult(
+        check_id    = f"routes.consistency.duplicate_{field}",
+        label       = f"Absence de {field} dupliqués par agence",
+        category    = "consistency",
+        status      = "pass",
+        weight      = 1.0,
+        message     = f"Aucun {field} dupliqué détecté",
+        total_count = len(df),
+    )
