@@ -51,6 +51,12 @@ def _check_data_consistency(df: pd.DataFrame, trips_df: pd.DataFrame) -> list[Ch
     ]
 
 
+def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
+    return [
+        _check_color_contrast(df),
+    ]
+
+
 def _check_agency_id_presence(df: pd.DataFrame, agency_df: pd.DataFrame | None) -> CheckResult:
     """
     Vérifie la présence du champ agency_id dans routes.txt.
@@ -171,4 +177,92 @@ def _check_duplicate_route_names(df: pd.DataFrame, field: str) -> CheckResult:
         weight      = 1.0,
         message     = f"Aucun {field} dupliqué détecté",
         total_count = len(df),
+    )
+
+
+def _check_color_contrast(df: pd.DataFrame) -> CheckResult:
+    """
+    Vérifie le contraste WCAG (ratio >= 4.5:1) entre route_color et route_text_color.
+    """
+
+    # Colonnes absentes → skip
+    if "route_color" not in df.columns or "route_text_color" not in df.columns:
+        return CheckResult(
+            check_id = "routes.accessibility.color_contrast",
+            label    = "Contraste WCAG entre route_color et route_text_color",
+            category = "accessibility",
+            status   = "skip",
+            weight   = 1.0,
+            message  = "Colonnes route_color et/ou route_text_color absentes",
+        )
+
+    def relative_luminance(hex_color: str) -> float:
+        """Calcule la luminance relative d'une couleur hexadécimale."""
+        hex_color = str(hex_color).strip().lstrip('#')
+        r = int(hex_color[0:2], 16) / 255
+        g = int(hex_color[2:4], 16) / 255
+        b = int(hex_color[4:6], 16) / 255
+
+        def gamma(c):
+            return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+
+        return 0.2126 * gamma(r) + 0.7152 * gamma(g) + 0.0722 * gamma(b)
+
+    def contrast_ratio(hex1: str, hex2: str) -> float:
+        """Calcule le ratio de contraste entre deux couleurs."""
+        l1 = relative_luminance(hex1)
+        l2 = relative_luminance(hex2)
+        lighter = max(l1, l2)
+        darker  = min(l1, l2)
+        return (lighter + 0.05) / (darker + 0.05)
+
+    affected_ids = []
+    details      = {}
+    total_count  = 0
+
+    for _, row in df.iterrows():
+        route_color      = str(row["route_color"]).strip().lstrip('#')
+        route_text_color = str(row["route_text_color"]).strip().lstrip('#')
+        route_id         = str(row["route_id"]) if "route_id" in df.columns else str(row.name)
+
+        # Valeurs vides ou invalides → on ignore
+        if len(route_color) != 6 or len(route_text_color) != 6:
+            continue
+
+        try:
+            ratio = round(contrast_ratio(route_color, route_text_color), 2)
+            total_count += 1
+
+            if ratio < 4.5:
+                affected_ids.append(route_id)
+                details[route_id] = {
+                    "route_color":      route_color,
+                    "route_text_color": route_text_color,
+                    "ratio":            ratio,
+                }
+        except (ValueError, TypeError):
+            continue
+
+    if affected_ids:
+        return CheckResult(
+            check_id       = "routes.accessibility.color_contrast",
+            label          = "Contraste WCAG entre route_color et route_text_color",
+            category       = "accessibility",
+            status         = "warning",
+            weight         = 1.0,
+            message        = f"{len(affected_ids)} route(s) avec un ratio de contraste insuffisant (< 4.5:1)",
+            affected_ids   = affected_ids,
+            affected_count = len(affected_ids),
+            total_count    = total_count,
+            details        = details,
+        )
+
+    return CheckResult(
+        check_id    = "routes.accessibility.color_contrast",
+        label       = "Contraste WCAG entre route_color et route_text_color",
+        category    = "accessibility",
+        status      = "pass",
+        weight      = 1.0,
+        message     = "Tous les contrastes de couleur sont suffisants (>= 4.5:1)",
+        total_count = total_count,
     )
