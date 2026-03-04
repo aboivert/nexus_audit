@@ -1,13 +1,13 @@
 import pandas as pd
 from audit_models import CheckResult
-from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field
+from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_accessibility_metrics
 import pytz
 
 format = {'stop_timezone':{'genre':'optional','description':"Validité des fuseaux horaires", 'type':'listing', 'valid_fields':set(pytz.all_timezones)},
           'stop_url':{'genre':'optional','description':"Validité des URL",'type':'url'},
           'stop_lat':{'genre':'required','description':"Validité des latitudes",'type':'coordinates'},
           'stop_lon':{'genre':'required','description':"Validité des longitudes",'type':'coordinates'},
-          'wheelchair_boarding':{'genre':'optional','description':"Validité des embarquements UFR",'type':'listing', 'valid_fields':['0', '1','2']},
+          'wheelchair_boarding':{'genre':'optional','description':"Validité des embarquements UFR",'type':'listing', 'valid_fields':[0, 1, 2]},
           'location_type':{'genre':'optional','description':"Validité des types de location",'type':'listing', 'valid_fields':['0','1','2', '3', '4']},
 }
 
@@ -36,4 +36,11 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
         check_format_field(df, "stop_timezone", format["stop_timezone"], "stop_id", weight=1.0),
         check_format_field(df, "stop_lat", format["stop_lat"], "stop_id", weight=1.0),
         check_format_field(df, "stop_lon", format["stop_lon"], "stop_id", weight=1.0),
+    ]
+
+
+def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
+    return [
+        check_format_field(df, "wheelchair_boarding", format["wheelchair_boarding"], "stop_id", weight=1.0, category="accessibility"),
+        check_accessibility_metrics(df, "wheelchair_boarding", "stop_id", weight=1.0),
     ]

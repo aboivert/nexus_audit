@@ -218,7 +218,7 @@ def check_at_least_one_field_presence(df: pd.DataFrame, fields: list[str], id_fi
     )
 
 
-def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_field: str | list[str], weight: float = 1.0) -> CheckResult:
+def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_field: str | list[str], weight: float = 1.0, category: str = "format") -> CheckResult:
     """
     Vérifie la validité du format d'un champ.
     Supporte les types : listing, url, regex, coordinates, date, time.
@@ -233,7 +233,7 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
             return CheckResult(
                 check_id = f"format.{field}_valid",
                 label    = format_config["description"],
-                category = "format",
+                category = category,
                 status   = "skip",
                 weight   = weight,
                 message  = f"Champ optionnel {field} absent",
@@ -242,7 +242,7 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
         return CheckResult(
             check_id       = f"format.{field}_valid",
             label          = format_config["description"],
-            category       = "format",
+            category       = category,
             status         = "error",
             weight         = weight,
             message        = f"Champ {field} absent",
@@ -317,7 +317,7 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
         return CheckResult(
             check_id       = f"format.{field}_valid",
             label          = format_config["description"],
-            category       = "format",
+            category       = category,
             status         = "warning",
             weight         = weight,
             message        = f"{len(invalid_ids)} valeurs invalides, {len(empty_ids)} valeurs vides pour {field}",
@@ -330,7 +330,7 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
     return CheckResult(
         check_id    = f"format.{field}_valid",
         label       = format_config["description"],
-        category    = "format",
+        category    = category,
         status      = "pass",
         weight      = weight,
         message     = f"Tous les formats {field} sont valides",
@@ -427,4 +427,56 @@ def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
         weight      = weight,
         message     = f"Tous les {id_field} sont utilisés",
         total_count = len(source_ids),
+    )
+
+
+def check_accessibility_metrics(df: pd.DataFrame, field: str, id_field: str | list[str], weight: float = 1.0) -> CheckResult:
+    """
+    Analyse métier d'un champ d'accessibilité UFR.
+    Calcule le taux de renseignement (valeurs 1 et 2) et le taux d'accessibilité (valeurs 1 parmi 1 et 2).
+    """
+
+    # Colonne absente → skip
+    if field not in df.columns:
+        return CheckResult(
+            check_id = f"accessibility.{field}_metrics",
+            label    = f"Analyse accessibilité {field}",
+            category = "accessibility",
+            status   = "skip",
+            weight   = weight,
+            message  = f"Colonne {field} absente",
+        )
+
+    total_count = len(df)
+
+    # Normalisation des valeurs en string pour uniformiser
+    values = df[field].astype(str).str.strip()
+
+    no_info_count        = int((values.isin(['0', '', 'nan', 'none'])).sum())
+    accessible_count     = int((values == '1').sum())
+    not_accessible_count = int((values == '2').sum())
+
+    # Taux de renseignement = % de valeurs 1 ou 2
+    rensigned_count = accessible_count + not_accessible_count
+    completion_rate = round((rensigned_count / total_count) * 100, 1) if total_count > 0 else 0.0
+
+    # Taux d'accessibilité = % de valeurs 1 parmi 1 et 2
+    accessibility_rate = round((accessible_count / rensigned_count) * 100, 1) if rensigned_count > 0 else 0.0
+
+    return CheckResult(
+        check_id       = f"accessibility.{field}_metrics",
+        label          = f"Analyse accessibilité {field}",
+        category       = "accessibility",
+        status         = "pass",
+        weight         = weight,
+        message        = f"Taux de renseignement : {completion_rate}%, Taux d'accessibilité : {accessibility_rate}%",
+        affected_count = no_info_count,
+        total_count    = total_count,
+        details        = {
+            "completion_rate":    completion_rate,
+            "accessibility_rate": accessibility_rate,
+            "accessible_count":   accessible_count,
+            "not_accessible_count": not_accessible_count,
+            "no_info_count":      no_info_count,
+        }
     )

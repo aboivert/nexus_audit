@@ -14,7 +14,7 @@ class CheckResult:
     """
     check_id        : str                    # Identifiant unique, ex: "agency.format.timezone"
     label           : str                    # Description lisible, ex: "Validité du fuseau horaire"
-    category        : str                    # "mandatory" | "format" | "consistency" | "stats"
+    category        : str                    # "mandatory" | "format" | "consistency" | "stats" | "accessibility"
     status          : str                    # "pass" | "warning" | "error" | "skip"
     weight          : float                  # Pondération définie par l'auteur du check
     message         : str                    # Explication humaine du résultat
