@@ -3,7 +3,7 @@ from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids
 
 
-format = {'exception_type':{'genre':'required','description':"Validité du champ exception_type",'type':'listing', 'valid_fields':[1, 2]},
+format_config = {'exception_type':{'genre':'required','description':"Validité du champ exception_type",'type':'listing', 'valid_fields':{'1', '2'}},
           'date':{'genre':'required','description':"Validité des dates",'type':'date'},
 }
 
@@ -30,8 +30,8 @@ def _check_mandatory_fields(df: pd.DataFrame, calendar_df: pd.DataFrame) -> list
 
 def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
     return [
-        check_format_field(df, "date", format["date"], "service_id", weight=1.0),
-        check_format_field(df, "exception_type", format["exception_type"], ["service_id", "date"], weight=1.0),
+        check_format_field(df, "date", format_config["date"], "service_id", weight=1.0),
+        check_format_field(df, "exception_type", format_config["exception_type"], ["service_id", "date"], weight=1.0),
     ]
 
 

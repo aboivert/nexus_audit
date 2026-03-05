@@ -3,12 +3,12 @@ from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_accessibility_metrics, check_orphan_ids, check_unused_ids
 import pytz
 
-format = {'stop_timezone':{'genre':'optional','description':"Validité des fuseaux horaires", 'type':'listing', 'valid_fields':set(pytz.all_timezones)},
+format_config = {'stop_timezone':{'genre':'optional','description':"Validité des fuseaux horaires", 'type':'listing', 'valid_fields':set(pytz.all_timezones)},
           'stop_url':{'genre':'optional','description':"Validité des URL",'type':'url'},
           'stop_lat':{'genre':'required','description':"Validité des latitudes",'type':'coordinates'},
           'stop_lon':{'genre':'required','description':"Validité des longitudes",'type':'coordinates'},
-          'wheelchair_boarding':{'genre':'optional','description':"Validité des embarquements UFR",'type':'listing', 'valid_fields':[0, 1, 2]},
-          'location_type':{'genre':'optional','description':"Validité des types de location",'type':'listing', 'valid_fields':['0','1','2', '3', '4']},
+          'wheelchair_boarding':{'genre':'optional','description':"Validité des embarquements UFR",'type':'listing', 'valid_fields':{'0', '1', '2'}},
+          'location_type':{'genre':'optional','description':"Validité des types de location",'type':'listing', 'valid_fields':{'0','1','2', '3', '4'}},
 }
 
 
@@ -27,10 +27,10 @@ def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
 
 def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
     return [
-        check_format_field(df, "stop_url", format["stop_url"], "stop_id", weight=1.0),
-        check_format_field(df, "stop_timezone", format["stop_timezone"], "stop_id", weight=1.0),
-        check_format_field(df, "stop_lat", format["stop_lat"], "stop_id", weight=1.0),
-        check_format_field(df, "stop_lon", format["stop_lon"], "stop_id", weight=1.0),
+        check_format_field(df, "stop_url", format_config["stop_url"], "stop_id", weight=1.0),
+        check_format_field(df, "stop_timezone", format_config["stop_timezone"], "stop_id", weight=1.0),
+        check_format_field(df, "stop_lat", format_config["stop_lat"], "stop_id", weight=1.0),
+        check_format_field(df, "stop_lon", format_config["stop_lon"], "stop_id", weight=1.0),
     ]
 
 
@@ -49,7 +49,7 @@ def _check_stops_hierarchy(df: pd.DataFrame) -> list[CheckResult]:
         (df["parent_station"].astype(str).str.strip() != "nan")
     ] if "parent_station" in df.columns else pd.DataFrame()
     return [
-        check_format_field(df, "location_type", format["location_type"], "stop_id", weight=2.0, category="stops_hierarchy"),
+        check_format_field(df, "location_type", format_config["location_type"], "stop_id", weight=2.0, category="stops_hierarchy"),
         _check_station_no_parent(df),
         check_orphan_ids(df, "stop_id", df_with_parent, "parent_station", weight=2.0, category="stops_hierarchy"),
         _check_parent_station_is_station(df),
@@ -60,7 +60,7 @@ def _check_stops_hierarchy(df: pd.DataFrame) -> list[CheckResult]:
 
 def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
     return [
-        check_format_field(df, "wheelchair_boarding", format["wheelchair_boarding"], "stop_id", weight=1.0, category="accessibility"),
+        check_format_field(df, "wheelchair_boarding", format_config["wheelchair_boarding"], "stop_id", weight=1.0, category="accessibility"),
         check_accessibility_metrics(df, "wheelchair_boarding", "stop_id", weight=1.0),
     ]
 

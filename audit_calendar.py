@@ -3,13 +3,13 @@ from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_unused_ids
 
 
-format = {'monday':{'genre':'required','description':"Validité du champ monday",'type':'listing', 'valid_fields':['0', '1',]},
-          'tuesday':{'genre':'required','description':"Validité du champ tuesday",'type':'listing', 'valid_fields':['0', '1',]},
-          'wednesday':{'genre':'required','description':"Validité du champ wednesday",'type':'listing', 'valid_fields':['0', '1',]},
-          'thursday':{'genre':'required','description':"Validité du champ thursday",'type':'listing', 'valid_fields':['0', '1',]},
-          'friday':{'genre':'required','description':"Validité du champ friday",'type':'listing', 'valid_fields':['0', '1',]},
-          'saturday':{'genre':'required','description':"Validité du champ saturday",'type':'listing', 'valid_fields':['0', '1',]},
-          'sunday':{'genre':'required','description':"Validité du champ sunday",'type':'listing', 'valid_fields':['0', '1',]},
+format_config = {'monday':{'genre':'required','description':"Validité du champ monday",'type':'listing', 'valid_fields':{'0', '1'}},
+          'tuesday':{'genre':'required','description':"Validité du champ tuesday",'type':'listing', 'valid_fields':{'0', '1'}},
+          'wednesday':{'genre':'required','description':"Validité du champ wednesday",'type':'listing', 'valid_fields':{'0', '1'}},
+          'thursday':{'genre':'required','description':"Validité du champ thursday",'type':'listing', 'valid_fields':{'0', '1'}},
+          'friday':{'genre':'required','description':"Validité du champ friday",'type':'listing', 'valid_fields':{'0', '1'}},
+          'saturday':{'genre':'required','description':"Validité du champ saturday",'type':'listing', 'valid_fields':{'0', '1'}},
+          'sunday':{'genre':'required','description':"Validité du champ sunday",'type':'listing', 'valid_fields':{'0', '1'}},
           'start_date':{'genre':'required','description':"Validité des dates de début de calendrier",'type':'date'},
           'end_date':{'genre':'required','description':"Validité des dates de fin de calendrier",'type':'date'},
 }
@@ -36,15 +36,15 @@ def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
 
 def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
     return [
-        check_format_field(df, "monday", format["monday"], "service_id", weight=1.0),
-        check_format_field(df, "tuesday", format["tuesday"], "service_id", weight=1.0),
-        check_format_field(df, "wednesday", format["wednesday"], "service_id", weight=1.0),
-        check_format_field(df, "thursday", format["thursday"], "service_id", weight=1.0),
-        check_format_field(df, "friday", format["friday"], "service_id", weight=1.0),
-        check_format_field(df, "saturday", format["saturday"], "service_id", weight=1.0),
-        check_format_field(df, "sunday", format["sunday"], "service_id", weight=1.0),
-        check_format_field(df, "start_date", format["start_date"], "service_id", weight=1.0),
-        check_format_field(df, "end_date", format["end_date"], "service_id", weight=1.0),
+        check_format_field(df, "monday", format_config["monday"], "service_id", weight=1.0),
+        check_format_field(df, "tuesday", format_config["tuesday"], "service_id", weight=1.0),
+        check_format_field(df, "wednesday", format_config["wednesday"], "service_id", weight=1.0),
+        check_format_field(df, "thursday", format_config["thursday"], "service_id", weight=1.0),
+        check_format_field(df, "friday", format_config["friday"], "service_id", weight=1.0),
+        check_format_field(df, "saturday", format_config["saturday"], "service_id", weight=1.0),
+        check_format_field(df, "sunday", format_config["sunday"], "service_id", weight=1.0),
+        check_format_field(df, "start_date", format_config["start_date"], "service_id", weight=1.0),
+        check_format_field(df, "end_date", format_config["end_date"], "service_id", weight=1.0),
     ]
 
 

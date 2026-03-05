@@ -5,7 +5,7 @@ import pytz
 import re
 
 
-format = {'agency_timezone':{'genre':'required','description':"Validité des fuseaux horaires", 'type':'listing', 'valid_fields':set(pytz.all_timezones)},
+format_config = {'agency_timezone':{'genre':'required','description':"Validité des fuseaux horaires", 'type':'listing', 'valid_fields':set(pytz.all_timezones)},
           'agency_lang':{'genre':'optional','description':"Validité des langues", 'type':'listing','valid_fields':{'en', 'fr', 'es', 'de', 'it', 'pt', 'nl', 'sv', 'da', 'no', 'fi', 'ru', 'zh', 'ja', 'ko', 'ar','EN', 'FR', 'ES', 'DE', 'IT', 'PT', 'NL', 'SV', 'DA', 'NO', 'FI', 'RU', 'ZH', 'JA', 'KO', 'AR'}},
           'agency_url':{'genre':'required','description':"Validité des URL",'type':'url'},
           'agency_fare_url':{'genre':'optional','description':"Validité des URL de tarif",'type':'url'},
@@ -31,12 +31,12 @@ def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
 
 def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
     return [
-        check_format_field(df, "agency_lang",     format["agency_lang"],     "agency_id", weight=1.0),
-        check_format_field(df, "agency_phone",    format["agency_phone"],    "agency_id", weight=1.0),
-        check_format_field(df, "agency_fare_url", format["agency_fare_url"], "agency_id", weight=1.0),
-        check_format_field(df, "agency_email",    format["agency_email"],    "agency_id", weight=1.0),
-        check_format_field(df, "agency_timezone", format["agency_timezone"], "agency_id", weight=1.0),
-        check_format_field(df, "agency_url",      format["agency_url"],      "agency_id", weight=1.0),
+        check_format_field(df, "agency_lang",     format_config["agency_lang"],     "agency_id", weight=1.0),
+        check_format_field(df, "agency_phone",    format_config["agency_phone"],    "agency_id", weight=1.0),
+        check_format_field(df, "agency_fare_url", format_config["agency_fare_url"], "agency_id", weight=1.0),
+        check_format_field(df, "agency_email",    format_config["agency_email"],    "agency_id", weight=1.0),
+        check_format_field(df, "agency_timezone", format_config["agency_timezone"], "agency_id", weight=1.0),
+        check_format_field(df, "agency_url",      format_config["agency_url"],      "agency_id", weight=1.0),
     ]
 
 
