@@ -1,3 +1,8 @@
+"""
+GTFS audit generic functions.
+Defines generic functions used across various GTFS files.
+"""
+
 import pandas as pd
 from audit_models import CheckResult
 import re
@@ -6,7 +11,7 @@ from datetime import datetime
 
 
 def is_truly_empty(value):
-    """Vérifie si une valeur est vraiment vide (NaN, None, '', 'nan', etc.)"""
+    """Returns True if value is empty (NaN, None, '', 'nan', 'n/a', etc.)."""
     if pd.isna(value):
         return True
     
@@ -19,7 +24,13 @@ def is_truly_empty(value):
 
 
 def check_id_presence(df: pd.DataFrame, field: str, weight: float = 1.0) -> CheckResult:
-    
+    """
+    Checks that a field is present and has no missing values in a DataFrame.
+
+    :param df: Target DataFrame.
+    :param field: Field name to check.
+    :param weight: Check weight for scoring.
+    """ 
     # Colonne absente
     if field not in df.columns:
         return CheckResult(
@@ -60,7 +71,13 @@ def check_id_presence(df: pd.DataFrame, field: str, weight: float = 1.0) -> Chec
 
 
 def check_id_unicity(df: pd.DataFrame, fields: str | list[str], weight: float = 1.0) -> CheckResult:
-    
+    """
+    Checks that one or more fields form a unique key across all rows.
+
+    :param df: Target DataFrame.
+    :param fields: Field name or list of field names to check for duplicates.
+    :param weight: Check weight for scoring.
+    """   
     # Normalisation : on travaille toujours avec une liste
     fields_list = [fields] if isinstance(fields, str) else fields
     label_fields = ", ".join(fields_list)
@@ -112,7 +129,14 @@ def check_id_unicity(df: pd.DataFrame, fields: str | list[str], weight: float = 
 
 
 def check_field_presence(df: pd.DataFrame, field: str, id_field: str | list[str], weight: float = 1.0) -> CheckResult:
-    
+    """
+    Checks that a field is present and non-empty, returning affected IDs from a reference field.
+
+    :param df: Target DataFrame.
+    :param field: Field name to check.
+    :param id_field: Field(s) used to identify problematic rows in the result.
+    :param weight: Check weight for scoring.
+    """   
     # Colonne absente
     if field not in df.columns:
         return CheckResult(
@@ -161,8 +185,12 @@ def check_field_presence(df: pd.DataFrame, field: str, id_field: str | list[str]
 
 def check_at_least_one_field_presence(df: pd.DataFrame, fields: list[str], id_field: str, weight: float = 1.0) -> CheckResult:
     """
-    Vérifie qu'au moins un champ parmi la liste est renseigné pour chaque ligne.
-    Ex : au moins route_short_name ou route_long_name pour chaque route.
+    Checks that each row has at least one non-empty value among the given fields.
+
+    :param df: Target DataFrame.
+    :param fields: List of fields where at least one must be filled.
+    :param id_field: Field used to identify problematic rows.
+    :param weight: Check weight for scoring.
     """
     label_fields = ", ".join(fields)
 
@@ -220,8 +248,15 @@ def check_at_least_one_field_presence(df: pd.DataFrame, fields: list[str], id_fi
 
 def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_field: str | list[str], weight: float = 1.0, category: str = "format") -> CheckResult:
     """
-    Vérifie la validité du format d'un champ.
-    Supporte les types : listing, url, regex, coordinates, date, time.
+    Checks the format validity of a field. Supports types: listing, url, regex, coordinates, date, time.
+    Skips optional absent fields, errors on required absent fields.
+
+    :param df: Target DataFrame.
+    :param field: Field name to validate.
+    :param format_config: Dict describing expected format (type, genre, description, etc.).
+    :param id_field: Field(s) used to identify problematic rows.
+    :param weight: Check weight for scoring.
+    :param category: Check category (default: 'format').
     """
     invalid_ids = []
     empty_ids   = []
@@ -340,12 +375,16 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
 
 def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0, category: str = "consistency") -> CheckResult:
     """
-    Vérifie qu'il n'y a pas d'IDs orphelins.
-    Orphelin = ID référencé dans ref_df mais absent de df.
-    Ex : agency_id dans routes.txt qui n'existe pas dans agency.txt.
-    --> quand un fichier référence des IDs qui doivent exister ailleurs. C'est une erreur critique car ça casse les liaisons entre fichiers.
-    """
+    Checks for orphan IDs: IDs referenced in ref_df but absent from df.
+    Errors are critical as they break cross-file relationships.
 
+    :param df: DataFrame containing the reference ID definitions.
+    :param id_field: ID field in df.
+    :param ref_df: DataFrame referencing those IDs.
+    :param ref_field: Field in ref_df pointing to id_field.
+    :param weight: Check weight for scoring.
+    :param category: Check category (default: 'consistency').
+    """
     if id_field not in df.columns or ref_field not in ref_df.columns:
         return CheckResult(
             check_id = f"consistency.{id_field}_no_orphan",
@@ -386,12 +425,16 @@ def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
 
 def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0, category: str = "consistency") -> CheckResult:
     """
-    Vérifie qu'il n'y a pas d'IDs non utilisés.
-    Non utilisé = ID présent dans df mais jamais référencé dans ref_df.
-    Ex : agency_id dans agency.txt jamais utilisé dans routes.txt.
-    -->  quand un fichier définit des IDs qui ne sont jamais utilisés ailleurs. C'est un warning — la donnée est inutile mais ne casse rien.
-    """
+    Checks for unused IDs: IDs defined in df but never referenced in ref_df.
+    Results in a warning — data is useless but not breaking.
 
+    :param df: DataFrame containing the ID definitions.
+    :param id_field: ID field in df.
+    :param ref_df: DataFrame that should reference those IDs.
+    :param ref_field: Field in ref_df pointing to id_field.
+    :param weight: Check weight for scoring.
+    :param category: Check category (default: 'consistency').
+    """
     if id_field not in df.columns or ref_field not in ref_df.columns:
         return CheckResult(
             check_id = f"consistency.{id_field}_no_unused",
@@ -432,10 +475,14 @@ def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
 
 def check_accessibility_metrics(df: pd.DataFrame, field: str, id_field: str | list[str], weight: float = 1.0) -> CheckResult:
     """
-    Analyse métier d'un champ d'accessibilité UFR.
-    Calcule le taux de renseignement (valeurs 1 et 2) et le taux d'accessibilité (valeurs 1 parmi 1 et 2).
-    """
+    Analyses a UFR accessibility field: computes completion rate (values 1 & 2)
+    and accessibility rate (value 1 among 1 & 2).
 
+    :param df: Target DataFrame.
+    :param field: Accessibility field to analyse.
+    :param id_field: Field(s) used to identify rows.
+    :param weight: Check weight for scoring.
+    """
     # Colonne absente → skip
     if field not in df.columns:
         return CheckResult(

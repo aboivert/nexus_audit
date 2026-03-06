@@ -1,3 +1,4 @@
+"""Audit functions for calendar_dates.txt: mandatory fields, format validation and consistency checks."""
 import pandas as pd
 from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids
@@ -9,6 +10,12 @@ format_config = {'exception_type':{'genre':'required','description':"Validité d
 
 
 def _check_mandatory_fields(df: pd.DataFrame, calendar_df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks presence and unicity of service_id and date, and cross-file consistency with calendar.txt.
+
+    :param df: calendar_dates.txt DataFrame.
+    :param calendar_df: calendar.txt DataFrame, or None if absent.
+    """
     checks = [
         check_id_presence(df, "service_id", weight=3.0),
         check_id_presence(df, "date", weight=3.0),
@@ -29,6 +36,11 @@ def _check_mandatory_fields(df: pd.DataFrame, calendar_df: pd.DataFrame) -> list
 
 
 def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks format validity of date and exception_type fields against format_config.
+
+    :param df: calendar_dates.txt DataFrame.
+    """
     return [
         check_format_field(df, "date", format_config["date"], "service_id", weight=1.0),
         check_format_field(df, "exception_type", format_config["exception_type"], ["service_id", "date"], weight=1.0),
@@ -36,6 +48,12 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
 
 def _check_data_consistency(df: pd.DataFrame, calendar_df: pd.DataFrame | None) -> list[CheckResult]:
+    """
+    Checks date range validity and exception conflicts.
+
+    :param df: calendar_dates.txt DataFrame.
+    :param calendar_df: calendar.txt DataFrame, or None if absent.
+    """
     return [
         _check_dates_in_calendar_period(df, calendar_df),
         _check_no_conflicting_exceptions(df),
@@ -44,8 +62,11 @@ def _check_data_consistency(df: pd.DataFrame, calendar_df: pd.DataFrame | None) 
 
 def _check_dates_in_calendar_period(df: pd.DataFrame, calendar_df: pd.DataFrame | None) -> CheckResult:
     """
-    Vérifie que les dates de calendar_dates.txt sont dans la période
-    start_date/end_date de calendar.txt, service_id par service_id.
+    Checks that each date in calendar_dates.txt falls within the start_date/end_date
+    range of its service_id in calendar.txt.
+
+    :param df: calendar_dates.txt DataFrame.
+    :param calendar_df: calendar.txt DataFrame, or None if absent.
     """
     if calendar_df is None:
         return CheckResult(
@@ -113,8 +134,9 @@ def _check_dates_in_calendar_period(df: pd.DataFrame, calendar_df: pd.DataFrame 
 
 def _check_no_conflicting_exceptions(df: pd.DataFrame) -> CheckResult:
     """
-    Vérifie l'absence de conflits : deux exceptions contraires le même jour
-    pour un même service_id (exception_type 1 et 2 le même jour).
+    Checks that no (service_id, date) pair has both exception_type 1 and 2 simultaneously.
+
+    :param df: calendar_dates.txt DataFrame.
     """
     if "service_id" not in df.columns or "date" not in df.columns or "exception_type" not in df.columns:
         return CheckResult(

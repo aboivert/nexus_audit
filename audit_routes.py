@@ -1,3 +1,4 @@
+"""Audit functions for routes.txt: mandatory fields, format validation, consistency and accessibility checks."""
 import pandas as pd
 from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids, check_unused_ids, check_at_least_one_field_presence
@@ -14,7 +15,11 @@ format_config = {'route_type':{'genre':'required','description':"Validité des t
 
 def _check_mandatory_fields(df: pd.DataFrame, agency_df: pd.DataFrame) -> list[CheckResult]:
     """
-    Vérifie la présence des champs obligatoires route_id, trip_id.
+    Checks presence and unicity of route_id, at least one name field, route_type,
+    and agency_id validity against agency.txt.
+
+    :param df: routes.txt DataFrame.
+    :param agency_df: agency.txt DataFrame.
     """
     return [
         check_id_presence(df, "route_id", weight=3.0),
@@ -27,6 +32,11 @@ def _check_mandatory_fields(df: pd.DataFrame, agency_df: pd.DataFrame) -> list[C
 
 
 def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks format validity of route fields (type, colors, url, pickup/drop-off) against format_config.
+
+    :param df: routes.txt DataFrame.
+    """
     return [
         check_format_field(df, "route_type", format_config["route_type"], "route_id", weight=1.0),
         check_format_field(df, "route_color", format_config["route_color"], "route_id", weight=1.0),
@@ -38,6 +48,12 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
 
 def _check_data_consistency(df: pd.DataFrame, trips_df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks route_id cross-file consistency and detects duplicate route names per agency.
+
+    :param df: routes.txt DataFrame.
+    :param trips_df: trips.txt DataFrame.
+    """
     return [
         check_orphan_ids(df, "route_id", trips_df, "route_id", weight=2.0),
         check_unused_ids(df, "route_id", trips_df, "route_id", weight=2.0),
@@ -47,6 +63,11 @@ def _check_data_consistency(df: pd.DataFrame, trips_df: pd.DataFrame) -> list[Ch
 
 
 def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Runs accessibility checks on routes.txt (color contrast).
+
+    :param df: routes.txt DataFrame.
+    """
     return [
         _check_color_contrast(df),
     ]
@@ -54,10 +75,12 @@ def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
 
 def _check_agency_id_presence(df: pd.DataFrame, agency_df: pd.DataFrame | None) -> CheckResult:
     """
-    Vérifie la présence du champ agency_id dans routes.txt.
-    Obligatoire seulement si plusieurs agences dans agency.txt.
-    """
+    Checks that agency_id is present in routes.txt.
+    Skipped if agency.txt is absent or contains only one agency.
 
+    :param df: routes.txt DataFrame.
+    :param agency_df: agency.txt DataFrame, or None if absent.
+    """
     # agency.txt absent → on ne peut pas savoir
     if agency_df is None:
         return CheckResult(
@@ -86,9 +109,12 @@ def _check_agency_id_presence(df: pd.DataFrame, agency_df: pd.DataFrame | None) 
 
 def _check_agency_id_existence(df: pd.DataFrame, agency_df: pd.DataFrame | None) -> CheckResult:
     """
-    Vérifie que les agency_id référencés dans routes.txt existent dans agency.txt.
-    """
+    Checks that all agency_id values in routes.txt exist in agency.txt.
+    Skipped if agency.txt or agency_id column is absent.
 
+    :param df: routes.txt DataFrame.
+    :param agency_df: agency.txt DataFrame, or None if absent.
+    """
     # agency.txt absent → pas de référentiel
     if agency_df is None:
         return CheckResult(
@@ -116,8 +142,10 @@ def _check_agency_id_existence(df: pd.DataFrame, agency_df: pd.DataFrame | None)
 
 def _check_duplicate_route_names(df: pd.DataFrame, field: str) -> CheckResult:
     """
-    Détecte les noms de routes dupliqués par agence pour un champ donné.
-    (route_short_name ou route_long_name)
+    Detects duplicate route names per agency for a given field (route_short_name or route_long_name).
+
+    :param df: routes.txt DataFrame.
+    :param field: Field to check for duplicates.
     """
     if field not in df.columns:
         return CheckResult(
@@ -177,9 +205,10 @@ def _check_duplicate_route_names(df: pd.DataFrame, field: str) -> CheckResult:
 
 def _check_color_contrast(df: pd.DataFrame) -> CheckResult:
     """
-    Vérifie le contraste WCAG (ratio >= 4.5:1) entre route_color et route_text_color.
-    """
+    Checks WCAG contrast ratio (>= 4.5:1) between route_color and route_text_color.
 
+    :param df: routes.txt DataFrame.
+    """
     # Colonnes absentes → skip
     if "route_color" not in df.columns or "route_text_color" not in df.columns:
         return CheckResult(
@@ -192,7 +221,7 @@ def _check_color_contrast(df: pd.DataFrame) -> CheckResult:
         )
 
     def relative_luminance(hex_color: str) -> float:
-        """Calcule la luminance relative d'une couleur hexadécimale."""
+        """Returns the relative luminance of a hex color string."""
         hex_color = str(hex_color).strip().lstrip('#')
         r = int(hex_color[0:2], 16) / 255
         g = int(hex_color[2:4], 16) / 255
@@ -204,7 +233,7 @@ def _check_color_contrast(df: pd.DataFrame) -> CheckResult:
         return 0.2126 * gamma(r) + 0.7152 * gamma(g) + 0.0722 * gamma(b)
 
     def contrast_ratio(hex1: str, hex2: str) -> float:
-        """Calcule le ratio de contraste entre deux couleurs."""
+        """Returns the WCAG contrast ratio between two hex colors."""
         l1 = relative_luminance(hex1)
         l2 = relative_luminance(hex2)
         lighter = max(l1, l2)

@@ -1,6 +1,6 @@
 """
-Modèles de données pour les audits GTFS.
-Définit les structures CheckResult, CategoryScore et FileScore.
+GTFS audit data models.
+Defines CheckResult, CategoryScore and FileScore structures.
 """
 from dataclasses import dataclass, field
 from typing import Optional
@@ -8,10 +8,7 @@ from typing import Optional
 
 @dataclass
 class CheckResult:
-    """
-    Résultat d'un check individuel.
-    Retourné par chaque fonction d'audit.
-    """
+    """Single check result returned by each audit function."""
     check_id        : str                    # Identifiant unique, ex: "agency.format.timezone"
     label           : str                    # Description lisible, ex: "Validité du fuseau horaire"
     category        : str                    # "mandatory" | "format" | "consistency" | "stats" | "accessibility" | "temporal" | "stops_hierarchy"
@@ -26,7 +23,7 @@ class CheckResult:
 
     @property
     def anomaly_rate(self) -> Optional[float]:
-        """Taux d'anomalie en %, calculé automatiquement."""
+        """Returns the anomaly rate as a percentage, or None if total_count is 0."""
         if self.total_count > 0:
             return round((self.affected_count / self.total_count) * 100, 2)
         return None
@@ -34,10 +31,9 @@ class CheckResult:
     @property
     def score(self) -> Optional[float]:
         """
-        Score de 0 à 100, calculé automatiquement selon deux modes :
-        - Si on a des stats (affected_count + total_count) → taux de réussite
-        - Sinon → pénalité fixe selon le statut
-        Les checks 'skip' n'ont pas de score (retourne None).
+        Returns a score from 0 to 100, or None if status is 'skip'.
+        Uses success rate if total_count > 0, otherwise applies a fixed penalty by status
+        (pass=100, warning=60, error=0).
         """
         if self.status == "skip":
             return None
@@ -56,16 +52,13 @@ class CheckResult:
 
 @dataclass
 class CategoryScore:
-    """
-    Score agrégé pour une catégorie de checks au sein d'un fichier.
-    Construit à partir d'une liste de CheckResult.
-    """
+    """Aggregated score for a check category within a file, built from a list of CheckResult."""
     category : str
     checks   : list[CheckResult] = field(default_factory=list)
 
     @property
     def score(self) -> Optional[float]:
-        """Moyenne pondérée des scores des checks éligibles (hors skip)."""
+        """Returns the weighted average score of eligible checks (skipped checks excluded), or None."""
         eligible = [c for c in self.checks if c.score is not None and c.weight > 0]
         if not eligible:
             return None
@@ -75,22 +68,19 @@ class CategoryScore:
 
     @property
     def total_weight(self) -> float:
-        """Somme des weights des checks éligibles. Sert au calcul du FileScore."""
+        """Returns the sum of weights of eligible checks. Used for FileScore computation."""
         return sum(c.weight for c in self.checks if c.score is not None and c.weight > 0)
 
 
 @dataclass
 class FileScore:
-    """
-    Score global d'un fichier GTFS.
-    Construit à partir d'une liste de CategoryScore.
-    """
+    """Overall score for a GTFS file, built from a list of CategoryScore."""
     file       : str
     categories : list[CategoryScore] = field(default_factory=list)
 
     @property
     def score(self) -> Optional[float]:
-        """Moyenne pondérée des catégories (pondérée par leur total_weight)."""
+        """Returns the weighted average score across all categories, or None if none are eligible."""
         eligible = [cat for cat in self.categories if cat.score is not None]
         if not eligible:
             return None
@@ -102,7 +92,7 @@ class FileScore:
 
     @property
     def grade(self) -> Optional[str]:
-        """Note littérale calculée à partir du score."""
+        """Returns a letter grade (A+ to F) derived from the file score, or None if unavailable."""
         s = self.score
         if s is None:
             return None

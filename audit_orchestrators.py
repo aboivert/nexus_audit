@@ -1,7 +1,6 @@
 """
-Orchestrateurs d'audit GTFS.
-Chaque fonction publique appelle les fonctions privées du fichier d'audit correspondant,
-construit les CategoryScore et retourne un FileScore.
+GTFS audit orchestrators. Each function calls the private audit functions
+of the corresponding file, builds CategoryScores and returns a FileScore.
 """
 import pandas as pd
 from audit_models import CategoryScore, FileScore
@@ -52,6 +51,12 @@ from audit_trips import (
 # ============================================================
 
 def audit_agency(df: pd.DataFrame, routes_df: pd.DataFrame) -> FileScore:
+    """
+    Runs mandatory, format and consistency checks on agency.txt.
+
+    :param df: agency.txt DataFrame.
+    :param routes_df: routes.txt DataFrame, used for consistency checks.
+    """
     mandatory_checks    = agency_mandatory(df)
     format_checks       = agency_format(df)
     consistency_checks  = agency_consistency(df, routes_df)
@@ -71,6 +76,12 @@ def audit_agency(df: pd.DataFrame, routes_df: pd.DataFrame) -> FileScore:
 # ============================================================
 
 def audit_calendar(df: pd.DataFrame, trips_df: pd.DataFrame) -> FileScore:
+    """
+    Runs mandatory, format and consistency checks on calendar.txt.
+
+    :param df: calendar.txt DataFrame.
+    :param trips_df: trips.txt DataFrame, used for consistency checks.
+    """
     mandatory_checks    = calendar_mandatory(df)
     format_checks       = calendar_format(df)
     consistency_checks  = calendar_consistency(df, trips_df)
@@ -90,6 +101,13 @@ def audit_calendar(df: pd.DataFrame, trips_df: pd.DataFrame) -> FileScore:
 # ============================================================
 
 def audit_calendar_dates(df: pd.DataFrame, calendar_df: pd.DataFrame | None) -> FileScore:
+    """
+    Runs mandatory, format, consistency and accessibility checks on routes.txt.
+
+    :param df: routes.txt DataFrame.
+    :param agency_df: agency.txt DataFrame, used for mandatory checks.
+    :param trips_df: trips.txt DataFrame, used for consistency checks.
+    """
     mandatory_checks    = calendar_dates_mandatory(df, calendar_df)
     format_checks       = calendar_dates_format(df)
     consistency_checks  = calendar_dates_consistency(df, calendar_df)
@@ -109,6 +127,13 @@ def audit_calendar_dates(df: pd.DataFrame, calendar_df: pd.DataFrame | None) -> 
 # ============================================================
 
 def audit_routes(df: pd.DataFrame, agency_df: pd.DataFrame, trips_df: pd.DataFrame) -> FileScore:
+    """
+    Runs mandatory, format, consistency and accessibility checks on routes.txt.
+
+    :param df: routes.txt DataFrame.
+    :param agency_df: agency.txt DataFrame, used for mandatory checks.
+    :param trips_df: trips.txt DataFrame, used for consistency checks.
+    """
     mandatory_checks    = routes_mandatory(df, agency_df)
     format_checks       = routes_format(df)
     consistency_checks  = routes_consistency(df, trips_df)
@@ -130,6 +155,13 @@ def audit_routes(df: pd.DataFrame, agency_df: pd.DataFrame, trips_df: pd.DataFra
 # ============================================================
 
 def audit_stop_times(df: pd.DataFrame, trips_df: pd.DataFrame, stops_df: pd.DataFrame) -> FileScore:
+    """
+    Runs mandatory, format and temporal checks on stop_times.txt.
+
+    :param df: stop_times.txt DataFrame.
+    :param trips_df: trips.txt DataFrame, used for mandatory checks.
+    :param stops_df: stops.txt DataFrame, used for mandatory checks.
+    """
     mandatory_checks    = stop_times_mandatory(df, trips_df, stops_df)
     format_checks       = stop_times_format(df)
     temporality_checks  = stop_times_temporality(df)
@@ -149,6 +181,12 @@ def audit_stop_times(df: pd.DataFrame, trips_df: pd.DataFrame, stops_df: pd.Data
 # ============================================================
 
 def audit_stops(df: pd.DataFrame, stop_times_df: pd.DataFrame) -> FileScore:
+    """
+    Runs mandatory, format, consistency, hierarchy and accessibility checks on stops.txt.
+
+    :param df: stops.txt DataFrame.
+    :param stop_times_df: stop_times.txt DataFrame, used for consistency checks.
+    """
     mandatory_checks     = stops_mandatory(df)
     format_checks        = stops_format(df)
     consistency_checks   = stops_consistency(df, stop_times_df)
@@ -172,6 +210,16 @@ def audit_stops(df: pd.DataFrame, stop_times_df: pd.DataFrame) -> FileScore:
 # ============================================================
 
 def audit_trips(df: pd.DataFrame, routes_df: pd.DataFrame, calendar_df: pd.DataFrame | None, calendar_dates_df: pd.DataFrame | None, shapes_df: pd.DataFrame | None, stop_times_df: pd.DataFrame) -> FileScore:
+    """
+    Runs mandatory, format, consistency and accessibility checks on trips.txt.
+
+    :param df: trips.txt DataFrame.
+    :param routes_df: routes.txt DataFrame, used for mandatory checks.
+    :param calendar_df: calendar.txt DataFrame, or None if absent.
+    :param calendar_dates_df: calendar_dates.txt DataFrame, or None if absent.
+    :param shapes_df: shapes.txt DataFrame, or None if absent.
+    :param stop_times_df: stop_times.txt DataFrame, used for consistency checks.
+    """
     mandatory_checks     = trips_mandatory(df, routes_df, calendar_df, calendar_dates_df)
     format_checks        = trips_format(df)
     consistency_checks   = trips_consistency(df, shapes_df, stop_times_df)

@@ -1,3 +1,4 @@
+"""Audit functions for calendar.txt: mandatory fields, format validation and consistency checks."""
 import pandas as pd
 from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_unused_ids
@@ -17,7 +18,9 @@ format_config = {'monday':{'genre':'required','description':"Validité du champ 
 
 def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
     """
-    Vérifie la présence des champs obligatoires de dates et de jours
+    Checks presence and unicity of service_id, and presence of all day and date fields.
+
+    :param df: calendar.txt DataFrame.
     """
     return [
         check_id_presence(df, "service_id", weight=3.0),
@@ -35,6 +38,11 @@ def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
 
 
 def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks format validity of all day (0/1) and date fields against format_config.
+
+    :param df: calendar.txt DataFrame.
+    """
     return [
         check_format_field(df, "monday", format_config["monday"], "service_id", weight=1.0),
         check_format_field(df, "tuesday", format_config["tuesday"], "service_id", weight=1.0),
@@ -49,6 +57,12 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
 
 def _check_data_consistency(df: pd.DataFrame, trips_df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks service_id usage and date/day logical consistency.
+
+    :param df: calendar.txt DataFrame.
+    :param trips_df: trips.txt DataFrame, used to detect unused service_ids.
+    """
     return [
         check_unused_ids(df, "service_id", trips_df, "service_id", weight=2.0),
         _check_start_before_end(df),
@@ -58,7 +72,9 @@ def _check_data_consistency(df: pd.DataFrame, trips_df: pd.DataFrame) -> list[Ch
 
 def _check_start_before_end(df: pd.DataFrame) -> CheckResult:
     """
-    Vérifie que start_date est antérieure à end_date pour chaque service.
+    Checks that start_date is strictly before end_date for each service.
+
+    :param df: calendar.txt DataFrame.
     """
     if "start_date" not in df.columns or "end_date" not in df.columns:
         return CheckResult(
@@ -103,7 +119,9 @@ def _check_start_before_end(df: pd.DataFrame) -> CheckResult:
 
 def _check_at_least_one_active_day(df: pd.DataFrame) -> CheckResult:
     """
-    Vérifie qu'au moins un jour est actif par service (pas tous à 0).
+    Checks that each service has at least one active day (not all days set to 0).
+
+    :param df: calendar.txt DataFrame.
     """
     day_columns = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     existing_cols = [c for c in day_columns if c in df.columns]

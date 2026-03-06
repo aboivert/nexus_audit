@@ -1,3 +1,4 @@
+"""Audit functions for stop_times.txt: mandatory fields, format validation and temporal consistency checks."""
 import pandas as pd
 from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids, check_unused_ids, check_at_least_one_field_presence
@@ -12,7 +13,12 @@ format_config = {'pickup_type':{'genre':'optional','description':"Validité du c
 
 def _check_mandatory_fields(df: pd.DataFrame, trips_df: pd.DataFrame, stops_df: pd.DataFrame) -> list[CheckResult]:
     """
-    Vérifie la présence des champs obligatoires route_id, trip_id.
+    Checks presence and unicity of trip_id and stop_sequence, and cross-file consistency
+    with trips.txt and stops.txt.
+
+    :param df: stop_times.txt DataFrame.
+    :param trips_df: trips.txt DataFrame.
+    :param stops_df: stops.txt DataFrame.
     """
     return [
         check_id_presence(df, "trip_id", weight=3.0),
@@ -27,6 +33,11 @@ def _check_mandatory_fields(df: pd.DataFrame, trips_df: pd.DataFrame, stops_df: 
 
 
 def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks format validity of pickup_type and drop_off_type fields against format_config.
+
+    :param df: stop_times.txt DataFrame.
+    """
     return [
         check_format_field(df, "pickup_type", format_config["pickup_type"], ["trip_id", "stop_sequence"], weight=1.0),
         check_format_field(df, "drop_off_type", format_config["drop_off_type"], ["trip_id", "stop_sequence"], weight=1.0),
@@ -34,6 +45,11 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
 
 def _check_temporality(df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks time format validity and temporal consistency (order, dwell time).
+
+    :param df: stop_times.txt DataFrame.
+    """
     return [
         check_format_field(df, "arrival_time",   format_config["arrival_time"],   ["trip_id", "stop_sequence"], weight=1.0, category="temporal"),
         check_format_field(df, "departure_time", format_config["departure_time"], ["trip_id", "stop_sequence"], weight=1.0, category="temporal"),
@@ -45,9 +61,10 @@ def _check_temporality(df: pd.DataFrame) -> list[CheckResult]:
 
 def _parse_time_to_seconds(time_str: str) -> int | None:
     """
-    Convertit un horaire GTFS (HH:MM:SS) en secondes.
-    Gère les heures > 23 (ex: 25:30:00 → 91800).
-    Retourne None si le format est invalide.
+    Converts a GTFS time string (HH:MM:SS) to seconds. Handles hours > 23.
+    Returns None if the format is invalid.
+
+    :param time_str: Time string to parse.
     """
     try:
         time_str = str(time_str).strip()
@@ -66,7 +83,9 @@ def _parse_time_to_seconds(time_str: str) -> int | None:
 
 def _check_arrival_before_departure(df: pd.DataFrame) -> CheckResult:
     """
-    Vérifie que arrival_time <= departure_time pour chaque arrêt.
+    Checks that arrival_time <= departure_time for each stop.
+
+    :param df: stop_times.txt DataFrame.
     """
     if "arrival_time" not in df.columns or "departure_time" not in df.columns:
         return CheckResult(
@@ -118,8 +137,9 @@ def _check_arrival_before_departure(df: pd.DataFrame) -> CheckResult:
 
 def _check_sequential_consistency(df: pd.DataFrame) -> CheckResult:
     """
-    Vérifie que le departure_time d'un arrêt est antérieur ou égal
-    à l'arrival_time de l'arrêt suivant, pour chaque trip.
+    Checks that each stop's departure_time is <= the next stop's arrival_time, for each trip.
+
+    :param df: stop_times.txt DataFrame.
     """
     if "trip_id" not in df.columns or "stop_sequence" not in df.columns \
        or "departure_time" not in df.columns or "arrival_time" not in df.columns:
@@ -181,7 +201,9 @@ def _check_sequential_consistency(df: pd.DataFrame) -> CheckResult:
 
 def _check_excessive_dwell_time(df: pd.DataFrame) -> CheckResult:
     """
-    Détecte les temps d'arrêt excessifs (> 1h) entre arrival_time et departure_time.
+    Detects stops where dwell time (departure - arrival) exceeds 1 hour.
+
+    :param df: stop_times.txt DataFrame.
     """
     if "arrival_time" not in df.columns or "departure_time" not in df.columns:
         return CheckResult(

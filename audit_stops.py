@@ -1,3 +1,4 @@
+"""Audit functions for stops.txt: mandatory fields, format validation, consistency, hierarchy and accessibility checks."""
 import pandas as pd
 from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_accessibility_metrics, check_orphan_ids, check_unused_ids
@@ -14,7 +15,9 @@ format_config = {'stop_timezone':{'genre':'optional','description':"Validité de
 
 def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
     """
-    Vérifie la présence des champs obligatoires agency_name, agency_url, agency_timezone.
+    Checks presence and unicity of stop_id, and presence of stop_name, stop_lat and stop_lon.
+
+    :param df: stops.txt DataFrame.
     """
     return [
         check_id_presence(df, "stop_id", weight=3.0),
@@ -26,6 +29,11 @@ def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
 
 
 def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks format validity of url, timezone and coordinate fields against format_config.
+
+    :param df: stops.txt DataFrame.
+    """
     return [
         check_format_field(df, "stop_url", format_config["stop_url"], "stop_id", weight=1.0),
         check_format_field(df, "stop_timezone", format_config["stop_timezone"], "stop_id", weight=1.0),
@@ -35,6 +43,12 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
 
 def _check_data_consistency(df: pd.DataFrame, stop_times_df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks stop_id cross-file consistency: orphan and unused IDs against stop_times.txt.
+
+    :param df: stops.txt DataFrame.
+    :param stop_times_df: stop_times.txt DataFrame.
+    """
     return [
         check_orphan_ids(df, "stop_id", stop_times_df, "stop_id", weight=2.0),
         check_unused_ids(df, "stop_id", stop_times_df, "stop_id", weight=2.0),
@@ -42,6 +56,11 @@ def _check_data_consistency(df: pd.DataFrame, stop_times_df: pd.DataFrame) -> li
 
 
 def _check_stops_hierarchy(df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks location_type validity, parent_station integrity and geographic distance between stops and their station.
+
+    :param df: stops.txt DataFrame.
+    """
     stations_df = df[df["location_type"].astype(str).str.strip() == "1"] if "location_type" in df.columns else pd.DataFrame()
     df_with_parent = df[
         df["parent_station"].notna() &
@@ -59,6 +78,11 @@ def _check_stops_hierarchy(df: pd.DataFrame) -> list[CheckResult]:
 
 
 def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
+    """
+    Checks format validity and computes accessibility metrics for wheelchair_boarding.
+
+    :param df: stops.txt DataFrame.
+    """
     return [
         check_format_field(df, "wheelchair_boarding", format_config["wheelchair_boarding"], "stop_id", weight=1.0, category="accessibility"),
         check_accessibility_metrics(df, "wheelchair_boarding", "stop_id", weight=1.0),
@@ -67,7 +91,9 @@ def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
 
 def _check_station_no_parent(df: pd.DataFrame) -> CheckResult:
     """
-    Vérifie que les zones d'arrêt (location_type=1) n'ont pas de parent_station.
+    Checks that stops with location_type=1 (stations) have no parent_station.
+
+    :param df: stops.txt DataFrame.
     """
     if "location_type" not in df.columns or "parent_station" not in df.columns:
         return CheckResult(
@@ -131,8 +157,9 @@ def _check_station_no_parent(df: pd.DataFrame) -> CheckResult:
 
 def _check_parent_station_is_station(df: pd.DataFrame) -> CheckResult:
     """
-    Vérifie que parent_station pointe vers une zone d'arrêt (location_type=1)
-    et non vers un point d'arrêt.
+    Checks that each parent_station reference points to a location_type=1 stop.
+
+    :param df: stops.txt DataFrame.
     """
     if "parent_station" not in df.columns or "location_type" not in df.columns or "stop_id" not in df.columns:
         return CheckResult(
@@ -206,8 +233,9 @@ def _check_parent_station_is_station(df: pd.DataFrame) -> CheckResult:
 
 def _check_stop_distance_from_station(df: pd.DataFrame) -> CheckResult:
     """
-    Vérifie la distance géographique entre un arrêt et sa zone (parent_station).
-    Erreur si distance > 2000m.
+    Checks that each stop is within 2000m of its parent_station.
+
+    :param df: stops.txt DataFrame.
     """
     if "parent_station" not in df.columns or "stop_lat" not in df.columns \
        or "stop_lon" not in df.columns or "stop_id" not in df.columns:
@@ -221,7 +249,7 @@ def _check_stop_distance_from_station(df: pd.DataFrame) -> CheckResult:
         )
 
     def haversine(lat1, lon1, lat2, lon2) -> float:
-        """Calcule la distance en mètres entre deux points GPS."""
+        """Returns the distance in meters between two GPS coordinates."""
         import math
         R = 6371000  # rayon de la Terre en mètres
         phi1, phi2 = math.radians(lat1), math.radians(lat2)
