@@ -248,7 +248,7 @@ def check_at_least_one_field_presence(df: pd.DataFrame, fields: list[str], id_fi
 
 def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_field: str | list[str], weight: float = 1.0, category: str = "format") -> CheckResult:
     """
-    Checks the format validity of a field. Supports types: listing, url, regex, coordinates, date, time.
+    Checks the format validity of a field. Supports types: listing, url, regex, coordinates, date, time, positive_integer, positive_number, decimal.
     Skips optional absent fields, errors on required absent fields.
 
     :param df: Target DataFrame.
@@ -341,6 +341,28 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
                     if not (0 <= minutes <= 59) or not (0 <= seconds <= 59):
                         invalid_ids.append(f"{problematic_id}:{data}")
             except:
+                invalid_ids.append(f"{problematic_id}:{data}")
+
+        elif format_config["type"] == "positive_integer":
+            try:
+                val = int(str(data).strip())
+                if val < 0:
+                    invalid_ids.append(f"{problematic_id}:{data}")
+            except (ValueError, TypeError):
+                invalid_ids.append(f"{problematic_id}:{data}")
+
+        elif format_config["type"] == "positive_number":
+            try:
+                val = float(str(data).strip())
+                if val < 0:
+                    invalid_ids.append(f"{problematic_id}:{data}")
+            except (ValueError, TypeError):
+                invalid_ids.append(f"{problematic_id}:{data}")
+
+        elif format_config["type"] == "decimal":
+            try:
+                float(str(data).strip())
+            except (ValueError, TypeError):
                 invalid_ids.append(f"{problematic_id}:{data}")
 
     # Résultat
