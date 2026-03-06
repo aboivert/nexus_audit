@@ -1,0 +1,43 @@
+site_name: Audit API for Nexus
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: custom
+    accent: custom
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+  font:
+    text: IBM Plex Sans
+    code: JetBrains Mono
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+            filters: null
+
+nav:
+  - Accueil: index.md
+  - Architecture: architecture.md
+  - API:
+    - Agency: api/audit_agency.md
+    - Calendar Dates: api/audit_calendar_dates.md
+    - Calendar: api/audit_calendar.md
+    - Fonctions génériques: api/audit_generic_functions.md
+    - Models: api/audit_models.md
+    - Orchestrators: api/audit_orchestrators.md
+    - Routes: api/audit_routes.md
+    - Stop Times: api/audit_stop_times.md
+    - Stops: api/audit_stops.md
+    - Trips: api/audit_trips.md
