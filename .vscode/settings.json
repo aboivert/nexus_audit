@@ -3,6 +3,7 @@
         "result_models",
         "audit_functions",
         "documentation",
-        "scoring_system"
+        "scoring_system",
+        "test_interface"
     ]
 }

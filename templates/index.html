@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>GTFS Audit</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>GTFS Audit</h1>
+    <button id="btn-audit-all" disabled>Lancer tous les audits</button>
+  </header>
+
+  <main>
+
+    <!-- COLONNE GAUCHE : upload + état des fichiers -->
+    <aside>
+      <div id="drop-zone">
+        <p>Déposez un <strong>.zip</strong> ou des fichiers <strong>.txt</strong></p>
+        <input type="file" id="file-input" multiple accept=".zip,.txt">
+        <button onclick="document.getElementById('file-input').click()">Parcourir</button>
+      </div>
+
+      <div id="file-grid">
+        <!-- Un badge par fichier GTFS supporté, généré en JS -->
+      </div>
+    </aside>
+
+    <!-- COLONNE DROITE : sections d'audit -->
+    <section id="audit-sections">
+      <!-- Une section par fichier, générée en JS -->
+    </section>
+
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
