@@ -112,7 +112,9 @@ Les valeurs vides sont comptabilisées séparément des valeurs invalides dans `
 
 | Statut | Condition | Taux d'anomalie |
 |---|---|---|
-| `skip` | Une colonne est absente | Non calculable |
+| `error` | Fichier source (`df`) absent | Non calculable |
+| `error` | Fichier de référence (`ref_df`) absent | Non calculable |
+| `skip` | Colonne `id_field` ou `ref_field` absente | Non calculable |
 | `error` | Des IDs orphelins existent | `IDs orphelins / total des IDs référencés dans ref_df` |
 | `pass` | Tous les IDs référencés existent | 0% |
 
@@ -131,7 +133,9 @@ Les valeurs vides sont comptabilisées séparément des valeurs invalides dans `
 
 | Statut | Condition | Taux d'anomalie |
 |---|---|---|
-| `skip` | Une colonne est absente | Non calculable |
+| `error` | Fichier source (`df`) absent | Non calculable |
+| `error` | Fichier de référence (`ref_df`) absent | Non calculable |
+| `skip` | Colonne `id_field` ou `ref_field` absente | Non calculable |
 | `warning` | Des IDs inutilisés existent | `IDs inutilisés / total des IDs définis dans df` |
 | `pass` | Tous les IDs sont utilisés | 0% |
 

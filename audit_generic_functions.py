@@ -407,6 +407,26 @@ def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
     :param weight: Check weight for scoring.
     :param category: Check category (default: 'consistency').
     """
+    if df is None:
+        return CheckResult(
+            check_id = f"consistency.{id_field}_no_orphan",
+            label    = f"Absence d'orphelins {id_field}",
+            category = category,
+            status   = "error",
+            weight   = weight,
+            message  = "Fichier source absent, impossible de vérifier les orphelins",
+        )
+
+    if ref_df is None:
+        return CheckResult(
+            check_id = f"consistency.{id_field}_no_orphan",
+            label    = f"Absence d'orphelins {id_field}",
+            category = category,
+            status   = "error",
+            weight   = weight,
+            message  = "Fichier de référence absent, impossible de vérifier les orphelins",
+        )
+
     if id_field not in df.columns or ref_field not in ref_df.columns:
         return CheckResult(
             check_id = f"consistency.{id_field}_no_orphan",
@@ -457,6 +477,26 @@ def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
     :param weight: Check weight for scoring.
     :param category: Check category (default: 'consistency').
     """
+    if df is None:
+        return CheckResult(
+            check_id = f"consistency.{id_field}_no_unused",
+            label    = f"Absence de {id_field} non utilisés",
+            category = category,
+            status   = "error",
+            weight   = weight,
+            message  = "Fichier source absent, impossible de vérifier les non utilisés",
+        )
+
+    if ref_df is None:
+        return CheckResult(
+            check_id = f"consistency.{id_field}_no_unused",
+            label    = f"Absence de {id_field} non utilisés",
+            category = category,
+            status   = "error",
+            weight   = weight,
+            message  = "Fichier de référence absent, impossible de vérifier les non utilisés",
+        )
+
     if id_field not in df.columns or ref_field not in ref_df.columns:
         return CheckResult(
             check_id = f"consistency.{id_field}_no_unused",
