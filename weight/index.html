@@ -1,0 +1,1469 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../scoring/">
+      
+      
+        <link rel="next" href="../api/audit_generic_functions/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Weight system - Audit API for Nexus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#systeme-de-ponderation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Audit API for Nexus" class="md-header__button md-logo" aria-label="Audit API for Nexus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Audit API for Nexus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Weight system
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../scoring/" class="md-tabs__link">
+        
+  
+    
+  
+  Scoring system
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+    
+  
+  Weight system
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/audit_generic_functions/" class="md-tabs__link">
+          
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Audit API for Nexus" class="md-nav__button md-logo" aria-label="Audit API for Nexus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Audit API for Nexus
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accueil
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scoring system
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Weight system
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Weight system
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scoring_configjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      scoring_config.json
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scoring_configpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      scoring_config.py
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tableau-de-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tableau de référence
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tableau de référence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agencytxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      agency.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calendartxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      calendar.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calendar_datestxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      calendar_dates.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routestxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      routes.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop_timestxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      stop_times.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stopstxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      stops.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tripstxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      trips.txt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_generic_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fonctions génériques
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_agency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_routes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Routes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_stops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stops
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_trips/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trips
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_stop_times/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stop Times
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_calendar_dates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Calendar Dates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_calendar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Calendar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_orchestrators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Orchestrators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctionnement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scoring_configjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      scoring_config.json
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scoring_configpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      scoring_config.py
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tableau-de-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tableau de référence
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tableau de référence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agencytxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      agency.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calendartxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      calendar.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calendar_datestxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      calendar_dates.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routestxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      routes.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop_timestxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      stop_times.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stopstxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      stops.txt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tripstxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      trips.txt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="systeme-de-ponderation">Système de pondération</h1>
+<p>Le système de poids permet de moduler l'importance relative de chaque check dans le calcul du score final. Les poids sont centralisés dans un fichier JSON et chargés une seule fois au démarrage de l'application.</p>
+<hr />
+<h2 id="fonctionnement">Fonctionnement</h2>
+<p>Chaque check retourne un <code>CheckResult</code> qui contient un champ <code>weight</code> — un <code>float</code> définissant sa contribution au score de sa catégorie. Plus le poids est élevé, plus le check pèse dans le score final.</p>
+<p>Le poids intervient dans le calcul du <code>CategoryScore</code> : un check en <code>pass</code> contribue <code>weight</code> points au numérateur, un check en <code>error</code> ou <code>warning</code> contribue <code>0</code>, et un check en <code>skip</code> est exclu du calcul. Pour le détail de la formule, voir <a href="../scoring/">Système de scoring</a>.</p>
+<hr />
+<h2 id="scoring_configjson"><code>scoring_config.json</code></h2>
+<p>Les poids sont définis dans <code>scoring_config.json</code>, organisé par fichier GTFS. Chaque entrée associe un <code>check_id</code> à son poids :</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;routes.txt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;routes.mandatory.route_id_presence&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">4.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;routes.mandatory.route_id_unicity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">4.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;format.route_type_valid&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;routes.accessibility.color_contrast&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Les poids vont de <code>1.0</code> (check informatif ou optionnel) à <code>4.0</code> (check critique).</p>
+<hr />
+<h2 id="scoring_configpy"><code>scoring_config.py</code></h2>
+<p>Le module <code>scoring_config.py</code> charge le fichier JSON <strong>une seule fois</strong> au démarrage et expose <code>SCORING_CONFIG</code>, un dictionnaire Python importable dans tous les modules d'audit.</p>
+<p>Dans chaque fonction d'audit, la configuration du fichier GTFS concerné est chargée localement via <code>SCORING_CONFIG.get()</code> :
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">scoring_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCORING_CONFIG</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_mandatory_fields</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CheckResult</span><span class="p">]:</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">SCORING_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar.txt&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">check_id_presence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;service_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar.mandatory.service_id_presence&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+    <span class="o">...</span>
+    <span class="p">]</span>
+</code></pre></div></p>
+<p>Le <code>.get()</code> avec valeur par défaut garantit qu'une clé absente du JSON ne lève pas d'exception — le check se rabat sur un poids de <code>1.0</code>.</p>
+<hr />
+<h2 id="tableau-de-reference">Tableau de référence</h2>
+<h3 id="agencytxt"><code>agency.txt</code></h3>
+<table>
+<thead>
+<tr>
+<th>check_id</th>
+<th>Poids</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agency.mandatory.agency_name_presence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>agency.mandatory.agency_url_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>agency.mandatory.agency_timezone_presence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>agency.mandatory.agency_id_presence</code></td>
+<td>4.0</td>
+</tr>
+<tr>
+<td><code>agency.mandatory.agency_id_unicity</code></td>
+<td>4.0</td>
+</tr>
+<tr>
+<td><code>format.agency_lang_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.agency_phone_valid</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>format.agency_fare_url_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.agency_email_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.agency_timezone_valid</code></td>
+<td>4.0</td>
+</tr>
+<tr>
+<td><code>format.agency_url_valid</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>agency.consistency.agency_id_no_orphan</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>agency.consistency.agency_id_no_unused</code></td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="calendartxt"><code>calendar.txt</code></h3>
+<table>
+<thead>
+<tr>
+<th>check_id</th>
+<th>Poids</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>calendar.mandatory.service_id_presence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.service_id_unicity</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.monday_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.tuesday_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.wednesday_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.thursday_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.friday_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.saturday_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.sunday_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.start_date_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.mandatory.end_date_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.monday_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.tuesday_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.wednesday_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.thursday_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.friday_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.saturday_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.sunday_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.start_date_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.end_date_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.consistency.service_id_no_unused</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar.consistency.start_before_end</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>calendar.consistency.at_least_one_active_day</code></td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="calendar_datestxt"><code>calendar_dates.txt</code></h3>
+<table>
+<thead>
+<tr>
+<th>check_id</th>
+<th>Poids</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>calendar_dates.mandatory.service_id_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar_dates.mandatory.date_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar_dates.mandatory.service_id_date_unicity</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar_dates.mandatory.service_id_consistency</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.date_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.exception_type_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar_dates.consistency.dates_in_period</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>calendar_dates.consistency.no_conflicting_exceptions</code></td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="routestxt"><code>routes.txt</code></h3>
+<table>
+<thead>
+<tr>
+<th>check_id</th>
+<th>Poids</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routes.mandatory.route_id_presence</code></td>
+<td>4.0</td>
+</tr>
+<tr>
+<td><code>routes.mandatory.route_id_unicity</code></td>
+<td>4.0</td>
+</tr>
+<tr>
+<td><code>routes.mandatory.route_short_or_long_name</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>routes.mandatory.route_type_presence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>routes.mandatory.agency_id_presence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>routes.mandatory.agency_id_existence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>format.route_type_valid</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>format.route_color_valid</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>format.route_text_color_valid</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>format.route_url_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.continuous_pickup_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.continuous_drop_off_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>routes.consistency.route_id_no_orphan</code></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><code>routes.consistency.route_id_no_unused</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>routes.consistency.duplicate_route_short_name</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>routes.consistency.duplicate_route_long_name</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>routes.accessibility.color_contrast</code></td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="stop_timestxt"><code>stop_times.txt</code></h3>
+<table>
+<thead>
+<tr>
+<th>check_id</th>
+<th>Poids</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stop_times.mandatory.trip_id_presence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stop_times.mandatory.stop_sequence_presence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stop_times.mandatory.trip_id_stop_sequence_unicity</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stop_times.mandatory.trip_id_no_orphan</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stop_times.mandatory.stop_id_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>stop_times.mandatory.departure_time_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>stop_times.mandatory.arrival_time_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>stop_times.mandatory.stop_id_no_orphan</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>format.pickup_type_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.drop_off_type_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>stop_times.temporal.arrival_time_valid</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stop_times.temporal.departure_time_valid</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stop_times.temporal.arrival_before_departure</code></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><code>stop_times.temporal.sequential_consistency</code></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><code>stop_times.temporal.excessive_dwell_time</code></td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="stopstxt"><code>stops.txt</code></h3>
+<table>
+<thead>
+<tr>
+<th>check_id</th>
+<th>Poids</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stops.mandatory.stop_id_presence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stops.mandatory.stop_id_unicity</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stops.mandatory.stop_name_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>stops.mandatory.stop_lat_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>stops.mandatory.stop_lon_presence</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.stop_url_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.stop_timezone_valid</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>format.stop_lat_valid</code></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><code>format.stop_lon_valid</code></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><code>stops.consistency.stop_id_no_orphan</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stops.consistency.stop_id_no_unused</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>stops.stops_hierarchy.location_type_valid</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stops.stops_hierarchy.station_no_parent</code></td>
+<td>4.0</td>
+</tr>
+<tr>
+<td><code>stops.stops_hierarchy.parent_station_exists</code></td>
+<td>4.0</td>
+</tr>
+<tr>
+<td><code>stops.stops_hierarchy.parent_station_is_station</code></td>
+<td>4.0</td>
+</tr>
+<tr>
+<td><code>stops.stops_hierarchy.stop_id_no_unused</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>stops.stops_hierarchy.stop_distance_from_station</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.wheelchair_boarding_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>accessibility.wheelchair_boarding_metrics</code></td>
+<td>3.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tripstxt"><code>trips.txt</code></h3>
+<table>
+<thead>
+<tr>
+<th>check_id</th>
+<th>Poids</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>trips.mandatory.trip_id_presence</code></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><code>trips.mandatory.trip_id_unicity</code></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><code>trips.mandatory.route_id_presence</code></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><code>trips.mandatory.service_id_presence</code></td>
+<td>3.0</td>
+</tr>
+<tr>
+<td><code>trips.mandatory.route_id_no_orphan</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>trips.mandatory.service_id_existence</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>trips.mandatory.trip_short_or_headsign</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>format.direction_id_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>format.bikes_allowed_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>trips.consistency.trip_id_no_unused</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>trips.consistency.shape_id_no_orphan</code></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><code>format.wheelchair_accessible_valid</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>accessibility.wheelchair_accessible_metrics</code></td>
+<td>3.0</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.highlight"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>

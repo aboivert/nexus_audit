@@ -1,0 +1,2247 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../weight/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Scoring system - Audit API for Nexus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#systeme-de-scoring" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Audit API for Nexus" class="md-header__button md-logo" aria-label="Audit API for Nexus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Audit API for Nexus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Scoring system
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+    
+  
+  Scoring system
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../weight/" class="md-tabs__link">
+        
+  
+    
+  
+  Weight system
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/audit_generic_functions/" class="md-tabs__link">
+          
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Audit API for Nexus" class="md-nav__button md-logo" aria-label="Audit API for Nexus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Audit API for Nexus
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accueil
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Scoring system
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Scoring system
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vue d'ensemble
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#les-classes-en-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Les classes en détail
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les classes en détail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checkresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      CheckResult
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CheckResult">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statuts-possibles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statuts possibles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-anomaly_rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété anomaly_rate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-score" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété score
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categoryscore" class="md-nav__link">
+    <span class="md-ellipsis">
+      CategoryScore
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CategoryScore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-existantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Catégories existantes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-score_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété score
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-total_weight" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété total_weight
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filescore" class="md-nav__link">
+    <span class="md-ellipsis">
+      FileScore
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FileScore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributs_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-score_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété score
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-grade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété grade
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calcul-du-score-recapitulatif" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calcul du score — récapitulatif
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemple-complet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemple complet
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Référence complète
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_models" class="md-nav__link">
+    <span class="md-ellipsis">
+      audit_models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_models.CategoryScore" class="md-nav__link">
+    <span class="md-ellipsis">
+      CategoryScore
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CategoryScore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.CategoryScore.score" class="md-nav__link">
+    <span class="md-ellipsis">
+      score
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.CategoryScore.total_weight" class="md-nav__link">
+    <span class="md-ellipsis">
+      total_weight
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_models.CheckResult" class="md-nav__link">
+    <span class="md-ellipsis">
+      CheckResult
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CheckResult">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.CheckResult.anomaly_rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      anomaly_rate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.CheckResult.score" class="md-nav__link">
+    <span class="md-ellipsis">
+      score
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_models.FileScore" class="md-nav__link">
+    <span class="md-ellipsis">
+      FileScore
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FileScore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.FileScore.grade" class="md-nav__link">
+    <span class="md-ellipsis">
+      grade
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.FileScore.score" class="md-nav__link">
+    <span class="md-ellipsis">
+      score
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../weight/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Weight system
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_generic_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fonctions génériques
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_agency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_routes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Routes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_stops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stops
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_trips/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trips
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_stop_times/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stop Times
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_calendar_dates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Calendar Dates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_calendar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Calendar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/audit_orchestrators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Orchestrators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vue d'ensemble
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#les-classes-en-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Les classes en détail
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les classes en détail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checkresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      CheckResult
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CheckResult">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statuts-possibles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statuts possibles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-anomaly_rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété anomaly_rate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-score" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété score
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categoryscore" class="md-nav__link">
+    <span class="md-ellipsis">
+      CategoryScore
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CategoryScore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-existantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Catégories existantes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-score_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété score
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-total_weight" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété total_weight
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filescore" class="md-nav__link">
+    <span class="md-ellipsis">
+      FileScore
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FileScore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attributs_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-score_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété score
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propriete-grade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propriété grade
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calcul-du-score-recapitulatif" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calcul du score — récapitulatif
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemple-complet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemple complet
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Référence complète
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_models" class="md-nav__link">
+    <span class="md-ellipsis">
+      audit_models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_models.CategoryScore" class="md-nav__link">
+    <span class="md-ellipsis">
+      CategoryScore
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CategoryScore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.CategoryScore.score" class="md-nav__link">
+    <span class="md-ellipsis">
+      score
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.CategoryScore.total_weight" class="md-nav__link">
+    <span class="md-ellipsis">
+      total_weight
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_models.CheckResult" class="md-nav__link">
+    <span class="md-ellipsis">
+      CheckResult
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CheckResult">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.CheckResult.anomaly_rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      anomaly_rate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.CheckResult.score" class="md-nav__link">
+    <span class="md-ellipsis">
+      score
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_models.FileScore" class="md-nav__link">
+    <span class="md-ellipsis">
+      FileScore
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FileScore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.FileScore.grade" class="md-nav__link">
+    <span class="md-ellipsis">
+      grade
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit_models.FileScore.score" class="md-nav__link">
+    <span class="md-ellipsis">
+      score
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="systeme-de-scoring">Système de scoring</h1>
+<p>Le système de scoring évalue la qualité d'un fichier GTFS en agrégeant les résultats de tous les checks d'audit en un score final sur 100, assorti d'une note lettrée.</p>
+<p>Il repose sur trois structures imbriquées : <code>CheckResult</code> → <code>CategoryScore</code> → <code>FileScore</code>.</p>
+<hr />
+<h2 id="vue-densemble">Vue d'ensemble</h2>
+<div class="highlight"><pre><span></span><code>CheckResult        CheckResult        CheckResult  ...
+     │                  │                  │
+     └──────────────────┴──────────────────┘
+                        │
+                  CategoryScore  (ex: &quot;mandatory&quot;)
+                        │
+              CategoryScore  CategoryScore  ...
+                        │         │
+                        └────┬────┘
+                             │
+                          FileScore  →  score (0-100)  →  grade (A+ … F)
+</code></pre></div>
+<p>Chaque <code>CheckResult</code> a un <strong>poids</strong> (<code>weight</code>) qui reflète l'importance relative du check. Les scores sont agrégés par <strong>moyenne pondérée</strong> à chaque niveau.</p>
+<hr />
+<h2 id="les-classes-en-detail">Les classes en détail</h2>
+<h3 id="checkresult">CheckResult</h3>
+<p><code>CheckResult</code> est la brique de base du système. Chaque fonction d'audit retourne une liste de <code>CheckResult</code> — un par vérification effectuée. C'est un <strong>dataclass</strong> Python, ce qui signifie que ses attributs sont déclarés directement à la définition de la classe, sans logique dans <code>__init__</code>.</p>
+<h4 id="attributs">Attributs</h4>
+<table>
+<thead>
+<tr>
+<th>Attribut</th>
+<th>Type</th>
+<th>Obligatoire</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>check_id</code></td>
+<td><code>str</code></td>
+<td>✅</td>
+<td>Identifiant unique du check, ex: <code>"agency.format.timezone"</code>. Suit la convention <code>fichier.catégorie.champ</code></td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td><code>str</code></td>
+<td>✅</td>
+<td>Description lisible du check, ex: <code>"Validité du fuseau horaire"</code></td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td><code>str</code></td>
+<td>✅</td>
+<td>Catégorie du check — voir tableau des catégories ci-dessous</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>str</code></td>
+<td>✅</td>
+<td>Résultat du check : <code>"pass"</code>, <code>"warning"</code>, <code>"error"</code> ou <code>"skip"</code></td>
+</tr>
+<tr>
+<td><code>weight</code></td>
+<td><code>float</code></td>
+<td>✅</td>
+<td>Pondération du check dans le calcul du score. Plus le poids est élevé, plus ce check influence le score final</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>str</code></td>
+<td>✅</td>
+<td>Explication humaine du résultat, ex: <code>"3 fuseaux horaires invalides détectés"</code></td>
+</tr>
+<tr>
+<td><code>affected_ids</code></td>
+<td><code>list[str]</code></td>
+<td>❌</td>
+<td>Liste des identifiants des éléments problématiques (ex: les <code>agency_id</code> en erreur). Vide par défaut</td>
+</tr>
+<tr>
+<td><code>affected_count</code></td>
+<td><code>int</code></td>
+<td>❌</td>
+<td>Nombre d'éléments en anomalie. <code>0</code> par défaut</td>
+</tr>
+<tr>
+<td><code>total_count</code></td>
+<td><code>int</code></td>
+<td>❌</td>
+<td>Nombre total d'éléments évalués. <code>0</code> par défaut</td>
+</tr>
+<tr>
+<td><code>recommendations</code></td>
+<td><code>list[str]</code></td>
+<td>❌</td>
+<td>Actions correctives suggérées (fonctionnalité prévue). Vide par défaut</td>
+</tr>
+<tr>
+<td><code>details</code></td>
+<td><code>dict \| None</code></td>
+<td>❌</td>
+<td>Données brutes optionnelles pour debug ou affichage avancé. <code>None</code> par défaut</td>
+</tr>
+</tbody>
+</table>
+<h4 id="statuts-possibles">Statuts possibles</h4>
+<table>
+<thead>
+<tr>
+<th>Statut</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pass</code></td>
+<td>Le check est réussi, aucune anomalie détectée</td>
+</tr>
+<tr>
+<td><code>warning</code></td>
+<td>Des anomalies mineures ont été détectées</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>Des anomalies bloquantes ont été détectées</td>
+</tr>
+<tr>
+<td><code>skip</code></td>
+<td>Le check a été ignoré (non applicable dans ce contexte)</td>
+</tr>
+</tbody>
+</table>
+<p>Les checks en statut <code>skip</code> sont <strong>exclus du calcul du score</strong> — ils ne pénalisent pas le résultat.</p>
+<h4 id="propriete-anomaly_rate">Propriété <code>anomaly_rate</code></h4>
+<p>Calcule le taux d'anomalie en pourcentage à partir de <code>affected_count</code> et <code>total_count</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="n">anomaly_rate</span> <span class="o">=</span> <span class="p">(</span><span class="n">affected_count</span> <span class="o">/</span> <span class="n">total_count</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+</code></pre></div>
+<p>Retourne <code>None</code> si <code>total_count == 0</code> pour éviter une division par zéro.</p>
+<h4 id="propriete-score">Propriété <code>score</code></h4>
+<p>Calcule le score du check sur une échelle de 0 à 100. Retourne <code>None</code> si le statut est <code>skip</code>.</p>
+<p><strong>Mode 1 — Taux de réussite</strong> (utilisé quand <code>total_count &gt; 0</code>)</p>
+<div class="highlight"><pre><span></span><code><span class="n">score</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">affected_count</span> <span class="o">/</span> <span class="n">total_count</span><span class="p">)</span>
+</code></pre></div>
+<p>Par exemple, si 3 lignes sur 10 sont en anomalie : <code>score = 100 * (1 - 3/10) = 70.0</code></p>
+<p><strong>Mode 2 — Pénalité fixe</strong> (utilisé quand <code>total_count == 0</code>, c'est-à-dire quand le check est binaire)</p>
+<table>
+<thead>
+<tr>
+<th>Statut</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pass</code></td>
+<td>100.0</td>
+</tr>
+<tr>
+<td><code>warning</code></td>
+<td>60.0</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>0.0</td>
+</tr>
+<tr>
+<td><code>skip</code></td>
+<td><code>None</code> (exclu)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="categoryscore">CategoryScore</h3>
+<p><code>CategoryScore</code> agrège tous les <code>CheckResult</code> d'une même catégorie au sein d'un fichier GTFS. C'est également un <strong>dataclass</strong>, construit après l'exécution de tous les checks d'un fichier.</p>
+<h4 id="attributs_1">Attributs</h4>
+<table>
+<thead>
+<tr>
+<th>Attribut</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td><code>str</code></td>
+<td>Nom de la catégorie, ex: <code>"mandatory"</code>, <code>"format"</code></td>
+</tr>
+<tr>
+<td><code>checks</code></td>
+<td><code>list[CheckResult]</code></td>
+<td>Liste de tous les <code>CheckResult</code> appartenant à cette catégorie. Vide par défaut</td>
+</tr>
+</tbody>
+</table>
+<h4 id="categories-existantes">Catégories existantes</h4>
+<table>
+<thead>
+<tr>
+<th>Catégorie</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mandatory</code></td>
+<td>Présence et unicité des champs obligatoires</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td>Validité du format des valeurs</td>
+</tr>
+<tr>
+<td><code>consistency</code></td>
+<td>Cohérence inter-fichiers (IDs orphelins, inutilisés…)</td>
+</tr>
+<tr>
+<td><code>stats</code></td>
+<td>Indicateurs statistiques</td>
+</tr>
+<tr>
+<td><code>accessibility</code></td>
+<td>Accessibilité PMR</td>
+</tr>
+<tr>
+<td><code>temporal</code></td>
+<td>Cohérence des données temporelles</td>
+</tr>
+<tr>
+<td><code>stops_hierarchy</code></td>
+<td>Hiérarchie des arrêts</td>
+</tr>
+</tbody>
+</table>
+<h4 id="propriete-score_1">Propriété <code>score</code></h4>
+<p>Calcule la <strong>moyenne pondérée</strong> des scores des checks éligibles. Un check est éligible si son score n'est pas <code>None</code> (donc statut ≠ <code>skip</code>) et que son poids est strictement supérieur à 0 :</p>
+<div class="highlight"><pre><span></span><code><span class="n">score</span> <span class="o">=</span> <span class="n">Σ</span> <span class="p">(</span><span class="n">check</span><span class="o">.</span><span class="n">score</span> <span class="err">×</span> <span class="n">check</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span> <span class="o">/</span> <span class="n">Σ</span> <span class="n">check</span><span class="o">.</span><span class="n">weight</span>
+</code></pre></div>
+<p>Retourne <code>None</code> si aucun check éligible n'existe dans la catégorie.</p>
+<h4 id="propriete-total_weight">Propriété <code>total_weight</code></h4>
+<p>Retourne la somme des poids des checks éligibles uniquement :</p>
+<div class="highlight"><pre><span></span><code><span class="n">total_weight</span> <span class="o">=</span> <span class="n">Σ</span> <span class="n">check</span><span class="o">.</span><span class="n">weight</span>  <span class="c1"># checks éligibles seulement</span>
+</code></pre></div>
+<p>Ce <code>total_weight</code> est <strong>réutilisé par <code>FileScore</code></strong> pour pondérer les catégories entre elles — une catégorie avec beaucoup de checks importants (poids élevés) aura donc plus d'influence sur le score final qu'une catégorie légère.</p>
+<hr />
+<h3 id="filescore">FileScore</h3>
+<p><code>FileScore</code> est le niveau le plus haut du système. Il agrège tous les <code>CategoryScore</code> d'un fichier GTFS pour produire un <strong>score global sur 100</strong> et une <strong>note lettrée</strong>.</p>
+<h4 id="attributs_2">Attributs</h4>
+<table>
+<thead>
+<tr>
+<th>Attribut</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code></td>
+<td><code>str</code></td>
+<td>Nom du fichier GTFS audité, ex: <code>"agency.txt"</code></td>
+</tr>
+<tr>
+<td><code>categories</code></td>
+<td><code>list[CategoryScore]</code></td>
+<td>Liste de toutes les catégories du fichier. Vide par défaut</td>
+</tr>
+</tbody>
+</table>
+<h4 id="propriete-score_2">Propriété <code>score</code></h4>
+<p>Calcule la <strong>moyenne pondérée</strong> des scores de catégories éligibles (score non <code>None</code>), pondérée par le <code>total_weight</code> de chaque catégorie :</p>
+<div class="highlight"><pre><span></span><code><span class="n">score</span> <span class="o">=</span> <span class="n">Σ</span> <span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">score</span> <span class="err">×</span> <span class="n">cat</span><span class="o">.</span><span class="n">total_weight</span><span class="p">)</span> <span class="o">/</span> <span class="n">Σ</span> <span class="n">cat</span><span class="o">.</span><span class="n">total_weight</span>
+</code></pre></div>
+<p>Retourne <code>None</code> si aucune catégorie n'est éligible, ou si le poids total est égal à 0.</p>
+<p>Ce double niveau de pondération (poids des checks → poids des catégories) garantit que <strong>les checks les plus importants ont toujours le plus d'impact</strong> sur le score final, quelle que soit la catégorie dans laquelle ils se trouvent.</p>
+<h4 id="propriete-grade">Propriété <code>grade</code></h4>
+<p>Convertit le score numérique en note lettrée :</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>≥ 95</td>
+<td>A+</td>
+</tr>
+<tr>
+<td>≥ 90</td>
+<td>A</td>
+</tr>
+<tr>
+<td>≥ 85</td>
+<td>B+</td>
+</tr>
+<tr>
+<td>≥ 80</td>
+<td>B</td>
+</tr>
+<tr>
+<td>≥ 75</td>
+<td>C+</td>
+</tr>
+<tr>
+<td>≥ 70</td>
+<td>C</td>
+</tr>
+<tr>
+<td>≥ 60</td>
+<td>D</td>
+</tr>
+<tr>
+<td>&lt; 60</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+<p>Retourne <code>None</code> si le score est <code>None</code>.</p>
+<hr />
+<h2 id="calcul-du-score-recapitulatif">Calcul du score — récapitulatif</h2>
+<table>
+<thead>
+<tr>
+<th>Niveau</th>
+<th>Formule</th>
+<th>Exclut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CheckResult.score</code></td>
+<td>Taux de réussite ou pénalité fixe</td>
+<td>statut <code>skip</code></td>
+</tr>
+<tr>
+<td><code>CategoryScore.score</code></td>
+<td>Moyenne pondérée des checks</td>
+<td>checks <code>skip</code> ou poids = 0</td>
+</tr>
+<tr>
+<td><code>FileScore.score</code></td>
+<td>Moyenne pondérée des catégories</td>
+<td>catégories sans score</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exemple-complet">Exemple complet</h2>
+<p>Prenons un fichier <code>agency.txt</code> avec les checks suivants :</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Catégorie</th>
+<th>Statut</th>
+<th>affected</th>
+<th>total</th>
+<th>Poids</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agency_name</code> présence</td>
+<td>mandatory</td>
+<td>pass</td>
+<td>0</td>
+<td>5</td>
+<td>1.0</td>
+<td>100.0</td>
+</tr>
+<tr>
+<td><code>agency_id</code> présence</td>
+<td>mandatory</td>
+<td>error</td>
+<td>5</td>
+<td>5</td>
+<td>3.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td><code>agency_timezone</code> format</td>
+<td>format</td>
+<td>warning</td>
+<td>1</td>
+<td>5</td>
+<td>1.0</td>
+<td>80.0</td>
+</tr>
+<tr>
+<td><code>agency_url</code> format</td>
+<td>format</td>
+<td>pass</td>
+<td>0</td>
+<td>5</td>
+<td>1.0</td>
+<td>100.0</td>
+</tr>
+<tr>
+<td><code>agency_id</code> orphelins</td>
+<td>consistency</td>
+<td>pass</td>
+<td>0</td>
+<td>5</td>
+<td>2.0</td>
+<td>100.0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CategoryScore "mandatory"</strong></p>
+<div class="highlight"><pre><span></span><code>score = (100.0 × 1.0 + 0.0 × 3.0) / (1.0 + 3.0) = 25.0
+total_weight = 4.0
+</code></pre></div>
+<p><strong>CategoryScore "format"</strong></p>
+<div class="highlight"><pre><span></span><code>score = (80.0 × 1.0 + 100.0 × 1.0) / (1.0 + 1.0) = 90.0
+total_weight = 2.0
+</code></pre></div>
+<p><strong>CategoryScore "consistency"</strong></p>
+<div class="highlight"><pre><span></span><code>score = (100.0 × 2.0) / 2.0 = 100.0
+total_weight = 2.0
+</code></pre></div>
+<p><strong>FileScore</strong></p>
+<div class="highlight"><pre><span></span><code>score = (25.0 × 4.0 + 90.0 × 2.0 + 100.0 × 2.0) / (4.0 + 2.0 + 2.0)
+      = (100 + 180 + 200) / 8
+      = 60.0  →  grade: D
+</code></pre></div>
+<p>L'absence de <code>agency_id</code> (poids 3.0) tire fortement le score vers le bas, ce qui illustre bien le rôle des poids dans le système.</p>
+<h2 id="reference-complete">Référence complète</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="audit_models"></a>
+    <div class="doc doc-contents first">
+
+        <p>GTFS audit data models.
+Defines CheckResult, CategoryScore and FileScore structures.</p>
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="audit_models.CategoryScore" class="doc doc-heading">
+            <code>CategoryScore</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Aggregated score for a check category within a file, built from a list of CheckResult.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>audit_models.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CategoryScore</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregated score for a check category within a file, built from a list of CheckResult.&quot;&quot;&quot;</span>
+    <span class="n">category</span> <span class="p">:</span> <span class="nb">str</span>
+    <span class="n">checks</span>   <span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CheckResult</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the weighted average score of eligible checks (skipped checks excluded), or None.&quot;&quot;&quot;</span>
+        <span class="n">eligible</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">checks</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">weight</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">eligible</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">score</span> <span class="o">*</span> <span class="n">c</span><span class="o">.</span><span class="n">weight</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">eligible</span><span class="p">)</span>
+        <span class="n">total_weight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">weight</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">eligible</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">weighted_sum</span> <span class="o">/</span> <span class="n">total_weight</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the sum of weights of eligible checks. Used for FileScore computation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">weight</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">checks</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">weight</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="audit_models.CategoryScore.score" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">score</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Returns the weighted average score of eligible checks (skipped checks excluded), or None.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="audit_models.CategoryScore.total_weight" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">total_weight</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Returns the sum of weights of eligible checks. Used for FileScore computation.</p>
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="audit_models.CheckResult" class="doc doc-heading">
+            <code>CheckResult</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Single check result returned by each audit function.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>audit_models.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CheckResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Single check result returned by each audit function.&quot;&quot;&quot;</span>
+    <span class="n">check_id</span>        <span class="p">:</span> <span class="nb">str</span>                    <span class="c1"># Identifiant unique, ex: &quot;agency.format.timezone&quot;</span>
+    <span class="n">label</span>           <span class="p">:</span> <span class="nb">str</span>                    <span class="c1"># Description lisible, ex: &quot;Validité du fuseau horaire&quot;</span>
+    <span class="n">category</span>        <span class="p">:</span> <span class="nb">str</span>                    <span class="c1"># &quot;mandatory&quot; | &quot;format&quot; | &quot;consistency&quot; | &quot;stats&quot; | &quot;accessibility&quot; | &quot;temporal&quot; | &quot;stops_hierarchy&quot;</span>
+    <span class="n">status</span>          <span class="p">:</span> <span class="nb">str</span>                    <span class="c1"># &quot;pass&quot; | &quot;warning&quot; | &quot;error&quot; | &quot;skip&quot;</span>
+    <span class="n">weight</span>          <span class="p">:</span> <span class="nb">float</span>                  <span class="c1"># Pondération définie par l&#39;auteur du check</span>
+    <span class="n">message</span>         <span class="p">:</span> <span class="nb">str</span>                    <span class="c1"># Explication humaine du résultat</span>
+    <span class="n">affected_ids</span>    <span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>   <span class="c1"># IDs des éléments problématiques</span>
+    <span class="n">affected_count</span>  <span class="p">:</span> <span class="nb">int</span>        <span class="o">=</span> <span class="mi">0</span>         <span class="c1"># Nombre d&#39;éléments en anomalie</span>
+    <span class="n">total_count</span>     <span class="p">:</span> <span class="nb">int</span>        <span class="o">=</span> <span class="mi">0</span>         <span class="c1"># Nombre total d&#39;éléments évalués</span>
+    <span class="n">recommendations</span> <span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>   <span class="c1"># Actions correctives (plus tard)</span>
+    <span class="n">details</span>         <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Données brutes optionnelles</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">anomaly_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the anomaly rate as a percentage, or None if total_count is 0.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">round</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">affected_count</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_count</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a score from 0 to 100, or None if status is &#39;skip&#39;.</span>
+<span class="sd">        Uses success rate if total_count &gt; 0, otherwise applies a fixed penalty by status</span>
+<span class="sd">        (pass=100, warning=60, error=0).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;skip&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># Mode 1 — Taux de réussite</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">affected_count</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_count</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Mode 2 — Pénalité fixe</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;pass&quot;</span><span class="p">:</span>    <span class="mf">100.0</span><span class="p">,</span>
+            <span class="s2">&quot;warning&quot;</span><span class="p">:</span>  <span class="mf">60.0</span><span class="p">,</span>
+            <span class="s2">&quot;error&quot;</span><span class="p">:</span>     <span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="audit_models.CheckResult.anomaly_rate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">anomaly_rate</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Returns the anomaly rate as a percentage, or None if total_count is 0.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="audit_models.CheckResult.score" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">score</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Returns a score from 0 to 100, or None if status is 'skip'.
+Uses success rate if total_count &gt; 0, otherwise applies a fixed penalty by status
+(pass=100, warning=60, error=0).</p>
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="audit_models.FileScore" class="doc doc-heading">
+            <code>FileScore</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Overall score for a GTFS file, built from a list of CategoryScore.</p>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>audit_models.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FileScore</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overall score for a GTFS file, built from a list of CategoryScore.&quot;&quot;&quot;</span>
+    <span class="n">file</span>       <span class="p">:</span> <span class="nb">str</span>
+    <span class="n">categories</span> <span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CategoryScore</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the weighted average score across all categories, or None if none are eligible.&quot;&quot;&quot;</span>
+        <span class="n">eligible</span> <span class="o">=</span> <span class="p">[</span><span class="n">cat</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">eligible</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">score</span> <span class="o">*</span> <span class="n">cat</span><span class="o">.</span><span class="n">total_weight</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">eligible</span><span class="p">)</span>
+        <span class="n">total_weight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">total_weight</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">eligible</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_weight</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">weighted_sum</span> <span class="o">/</span> <span class="n">total_weight</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">grade</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a letter grade (A+ to F) derived from the file score, or None if unavailable.&quot;&quot;&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;=</span> <span class="mi">95</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;A+&quot;</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;A&quot;</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;=</span> <span class="mi">85</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;B+&quot;</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;=</span> <span class="mi">80</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;B&quot;</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;=</span> <span class="mi">75</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;C+&quot;</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;=</span> <span class="mi">70</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;C&quot;</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;=</span> <span class="mi">60</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;D&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;F&quot;</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="audit_models.FileScore.grade" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">grade</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Returns a letter grade (A+ to F) derived from the file score, or None if unavailable.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="audit_models.FileScore.score" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">score</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Returns the weighted average score across all categories, or None if none are eligible.</p>
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.highlight"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>

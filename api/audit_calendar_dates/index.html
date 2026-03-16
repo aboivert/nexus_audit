@@ -1,0 +1,1641 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../audit_stop_times/">
+      
+      
+        <link rel="next" href="../audit_calendar/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Calendar Dates - Audit API for Nexus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#calendar-dates" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Audit API for Nexus" class="md-header__button md-logo" aria-label="Audit API for Nexus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Audit API for Nexus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Calendar Dates
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../scoring/" class="md-tabs__link">
+        
+  
+    
+  
+  Scoring system
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../weight/" class="md-tabs__link">
+        
+  
+    
+  
+  Weight system
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../audit_generic_functions/" class="md-tabs__link">
+          
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Audit API for Nexus" class="md-nav__button md-logo" aria-label="Audit API for Nexus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Audit API for Nexus
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accueil
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../scoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scoring system
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../weight/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Weight system
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_generic_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fonctions génériques
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_agency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_routes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Routes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_stops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stops
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_trips/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trips
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_stop_times/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stop Times
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Calendar Dates
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Calendar Dates
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#audits-effectues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Audits effectués
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Audits effectués">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-champs-obligatoires-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Champs obligatoires (mandatory)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-validite-des-formats-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Validité des formats (format)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-coherence-des-donnees-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cohérence des données (consistency)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctions-specifiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctions spécifiques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctions spécifiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_check_dates_in_calendar_perioddf-calendar_df" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_dates_in_calendar_period(df, calendar_df)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_check_no_conflicting_exceptionsdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_no_conflicting_exceptions(df)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Référence complète
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates" class="md-nav__link">
+    <span class="md-ellipsis">
+      audit_calendar_dates
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_data_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_data_consistency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_data_format" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_data_format
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_dates_in_calendar_period" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_dates_in_calendar_period
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_mandatory_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_mandatory_fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_no_conflicting_exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_no_conflicting_exceptions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_calendar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Calendar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_orchestrators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Orchestrators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#audits-effectues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Audits effectués
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Audits effectués">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-champs-obligatoires-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Champs obligatoires (mandatory)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-validite-des-formats-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Validité des formats (format)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-coherence-des-donnees-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cohérence des données (consistency)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctions-specifiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctions spécifiques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctions spécifiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_check_dates_in_calendar_perioddf-calendar_df" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_dates_in_calendar_period(df, calendar_df)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_check_no_conflicting_exceptionsdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_no_conflicting_exceptions(df)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Référence complète
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates" class="md-nav__link">
+    <span class="md-ellipsis">
+      audit_calendar_dates
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_data_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_data_consistency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_data_format" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_data_format
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_dates_in_calendar_period" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_dates_in_calendar_period
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_mandatory_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_mandatory_fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_calendar_dates._check_no_conflicting_exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_no_conflicting_exceptions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="calendar-dates">Calendar Dates</h1>
+<p>Ce module audite le fichier <code>calendar_dates.txt</code> selon trois axes : la présence des champs obligatoires, la validité des formats, et la cohérence logique des exceptions de service.</p>
+<hr />
+<h2 id="audits-effectues">Audits effectués</h2>
+<h3 id="1-champs-obligatoires-mandatory">1. Champs obligatoires (<code>mandatory</code>)</h3>
+<p>Vérifie la présence des champs clés et la cohérence des <code>service_id</code> avec <code>calendar.txt</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Poids recommandé</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Présence de <code>service_id</code></td>
+<td>1.0</td>
+<td>Toujours</td>
+</tr>
+<tr>
+<td>Présence de <code>date</code></td>
+<td>1.0</td>
+<td>Toujours</td>
+</tr>
+<tr>
+<td>Unicité de la paire <code>(service_id, date)</code></td>
+<td>1.0</td>
+<td>Toujours</td>
+</tr>
+<tr>
+<td>Cohérence des <code>service_id</code> avec <code>calendar.txt</code></td>
+<td>1.0</td>
+<td>Seulement si <code>calendar.txt</code> est chargé</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Unicité composite</p>
+<p>L'unicité est vérifiée sur la <strong>combinaison</strong> <code>(service_id, date)</code> et non sur chaque champ séparément — un même service peut apparaître plusieurs fois à des dates différentes.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Dépendance inter-fichiers</p>
+<p>Si <code>calendar.txt</code> est absent, le check de cohérence des <code>service_id</code> passe en statut <code>skip</code>.</p>
+</div>
+<hr />
+<h3 id="2-validite-des-formats-format">2. Validité des formats (<code>format</code>)</h3>
+<p>Vérifie que les valeurs respectent les formats attendus.</p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Poids recommandé</th>
+<th>Règle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td>1.0</td>
+<td>Doit être une date valide</td>
+</tr>
+<tr>
+<td><code>exception_type</code></td>
+<td>1.0</td>
+<td>Doit valoir <code>1</code> (ajout de service) ou <code>2</code> (suppression de service)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="3-coherence-des-donnees-consistency">3. Cohérence des données (<code>consistency</code>)</h3>
+<p>Vérifie la cohérence logique des exceptions par rapport au calendrier de référence.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Poids recommandé</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dates dans la période du service</td>
+<td>1.0</td>
+<td>Vérifie que chaque date est comprise dans la plage <code>start_date</code> / <code>end_date</code> de son <code>service_id</code> dans <code>calendar.txt</code></td>
+</tr>
+<tr>
+<td>Absence de conflits d'exceptions</td>
+<td>1.0</td>
+<td>Vérifie qu'aucune paire <code>(service_id, date)</code> n'a simultanément un <code>exception_type</code> à <code>1</code> et à <code>2</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Checks logiques spécifiques</p>
+<p>Ces deux checks sont des vérifications métier propres à ce module. Ils passent en <code>skip</code> si les colonnes nécessaires sont absentes, ou si <code>calendar.txt</code> n'est pas disponible.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Dépendance inter-fichiers</p>
+<p>La vérification des dates dans la période nécessite que <code>calendar.txt</code> soit chargé avec des colonnes <code>start_date</code> et <code>end_date</code> valides.</p>
+</div>
+<hr />
+<h2 id="fonctions-specifiques">Fonctions spécifiques</h2>
+<h3 id="_check_dates_in_calendar_perioddf-calendar_df"><code>_check_dates_in_calendar_period(df, calendar_df)</code></h3>
+<p><strong>Entrée</strong> — le DataFrame de <code>calendar_dates.txt</code> et le DataFrame de <code>calendar.txt</code> (ou <code>None</code> si absent).</p>
+<p><strong>Vérification</strong> — construit un dictionnaire <code>service_id → (start_date, end_date)</code> depuis <code>calendar.txt</code>. Pour chaque ligne de <code>calendar_dates.txt</code>, vérifie que la <code>date</code> est comprise dans la plage <code>[start_date, end_date]</code> de son <code>service_id</code>. Les <code>service_id</code> absents de <code>calendar.txt</code> sont ignorés — ils sont déjà couverts par <code>check_orphan_ids</code>.</p>
+<p><strong>Sortie</strong></p>
+<table>
+<thead>
+<tr>
+<th>Statut</th>
+<th>Condition</th>
+<th>Taux d'anomalie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>skip</code></td>
+<td><code>calendar.txt</code> absent</td>
+<td>Non calculable</td>
+</tr>
+<tr>
+<td><code>skip</code></td>
+<td>Colonnes <code>date</code>, <code>service_id</code>, <code>start_date</code> ou <code>end_date</code> absentes</td>
+<td>Non calculable</td>
+</tr>
+<tr>
+<td><code>warning</code></td>
+<td>Des dates sont hors de la période de leur service</td>
+<td><code>dates hors période / total de lignes</code></td>
+</tr>
+<tr>
+<td><code>pass</code></td>
+<td>Toutes les dates sont dans la période de leur service</td>
+<td>0%</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Warning et non error</p>
+<p>Une date hors période génère un <code>warning</code> et non un <code>error</code> — c'est une anomalie à signaler mais qui ne rompt pas la cohérence du référentiel.</p>
+</div>
+<hr />
+<h3 id="_check_no_conflicting_exceptionsdf"><code>_check_no_conflicting_exceptions(df)</code></h3>
+<p><strong>Entrée</strong> — le DataFrame de <code>calendar_dates.txt</code>.</p>
+<p><strong>Vérification</strong> — groupe les lignes par paire <code>(service_id, date)</code> et collecte l'ensemble des <code>exception_type</code> présents dans chaque groupe. Un conflit est détecté quand une même paire possède simultanément un <code>exception_type = 1</code> (ajout de service) et un <code>exception_type = 2</code> (suppression de service) — ce qui est logiquement contradictoire.</p>
+<p><strong>Sortie</strong></p>
+<table>
+<thead>
+<tr>
+<th>Statut</th>
+<th>Condition</th>
+<th>Taux d'anomalie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>skip</code></td>
+<td>Colonnes <code>service_id</code>, <code>date</code> ou <code>exception_type</code> absentes</td>
+<td>Non calculable</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>Des paires <code>(service_id, date)</code> ont les deux types simultanément</td>
+<td><code>paires en conflit / total de service_id uniques</code></td>
+</tr>
+<tr>
+<td><code>pass</code></td>
+<td>Aucun conflit détecté</td>
+<td>0%</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Error et non warning</p>
+<p>Un conflit d'exceptions est toujours un <code>error</code> — une même journée ne peut pas être à la fois ajoutée et supprimée pour un même service, ce qui rend les données inutilisables.</p>
+</div>
+<hr />
+<h2 id="reference-complete">Référence complète</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="audit_calendar_dates"></a>
+    <div class="doc doc-contents first">
+
+        <p>Audit functions for calendar_dates.txt: mandatory fields, format validation and consistency checks.</p>
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_calendar_dates._check_data_consistency" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_data_consistency</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks date range validity and exception conflicts.</p>
+<p>:param df: calendar_dates.txt DataFrame.
+:param calendar_df: calendar.txt DataFrame, or None if absent.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_calendar_dates.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_data_consistency</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CheckResult</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks date range validity and exception conflicts.</span>
+
+<span class="sd">    :param df: calendar_dates.txt DataFrame.</span>
+<span class="sd">    :param calendar_df: calendar.txt DataFrame, or None if absent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">SCORING_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar_dates.txt&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">_check_dates_in_calendar_period</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar_dates.consistency.dates_in_period&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">_check_no_conflicting_exceptions</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar_dates.consistency.no_conflicting_exceptions&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+    <span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_calendar_dates._check_data_format" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_data_format</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks format validity of date and exception_type fields against format_config.</p>
+<p>:param df: calendar_dates.txt DataFrame.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_calendar_dates.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_data_format</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CheckResult</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks format validity of date and exception_type fields against format_config.</span>
+
+<span class="sd">    :param df: calendar_dates.txt DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">SCORING_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar_dates.txt&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">check_format_field</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">format_config</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="s2">&quot;service_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format.date_valid&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">check_format_field</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;exception_type&quot;</span><span class="p">,</span> <span class="n">format_config</span><span class="p">[</span><span class="s2">&quot;exception_type&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;service_id&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format.exception_type_valid&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+    <span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_calendar_dates._check_dates_in_calendar_period" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_dates_in_calendar_period</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks that each date in calendar_dates.txt falls within the start_date/end_date
+range of its service_id in calendar.txt.</p>
+<p>:param df: calendar_dates.txt DataFrame.
+:param calendar_df: calendar.txt DataFrame, or None if absent.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_calendar_dates.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_dates_in_calendar_period</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CheckResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks that each date in calendar_dates.txt falls within the start_date/end_date</span>
+<span class="sd">    range of its service_id in calendar.txt.</span>
+
+<span class="sd">    :param df: calendar_dates.txt DataFrame.</span>
+<span class="sd">    :param calendar_df: calendar.txt DataFrame, or None if absent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">calendar_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CheckResult</span><span class="p">(</span>
+            <span class="n">check_id</span> <span class="o">=</span> <span class="s2">&quot;calendar_dates.consistency.dates_in_period&quot;</span><span class="p">,</span>
+            <span class="n">label</span>    <span class="o">=</span> <span class="s2">&quot;Dates dans la période start_date/end_date du calendar.txt&quot;</span><span class="p">,</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;consistency&quot;</span><span class="p">,</span>
+            <span class="n">status</span>   <span class="o">=</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+            <span class="n">weight</span>   <span class="o">=</span> <span class="n">weight</span><span class="p">,</span>
+            <span class="n">message</span>  <span class="o">=</span> <span class="s2">&quot;calendar.txt absent, vérification non applicable&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;date&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">or</span> <span class="s2">&quot;service_id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> \
+       <span class="ow">or</span> <span class="s2">&quot;start_date&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">calendar_df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">or</span> <span class="s2">&quot;end_date&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">calendar_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CheckResult</span><span class="p">(</span>
+            <span class="n">check_id</span> <span class="o">=</span> <span class="s2">&quot;calendar_dates.consistency.dates_in_period&quot;</span><span class="p">,</span>
+            <span class="n">label</span>    <span class="o">=</span> <span class="s2">&quot;Dates dans la période start_date/end_date du calendar.txt&quot;</span><span class="p">,</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;consistency&quot;</span><span class="p">,</span>
+            <span class="n">status</span>   <span class="o">=</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+            <span class="n">weight</span>   <span class="o">=</span> <span class="n">weight</span><span class="p">,</span>
+            <span class="n">message</span>  <span class="o">=</span> <span class="s2">&quot;Colonnes date, service_id, start_date ou end_date absentes&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Construire un dict service_id → (start_date, end_date) depuis calendar.txt</span>
+    <span class="n">calendar_periods</span> <span class="o">=</span> <span class="n">calendar_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;service_id&quot;</span><span class="p">)[[</span><span class="s2">&quot;start_date&quot;</span><span class="p">,</span> <span class="s2">&quot;end_date&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+
+    <span class="n">affected_ids</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">service_id</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;service_id&quot;</span><span class="p">]</span>
+        <span class="n">date</span>       <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span>
+
+        <span class="c1"># service_id absent de calendar.txt → on ignore (couvert par check_orphan_ids)</span>
+        <span class="k">if</span> <span class="n">service_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">calendar_periods</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">calendar_periods</span><span class="p">[</span><span class="n">service_id</span><span class="p">][</span><span class="s2">&quot;start_date&quot;</span><span class="p">]</span>
+        <span class="n">end_date</span>   <span class="o">=</span> <span class="n">calendar_periods</span><span class="p">[</span><span class="n">service_id</span><span class="p">][</span><span class="s2">&quot;end_date&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">date</span> <span class="o">&lt;</span> <span class="n">start_date</span> <span class="ow">or</span> <span class="n">date</span> <span class="o">&gt;</span> <span class="n">end_date</span><span class="p">:</span>
+            <span class="n">affected_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">service_id</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">affected_ids</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CheckResult</span><span class="p">(</span>
+            <span class="n">check_id</span>       <span class="o">=</span> <span class="s2">&quot;calendar_dates.consistency.dates_in_period&quot;</span><span class="p">,</span>
+            <span class="n">label</span>          <span class="o">=</span> <span class="s2">&quot;Dates dans la période start_date/end_date du calendar.txt&quot;</span><span class="p">,</span>
+            <span class="n">category</span>       <span class="o">=</span> <span class="s2">&quot;consistency&quot;</span><span class="p">,</span>
+            <span class="n">status</span>         <span class="o">=</span> <span class="s2">&quot;warning&quot;</span><span class="p">,</span>
+            <span class="n">weight</span>         <span class="o">=</span> <span class="n">weight</span><span class="p">,</span>
+            <span class="n">message</span>        <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">affected_ids</span><span class="p">)</span><span class="si">}</span><span class="s2"> date(s) hors de la période de leur service_id&quot;</span><span class="p">,</span>
+            <span class="n">affected_ids</span>   <span class="o">=</span> <span class="n">affected_ids</span><span class="p">,</span>
+            <span class="n">affected_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">affected_ids</span><span class="p">),</span>
+            <span class="n">total_count</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CheckResult</span><span class="p">(</span>
+        <span class="n">check_id</span>    <span class="o">=</span> <span class="s2">&quot;calendar_dates.consistency.dates_in_period&quot;</span><span class="p">,</span>
+        <span class="n">label</span>       <span class="o">=</span> <span class="s2">&quot;Dates dans la période start_date/end_date du calendar.txt&quot;</span><span class="p">,</span>
+        <span class="n">category</span>    <span class="o">=</span> <span class="s2">&quot;consistency&quot;</span><span class="p">,</span>
+        <span class="n">status</span>      <span class="o">=</span> <span class="s2">&quot;pass&quot;</span><span class="p">,</span>
+        <span class="n">weight</span>      <span class="o">=</span> <span class="n">weight</span><span class="p">,</span>
+        <span class="n">message</span>     <span class="o">=</span> <span class="s2">&quot;Toutes les dates sont dans la période de leur service_id&quot;</span><span class="p">,</span>
+        <span class="n">total_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_calendar_dates._check_mandatory_fields" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_mandatory_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks presence and unicity of service_id and date, and cross-file consistency with calendar.txt.</p>
+<p>:param df: calendar_dates.txt DataFrame.
+:param calendar_df: calendar.txt DataFrame, or None if absent.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_calendar_dates.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_mandatory_fields</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CheckResult</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks presence and unicity of service_id and date, and cross-file consistency with calendar.txt.</span>
+
+<span class="sd">    :param df: calendar_dates.txt DataFrame.</span>
+<span class="sd">    :param calendar_df: calendar.txt DataFrame, or None if absent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">SCORING_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar_dates.txt&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">checks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">check_id_presence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;service_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar_dates.mandatory.service_id_presence&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">check_id_presence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar_dates.mandatory.date_presence&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">check_id_unicity</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;service_id&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar_dates.mandatory.service_id_date_unicity&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="n">calendar_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">checks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">check_orphan_ids</span><span class="p">(</span><span class="n">calendar_df</span><span class="p">,</span> <span class="s2">&quot;service_id&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;service_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;calendar_dates.mandatory.service_id_consistency&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">checks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CheckResult</span><span class="p">(</span>
+            <span class="n">check_id</span> <span class="o">=</span> <span class="s2">&quot;calendar_dates.mandatory.service_id_consistency&quot;</span><span class="p">,</span>
+            <span class="n">label</span>    <span class="o">=</span> <span class="s2">&quot;Cohérence des service_id avec calendar.txt&quot;</span><span class="p">,</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;mandatory&quot;</span><span class="p">,</span>
+            <span class="n">status</span>   <span class="o">=</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+            <span class="n">weight</span>   <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">message</span>  <span class="o">=</span> <span class="s2">&quot;calendar.txt absent, vérification non applicable&quot;</span><span class="p">,</span>
+        <span class="p">))</span>
+    <span class="k">return</span> <span class="n">checks</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_calendar_dates._check_no_conflicting_exceptions" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_no_conflicting_exceptions</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks that no (service_id, date) pair has both exception_type 1 and 2 simultaneously.</p>
+<p>:param df: calendar_dates.txt DataFrame.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_calendar_dates.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_no_conflicting_exceptions</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CheckResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks that no (service_id, date) pair has both exception_type 1 and 2 simultaneously.</span>
+
+<span class="sd">    :param df: calendar_dates.txt DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;service_id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">or</span> <span class="s2">&quot;date&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">or</span> <span class="s2">&quot;exception_type&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CheckResult</span><span class="p">(</span>
+            <span class="n">check_id</span> <span class="o">=</span> <span class="s2">&quot;calendar_dates.consistency.no_conflicting_exceptions&quot;</span><span class="p">,</span>
+            <span class="n">label</span>    <span class="o">=</span> <span class="s2">&quot;Absence de conflits d&#39;exceptions&quot;</span><span class="p">,</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;consistency&quot;</span><span class="p">,</span>
+            <span class="n">status</span>   <span class="o">=</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+            <span class="n">weight</span>   <span class="o">=</span> <span class="n">weight</span><span class="p">,</span>
+            <span class="n">message</span>  <span class="o">=</span> <span class="s2">&quot;Colonnes service_id, date ou exception_type absentes&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Grouper par (service_id, date) et chercher les groupes avec les deux types</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;service_id&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">])[</span><span class="s2">&quot;exception_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)))</span>
+    <span class="n">conflicts</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="n">grouped</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">x</span><span class="p">))]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">conflicts</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">affected_ids</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">conflicts</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">CheckResult</span><span class="p">(</span>
+            <span class="n">check_id</span>       <span class="o">=</span> <span class="s2">&quot;calendar_dates.consistency.no_conflicting_exceptions&quot;</span><span class="p">,</span>
+            <span class="n">label</span>          <span class="o">=</span> <span class="s2">&quot;Absence de conflits d&#39;exceptions&quot;</span><span class="p">,</span>
+            <span class="n">category</span>       <span class="o">=</span> <span class="s2">&quot;consistency&quot;</span><span class="p">,</span>
+            <span class="n">status</span>         <span class="o">=</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span>
+            <span class="n">weight</span>         <span class="o">=</span> <span class="n">weight</span><span class="p">,</span>
+            <span class="n">message</span>        <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span><span class="si">}</span><span class="s2"> couple(s) (service_id, date) avec des exceptions contradictoires&quot;</span><span class="p">,</span>
+            <span class="n">affected_ids</span>   <span class="o">=</span> <span class="n">affected_ids</span><span class="p">,</span>
+            <span class="n">affected_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">conflicts</span><span class="p">),</span>
+            <span class="n">total_count</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;service_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()),</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CheckResult</span><span class="p">(</span>
+        <span class="n">check_id</span>    <span class="o">=</span> <span class="s2">&quot;calendar_dates.consistency.no_conflicting_exceptions&quot;</span><span class="p">,</span>
+        <span class="n">label</span>       <span class="o">=</span> <span class="s2">&quot;Absence de conflits d&#39;exceptions&quot;</span><span class="p">,</span>
+        <span class="n">category</span>    <span class="o">=</span> <span class="s2">&quot;consistency&quot;</span><span class="p">,</span>
+        <span class="n">status</span>      <span class="o">=</span> <span class="s2">&quot;pass&quot;</span><span class="p">,</span>
+        <span class="n">weight</span>      <span class="o">=</span> <span class="n">weight</span><span class="p">,</span>
+        <span class="n">message</span>     <span class="o">=</span> <span class="s2">&quot;Aucun conflit d&#39;exceptions détecté&quot;</span><span class="p">,</span>
+        <span class="n">total_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;service_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()),</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.highlight"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>

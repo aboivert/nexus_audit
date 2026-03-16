@@ -1,0 +1,1519 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../audit_stops/">
+      
+      
+        <link rel="next" href="../audit_stop_times/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Trips - Audit API for Nexus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#trips" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Audit API for Nexus" class="md-header__button md-logo" aria-label="Audit API for Nexus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Audit API for Nexus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Trips
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../scoring/" class="md-tabs__link">
+        
+  
+    
+  
+  Scoring system
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../weight/" class="md-tabs__link">
+        
+  
+    
+  
+  Weight system
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../audit_generic_functions/" class="md-tabs__link">
+          
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Audit API for Nexus" class="md-nav__button md-logo" aria-label="Audit API for Nexus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Audit API for Nexus
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accueil
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../scoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scoring system
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../weight/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Weight system
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_generic_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fonctions génériques
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_agency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_routes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Routes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_stops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stops
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Trips
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Trips
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#audits-effectues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Audits effectués
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Audits effectués">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-champs-obligatoires-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Champs obligatoires (mandatory)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-validite-des-formats-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Validité des formats (format)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-coherence-inter-fichiers-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cohérence inter-fichiers (consistency)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-accessibilite-accessibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Accessibilité (accessibility)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctions-specifiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctions spécifiques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctions spécifiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_check_service_id_existencedf-calendar_df-calendar_dates_df" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_service_id_existence(df, calendar_df, calendar_dates_df)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Référence complète
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips" class="md-nav__link">
+    <span class="md-ellipsis">
+      audit_trips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_accessibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_accessibility
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_data_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_data_consistency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_data_format" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_data_format
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_mandatory_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_mandatory_fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_service_id_existence" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_service_id_existence
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_stop_times/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stop Times
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_calendar_dates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Calendar Dates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_calendar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Calendar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audit_orchestrators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Orchestrators
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#audits-effectues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Audits effectués
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Audits effectués">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-champs-obligatoires-mandatory" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Champs obligatoires (mandatory)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-validite-des-formats-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Validité des formats (format)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-coherence-inter-fichiers-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cohérence inter-fichiers (consistency)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-accessibilite-accessibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Accessibilité (accessibility)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonctions-specifiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fonctions spécifiques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonctions spécifiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_check_service_id_existencedf-calendar_df-calendar_dates_df" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_service_id_existence(df, calendar_df, calendar_dates_df)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Référence complète
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips" class="md-nav__link">
+    <span class="md-ellipsis">
+      audit_trips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_accessibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_accessibility
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_data_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_data_consistency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_data_format" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_data_format
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_mandatory_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_mandatory_fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit_trips._check_service_id_existence" class="md-nav__link">
+    <span class="md-ellipsis">
+      _check_service_id_existence
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="trips">Trips</h1>
+<p>Ce module audite le fichier <code>trips.txt</code> selon quatre axes : la présence des champs obligatoires, la validité des formats, la cohérence inter-fichiers, et l'accessibilité PMR.</p>
+<hr />
+<h2 id="audits-effectues">Audits effectués</h2>
+<h3 id="1-champs-obligatoires-mandatory">1. Champs obligatoires (<code>mandatory</code>)</h3>
+<p>Vérifie la présence et l'unicité des champs clés, ainsi que la cohérence avec <code>routes.txt</code>, <code>calendar.txt</code> et <code>calendar_dates.txt</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Poids recommandé</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Présence de <code>trip_id</code></td>
+<td>3.0</td>
+<td>Toujours</td>
+</tr>
+<tr>
+<td>Unicité de <code>trip_id</code></td>
+<td>3.0</td>
+<td>Toujours</td>
+</tr>
+<tr>
+<td>Présence de <code>route_id</code></td>
+<td>3.0</td>
+<td>Toujours</td>
+</tr>
+<tr>
+<td>Présence de <code>service_id</code></td>
+<td>3.0</td>
+<td>Toujours</td>
+</tr>
+<tr>
+<td>Cohérence des <code>route_id</code> avec <code>routes.txt</code></td>
+<td>2.0</td>
+<td>Toujours</td>
+</tr>
+<tr>
+<td>Existence des <code>service_id</code> dans <code>calendar.txt</code> et/ou <code>calendar_dates.txt</code></td>
+<td>2.0</td>
+<td>Seulement si au moins l'un des deux fichiers est chargé</td>
+</tr>
+<tr>
+<td>Présence d'au moins un nom (<code>trip_headsign</code> ou <code>trip_short_name</code>)</td>
+<td>2.0</td>
+<td>Toujours</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Existence des service_id</p>
+<p>Les <code>service_id</code> sont recherchés dans <code>calendar.txt</code> <strong>et</strong> <code>calendar_dates.txt</code> simultanément — un <code>service_id</code> valide dans l'un ou l'autre des deux fichiers est accepté. Si les deux fichiers sont absents, le check passe en <code>skip</code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Dépendance inter-fichiers</p>
+<p>Ce module dépend de <code>routes.txt</code>, <code>calendar.txt</code>, <code>calendar_dates.txt</code>, <code>stop_times.txt</code> et optionnellement <code>shapes.txt</code>.</p>
+</div>
+<hr />
+<h3 id="2-validite-des-formats-format">2. Validité des formats (<code>format</code>)</h3>
+<p>Vérifie que les valeurs respectent les formats attendus.</p>
+<p>| Champ | Poids recommandé | Règle |
+|---|---|
+| <code>direction_id</code> | 1.0 | Doit valoir <code>0</code> ou <code>1</code> |
+| <code>bikes_allowed</code> | 1.0 | Doit valoir <code>0</code>, <code>1</code> ou <code>2</code> |</p>
+<hr />
+<h3 id="3-coherence-inter-fichiers-consistency">3. Cohérence inter-fichiers (<code>consistency</code>)</h3>
+<p>Vérifie l'utilisation des <code>trip_id</code> dans <code>stop_times.txt</code> et la cohérence des <code>shape_id</code> avec <code>shapes.txt</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Poids recommandé</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>trip_id</code> inutilisés</td>
+<td>1.0</td>
+<td>Détecte les <code>trip_id</code> définis dans <code>trips.txt</code> mais sans aucun horaire dans <code>stop_times.txt</code></td>
+</tr>
+<tr>
+<td>Existence des <code>shape_id</code> dans <code>shapes.txt</code></td>
+<td>2.0</td>
+<td>Vérifie que tous les <code>shape_id</code> référencés dans <code>trips.txt</code> existent dans <code>shapes.txt</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Dépendance inter-fichiers</p>
+<p>Si <code>shapes.txt</code> est absent, le check sur les <code>shape_id</code> passe en <code>skip</code>.</p>
+</div>
+<hr />
+<h3 id="4-accessibilite-accessibility">4. Accessibilité (<code>accessibility</code>)</h3>
+<p>Vérifie la validité et mesure le taux de couverture de l'accessibilité PMR.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Poids recommandé</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Format de <code>wheelchair_accessible</code></td>
+<td>1.0</td>
+<td>Doit valoir <code>0</code>, <code>1</code> ou <code>2</code></td>
+</tr>
+<tr>
+<td>Métriques d'accessibilité</td>
+<td>3.0</td>
+<td>Calcule le taux de trips accessibles (<code>wheelchair_accessible = 1</code>) parmi ceux renseignés</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Métriques d'accessibilité</p>
+<p>Le check de métriques ne génère pas d'erreur — il produit un statut informatif et stocke dans <code>details</code> le nombre de trips accessibles, non accessibles, et non renseignés. C'est un indicateur de couverture plutôt qu'une validation stricte.</p>
+</div>
+<hr />
+<h2 id="fonctions-specifiques">Fonctions spécifiques</h2>
+<h3 id="_check_service_id_existencedf-calendar_df-calendar_dates_df"><code>_check_service_id_existence(df, calendar_df, calendar_dates_df)</code></h3>
+<p><strong>Entrée</strong> — le DataFrame de <code>trips.txt</code>, le DataFrame de <code>calendar.txt</code> (ou <code>None</code> si absent), et le DataFrame de <code>calendar_dates.txt</code> (ou <code>None</code> si absent).</p>
+<p><strong>Vérification</strong> — un <code>service_id</code> est valide s'il est défini dans <code>calendar.txt</code> <strong>ou</strong> dans <code>calendar_dates.txt</code> (ou les deux). Construit un DataFrame union des <code>service_id</code> uniques présents dans les fichiers disponibles, puis délègue à <code>check_orphan_ids</code> pour détecter les <code>service_id</code> de <code>trips.txt</code> absents de ce référentiel combiné.</p>
+<p><strong>Sortie</strong></p>
+<table>
+<thead>
+<tr>
+<th>Statut</th>
+<th>Condition</th>
+<th>Taux d'anomalie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>skip</code></td>
+<td>Ni <code>calendar.txt</code> ni <code>calendar_dates.txt</code> disponibles</td>
+<td>Non calculable</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>Des <code>service_id</code> n'existent ni dans <code>calendar.txt</code> ni dans <code>calendar_dates.txt</code></td>
+<td><code>IDs orphelins / total des service_id référencés dans trips.txt</code></td>
+</tr>
+<tr>
+<td><code>pass</code></td>
+<td>Tous les <code>service_id</code> existent dans au moins un des deux fichiers</td>
+<td>0%</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Union des référentiels</p>
+<p>Le référentiel est construit par <strong>union</strong> des deux fichiers — un <code>service_id</code> défini uniquement dans <code>calendar_dates.txt</code> (sans entrée dans <code>calendar.txt</code>) est tout à fait valide.</p>
+</div>
+<hr />
+<h2 id="reference-complete">Référence complète</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="audit_trips"></a>
+    <div class="doc doc-contents first">
+
+        <p>Audit functions for trips.txt: mandatory fields, format validation, consistency and accessibility checks.</p>
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_trips._check_accessibility" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_accessibility</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks format validity and computes accessibility metrics for wheelchair_accessible.</p>
+<p>:param df: trips.txt DataFrame.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_trips.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_accessibility</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CheckResult</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks format validity and computes accessibility metrics for wheelchair_accessible.</span>
+
+<span class="sd">    :param df: trips.txt DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">SCORING_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.txt&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">check_format_field</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;wheelchair_accessible&quot;</span><span class="p">,</span> <span class="n">format_config</span><span class="p">[</span><span class="s2">&quot;wheelchair_accessible&quot;</span><span class="p">],</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format.wheelchair_accessible_valid&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">category</span><span class="o">=</span><span class="s2">&quot;accessibility&quot;</span><span class="p">),</span>
+        <span class="n">check_accessibility_metrics</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;wheelchair_accessible&quot;</span><span class="p">,</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;accessibility.wheelchair_accessible_metrics&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)),</span>
+    <span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_trips._check_data_consistency" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_data_consistency</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">shapes_df</span><span class="p">,</span> <span class="n">stop_times_df</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks trip_id usage against stop_times.txt and shape_id existence against shapes.txt.</p>
+<p>:param df: trips.txt DataFrame.
+:param shapes_df: shapes.txt DataFrame, or None if absent.
+:param stop_times_df: stop_times.txt DataFrame.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_trips.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_data_consistency</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">shapes_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">stop_times_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CheckResult</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks trip_id usage against stop_times.txt and shape_id existence against shapes.txt.</span>
+
+<span class="sd">    :param df: trips.txt DataFrame.</span>
+<span class="sd">    :param shapes_df: shapes.txt DataFrame, or None if absent.</span>
+<span class="sd">    :param stop_times_df: stop_times.txt DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">SCORING_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.txt&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">checks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">check_unused_ids</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">stop_times_df</span><span class="p">,</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.consistency.trip_id_no_unused&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+    <span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">shapes_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">checks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">check_orphan_ids</span><span class="p">(</span><span class="n">shapes_df</span><span class="p">,</span> <span class="s2">&quot;shape_id&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;shape_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.consistency.shape_id_no_orphan&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">checks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CheckResult</span><span class="p">(</span>
+            <span class="n">check_id</span> <span class="o">=</span> <span class="s2">&quot;trips.consistency.shape_id_existence&quot;</span><span class="p">,</span>
+            <span class="n">label</span>    <span class="o">=</span> <span class="s2">&quot;Existence des shape_id dans shapes.txt&quot;</span><span class="p">,</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;consistency&quot;</span><span class="p">,</span>
+            <span class="n">status</span>   <span class="o">=</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+            <span class="n">weight</span>   <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.consistency.shape_id_no_orphan&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
+            <span class="n">message</span>  <span class="o">=</span> <span class="s2">&quot;shapes.txt absent, vérification non applicable&quot;</span><span class="p">,</span>
+        <span class="p">))</span>
+    <span class="k">return</span> <span class="n">checks</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_trips._check_data_format" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_data_format</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks format validity of direction_id and bikes_allowed fields against format_config.</p>
+<p>:param df: trips.txt DataFrame.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_trips.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_data_format</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CheckResult</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks format validity of direction_id and bikes_allowed fields against format_config.</span>
+
+<span class="sd">    :param df: trips.txt DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">SCORING_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.txt&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">check_format_field</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;direction_id&quot;</span><span class="p">,</span> <span class="n">format_config</span><span class="p">[</span><span class="s2">&quot;direction_id&quot;</span><span class="p">],</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format.direction_id_valid&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">check_format_field</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;bikes_allowed&quot;</span><span class="p">,</span> <span class="n">format_config</span><span class="p">[</span><span class="s2">&quot;bikes_allowed&quot;</span><span class="p">],</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format.bikes_allowed_valid&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+    <span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_trips._check_mandatory_fields" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_mandatory_fields</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">routes_df</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">,</span> <span class="n">calendar_dates_df</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks presence and unicity of trip_id, mandatory field presence, route_id and service_id validity,
+and that at least one of trip_headsign or trip_short_name is filled.</p>
+<p>:param df: trips.txt DataFrame.
+:param routes_df: routes.txt DataFrame.
+:param calendar_df: calendar.txt DataFrame, or None if absent.
+:param calendar_dates_df: calendar_dates.txt DataFrame, or None if absent.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_trips.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_mandatory_fields</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">routes_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">calendar_dates_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CheckResult</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks presence and unicity of trip_id, mandatory field presence, route_id and service_id validity,</span>
+<span class="sd">    and that at least one of trip_headsign or trip_short_name is filled.</span>
+
+<span class="sd">    :param df: trips.txt DataFrame.</span>
+<span class="sd">    :param routes_df: routes.txt DataFrame.</span>
+<span class="sd">    :param calendar_df: calendar.txt DataFrame, or None if absent.</span>
+<span class="sd">    :param calendar_dates_df: calendar_dates.txt DataFrame, or None if absent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">SCORING_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.txt&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">check_id_presence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.mandatory.trip_id_presence&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)),</span>
+        <span class="n">check_id_unicity</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>  <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.mandatory.trip_id_unicity&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)),</span>
+        <span class="n">check_field_presence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;route_id&quot;</span><span class="p">,</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.mandatory.route_id_presence&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)),</span>
+        <span class="n">check_field_presence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;service_id&quot;</span><span class="p">,</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.mandatory.service_id_presence&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)),</span>
+        <span class="n">check_orphan_ids</span><span class="p">(</span><span class="n">routes_df</span><span class="p">,</span> <span class="s2">&quot;route_id&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;route_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.mandatory.route_id_no_orphan&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;mandatory&quot;</span><span class="p">),</span>
+        <span class="n">_check_service_id_existence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">,</span> <span class="n">calendar_dates_df</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.mandatory.service_id_existence&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+        <span class="n">check_at_least_one_field_presence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;trip_short_name&quot;</span><span class="p">,</span><span class="s2">&quot;trip_headsign&quot;</span><span class="p">],</span> <span class="s2">&quot;trip_id&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trips.mandatory.trip_short_or_headsign&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+    <span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="audit_trips._check_service_id_existence" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_check_service_id_existence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">,</span> <span class="n">calendar_dates_df</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks that all service_id values in trips.txt exist in calendar.txt and/or calendar_dates.txt.
+Skipped if both files are absent.</p>
+<p>:param df: trips.txt DataFrame.
+:param calendar_df: calendar.txt DataFrame, or None if absent.
+:param calendar_dates_df: calendar_dates.txt DataFrame, or None if absent.
+:param weight: Check weight for scoring.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>audit_trips.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_check_service_id_existence</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">calendar_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">calendar_dates_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CheckResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks that all service_id values in trips.txt exist in calendar.txt and/or calendar_dates.txt.</span>
+<span class="sd">    Skipped if both files are absent.</span>
+
+<span class="sd">    :param df: trips.txt DataFrame.</span>
+<span class="sd">    :param calendar_df: calendar.txt DataFrame, or None if absent.</span>
+<span class="sd">    :param calendar_dates_df: calendar_dates.txt DataFrame, or None if absent.</span>
+<span class="sd">    :param weight: Check weight for scoring.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Aucun des deux fichiers disponible → skip</span>
+    <span class="k">if</span> <span class="n">calendar_df</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">calendar_dates_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CheckResult</span><span class="p">(</span>
+            <span class="n">check_id</span> <span class="o">=</span> <span class="s2">&quot;trips.mandatory.service_id_existence&quot;</span><span class="p">,</span>
+            <span class="n">label</span>    <span class="o">=</span> <span class="s2">&quot;Existence des service_id dans calendar.txt et/ou calendar_dates.txt&quot;</span><span class="p">,</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;mandatory&quot;</span><span class="p">,</span>
+            <span class="n">status</span>   <span class="o">=</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+            <span class="n">weight</span>   <span class="o">=</span> <span class="n">weight</span><span class="p">,</span>
+            <span class="n">message</span>  <span class="o">=</span> <span class="s2">&quot;Ni calendar.txt ni calendar_dates.txt disponibles&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Construction d&#39;un DataFrame union des service_id valides</span>
+    <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">calendar_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calendar_df</span><span class="p">[[</span><span class="s2">&quot;service_id&quot;</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">calendar_dates_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">calendar_dates_df</span><span class="p">[[</span><span class="s2">&quot;service_id&quot;</span><span class="p">]])</span>
+
+    <span class="n">combined_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+    <span class="c1"># On délègue à check_orphan_ids</span>
+    <span class="k">return</span> <span class="n">check_orphan_ids</span><span class="p">(</span>
+        <span class="n">df</span>         <span class="o">=</span> <span class="n">combined_df</span><span class="p">,</span>
+        <span class="n">id_field</span>   <span class="o">=</span> <span class="s2">&quot;service_id&quot;</span><span class="p">,</span>
+        <span class="n">ref_df</span>     <span class="o">=</span> <span class="n">df</span><span class="p">,</span>
+        <span class="n">ref_field</span>  <span class="o">=</span> <span class="s2">&quot;service_id&quot;</span><span class="p">,</span>
+        <span class="n">weight</span>     <span class="o">=</span> <span class="n">weight</span><span class="p">,</span>
+        <span class="n">category</span>   <span class="o">=</span> <span class="s2">&quot;mandatory&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.highlight"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>
