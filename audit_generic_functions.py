@@ -23,7 +23,7 @@ def is_truly_empty(value):
     return str_value in empty_values
 
 
-def check_id_presence(df: pd.DataFrame, field: str, weight: float = 1.0) -> CheckResult:
+def check_id_presence(df: pd.DataFrame, field: str, weight: float) -> CheckResult:
     """
     Checks that a field is present and has no missing values in a DataFrame.
 
@@ -70,7 +70,7 @@ def check_id_presence(df: pd.DataFrame, field: str, weight: float = 1.0) -> Chec
     )
 
 
-def check_id_unicity(df: pd.DataFrame, fields: str | list[str], weight: float = 1.0) -> CheckResult:
+def check_id_unicity(df: pd.DataFrame, fields: str | list[str], weight: float) -> CheckResult:
     """
     Checks that one or more fields form a unique key across all rows.
 
@@ -128,7 +128,7 @@ def check_id_unicity(df: pd.DataFrame, fields: str | list[str], weight: float = 
     )
 
 
-def check_field_presence(df: pd.DataFrame, field: str, id_field: str | list[str], weight: float = 1.0) -> CheckResult:
+def check_field_presence(df: pd.DataFrame, field: str, id_field: str | list[str], weight: float) -> CheckResult:
     """
     Checks that a field is present and non-empty, returning affected IDs from a reference field.
 
@@ -183,7 +183,7 @@ def check_field_presence(df: pd.DataFrame, field: str, id_field: str | list[str]
     )
 
 
-def check_at_least_one_field_presence(df: pd.DataFrame, fields: list[str], id_field: str, weight: float = 1.0) -> CheckResult:
+def check_at_least_one_field_presence(df: pd.DataFrame, fields: list[str], id_field: str, weight: float) -> CheckResult:
     """
     Checks that each row has at least one non-empty value among the given fields.
 
@@ -246,7 +246,7 @@ def check_at_least_one_field_presence(df: pd.DataFrame, fields: list[str], id_fi
     )
 
 
-def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_field: str | list[str], weight: float = 1.0, category: str = "format") -> CheckResult:
+def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_field: str | list[str], weight: float, category: str = "format") -> CheckResult:
     """
     Checks the format validity of a field. Supports types: listing, url, regex, coordinates, date, time, positive_integer, positive_number, decimal.
     Skips optional absent fields, errors on required absent fields.
@@ -395,7 +395,7 @@ def check_format_field(df: pd.DataFrame, field: str, format_config: dict, id_fie
     )
 
 
-def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0, category: str = "consistency") -> CheckResult:
+def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float, category: str = "consistency") -> CheckResult:
     """
     Checks for orphan IDs: IDs referenced in ref_df but absent from df.
     Errors are critical as they break cross-file relationships.
@@ -445,7 +445,7 @@ def check_orphan_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
     )
 
 
-def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float = 1.0, category: str = "consistency") -> CheckResult:
+def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_field: str, weight: float, category: str = "consistency") -> CheckResult:
     """
     Checks for unused IDs: IDs defined in df but never referenced in ref_df.
     Results in a warning — data is useless but not breaking.
@@ -495,7 +495,7 @@ def check_unused_ids(df: pd.DataFrame, id_field: str, ref_df: pd.DataFrame, ref_
     )
 
 
-def check_accessibility_metrics(df: pd.DataFrame, field: str, id_field: str | list[str], weight: float = 1.0) -> CheckResult:
+def check_accessibility_metrics(df: pd.DataFrame, field: str, id_field: str | list[str], weight: float) -> CheckResult:
     """
     Analyses a UFR accessibility field: computes completion rate (values 1 & 2)
     and accessibility rate (value 1 among 1 & 2).

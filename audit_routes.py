@@ -3,6 +3,7 @@ import pandas as pd
 from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids, check_unused_ids, check_at_least_one_field_presence
 import re
+from scoring_config import SCORING_CONFIG
 
 format_config = {'route_type':{'genre':'required','description':"Validité des types de route", 'type':'listing', 'valid_fields':{'0', '1', '2', '3', '4', '5', '6', '7', '11', '12', '100', '101', '102', '103', '104', '105', '106', '107', '108', '109', '200', '201', '202', '203', '204', '205', '206', '207', '208', '209', '300', '301', '302', '400', '401', '402', '403', '404', '405', '406', '407', '408', '409', '410', '411', '412', '413', '414', '415', '416', '417', '500', '600', '601', '602', '603', '604', '605', '606', '607', '700', '701', '702', '703', '704', '705', '706', '800', '900', '1000', '1100', '1200', '1300', '1400', '1500', '1600', '1700'}},
           'route_color':{'genre':'optional','description':"Validité des couleurs de route", 'type':'regex', 'pattern':re.compile(r'^[0-9A-Fa-f]{6}$')},
@@ -21,13 +22,14 @@ def _check_mandatory_fields(df: pd.DataFrame, agency_df: pd.DataFrame) -> list[C
     :param df: routes.txt DataFrame.
     :param agency_df: agency.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("routes.txt", {})
     return [
-        check_id_presence(df, "route_id", weight=3.0),
-        check_id_unicity(df,  "route_id", weight=3.0),
-        check_at_least_one_field_presence(df, ["route_short_name", "route_long_name"], "route_id", weight=3.0),
-        check_field_presence(df, "route_type", "route_id", weight=1.0),
-        _check_agency_id_presence(df, agency_df),
-        _check_agency_id_existence(df, agency_df),
+        check_id_presence(df, "route_id", weight=cfg.get("routes.mandatory.route_id_presence", 4.0)),
+        check_id_unicity(df,  "route_id", weight=cfg.get("routes.mandatory.route_id_unicity", 4.0)),
+        check_at_least_one_field_presence(df, ["route_short_name", "route_long_name"], "route_id", weight=cfg.get("routes.mandatory.route_short_or_long_name", 2.0)),
+        check_field_presence(df, "route_type", "route_id", weight=cfg.get("routes.mandatory.route_type_presence", 2.0)),
+        _check_agency_id_presence(df, agency_df, weight=cfg.get("routes.mandatory.agency_id_presence", 2.0)),
+        _check_agency_id_existence(df, agency_df, weight=cfg.get("routes.mandatory.agency_id_existence", 2.0)),
     ]
 
 
@@ -37,13 +39,14 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: routes.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("routes.txt", {})
     return [
-        check_format_field(df, "route_type", format_config["route_type"], "route_id", weight=1.0),
-        check_format_field(df, "route_color", format_config["route_color"], "route_id", weight=1.0),
-        check_format_field(df, "route_text_color", format_config["route_text_color"], "route_id", weight=1.0),
-        check_format_field(df, "route_url", format_config["route_url"], "route_id", weight=1.0),
-        check_format_field(df, "continuous_pickup", format_config["continuous_pickup"], "route_id", weight=1.0),
-        check_format_field(df, "continuous_drop_off", format_config["continuous_drop_off"], "route_id", weight=1.0),
+        check_format_field(df, "route_type", format_config["route_type"], "route_id", weight=cfg.get("format.route_type_valid", 2.0)),
+        check_format_field(df, "route_color", format_config["route_color"], "route_id", weight=cfg.get("format.route_color_valid", 2.0)),
+        check_format_field(df, "route_text_color", format_config["route_text_color"], "route_id", weight=cfg.get("format.route_text_color_valid", 2.0)),
+        check_format_field(df, "route_url", format_config["route_url"], "route_id", weight=cfg.get("format.route_url_valid", 1.0)),
+        check_format_field(df, "continuous_pickup", format_config["continuous_pickup"], "route_id", weight=cfg.get("format.continuous_pickup_valid", 1.0)),
+        check_format_field(df, "continuous_drop_off", format_config["continuous_drop_off"], "route_id", weight=cfg.get("format.continuous_drop_off_valid", 1.0)),
     ]
 
 
@@ -54,11 +57,12 @@ def _check_data_consistency(df: pd.DataFrame, trips_df: pd.DataFrame) -> list[Ch
     :param df: routes.txt DataFrame.
     :param trips_df: trips.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("routes.txt", {})
     return [
-        check_orphan_ids(df, "route_id", trips_df, "route_id", weight=2.0),
-        check_unused_ids(df, "route_id", trips_df, "route_id", weight=2.0),
-        _check_duplicate_route_names(df, "route_short_name"),
-        _check_duplicate_route_names(df, "route_long_name"),
+        check_orphan_ids(df, "route_id", trips_df, "route_id", weight=cfg.get("routes.consistency.route_id_no_orphan", 3.0)),
+        check_unused_ids(df, "route_id", trips_df, "route_id", weight=cfg.get("routes.consistency.route_id_no_unused", 2.0)),
+        _check_duplicate_route_names(df, "route_short_name", weight=cfg.get("routes.consistency.duplicate_route_short_name", 1.0)),
+        _check_duplicate_route_names(df, "route_long_name", weight=cfg.get("routes.consistency.duplicate_route_long_name", 1.0)),
     ]
 
 
@@ -68,12 +72,13 @@ def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: routes.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("routes.txt", {})
     return [
-        _check_color_contrast(df),
+        _check_color_contrast(df, weight=cfg.get("routes.accessibility.color_contrast", 1.0)),
     ]
 
 
-def _check_agency_id_presence(df: pd.DataFrame, agency_df: pd.DataFrame | None) -> CheckResult:
+def _check_agency_id_presence(df: pd.DataFrame, agency_df: pd.DataFrame | None, weight: float) -> CheckResult:
     """
     Checks that agency_id is present in routes.txt.
     Skipped if agency.txt is absent or contains only one agency.
@@ -88,7 +93,7 @@ def _check_agency_id_presence(df: pd.DataFrame, agency_df: pd.DataFrame | None) 
             label    = "Présence du champ agency_id",
             category = "mandatory",
             status   = "skip",
-            weight   = 3.0,
+            weight   = weight,
             message  = "agency.txt absent, impossible de déterminer si agency_id est obligatoire",
         )
 
@@ -99,15 +104,15 @@ def _check_agency_id_presence(df: pd.DataFrame, agency_df: pd.DataFrame | None) 
             label    = "Présence du champ agency_id",
             category = "mandatory",
             status   = "skip",
-            weight   = 3.0,
+            weight   = weight,
             message  = "agency_id optionnel (une seule agence)",
         )
 
     # Plusieurs agences → on vérifie la présence
-    return check_field_presence(df, "agency_id", "route_id", weight=3.0)
+    return check_field_presence(df, "agency_id", "route_id", weight=weight)
 
 
-def _check_agency_id_existence(df: pd.DataFrame, agency_df: pd.DataFrame | None) -> CheckResult:
+def _check_agency_id_existence(df: pd.DataFrame, agency_df: pd.DataFrame | None, weight: float) -> CheckResult:
     """
     Checks that all agency_id values in routes.txt exist in agency.txt.
     Skipped if agency.txt or agency_id column is absent.
@@ -122,7 +127,7 @@ def _check_agency_id_existence(df: pd.DataFrame, agency_df: pd.DataFrame | None)
             label    = "Existence des agency_id dans agency.txt",
             category = "mandatory",
             status   = "skip",
-            weight   = 3.0,
+            weight   = weight,
             message  = "agency.txt absent, vérification non applicable",
         )
 
@@ -133,14 +138,14 @@ def _check_agency_id_existence(df: pd.DataFrame, agency_df: pd.DataFrame | None)
             label    = "Existence des agency_id dans agency.txt",
             category = "mandatory",
             status   = "skip",
-            weight   = 3.0,
+            weight   = weight,
             message  = "agency_id absent de routes.txt, vérification non applicable",
         )
 
-    return check_orphan_ids(agency_df, "agency_id", df, "agency_id", weight=3.0, category="mandatory")
+    return check_orphan_ids(agency_df, "agency_id", df, "agency_id", weight=weight, category="mandatory")
 
 
-def _check_duplicate_route_names(df: pd.DataFrame, field: str) -> CheckResult:
+def _check_duplicate_route_names(df: pd.DataFrame, field: str, weight: float) -> CheckResult:
     """
     Detects duplicate route names per agency for a given field (route_short_name or route_long_name).
 
@@ -153,7 +158,7 @@ def _check_duplicate_route_names(df: pd.DataFrame, field: str) -> CheckResult:
             label    = f"Absence de {field} dupliqués par agence",
             category = "consistency",
             status   = "skip",
-            weight   = 1.0,
+            weight   = weight,
             message  = f"Colonne {field} absente",
         )
 
@@ -185,7 +190,7 @@ def _check_duplicate_route_names(df: pd.DataFrame, field: str) -> CheckResult:
             label          = f"Absence de {field} dupliqués par agence",
             category       = "consistency",
             status         = "warning",
-            weight         = 1.0,
+            weight         = weight,
             message        = f"{len(duplicates)} route(s) avec un {field} dupliqué au sein d'une même agence",
             affected_ids   = affected_ids,
             affected_count = len(duplicates),
@@ -197,13 +202,13 @@ def _check_duplicate_route_names(df: pd.DataFrame, field: str) -> CheckResult:
         label       = f"Absence de {field} dupliqués par agence",
         category    = "consistency",
         status      = "pass",
-        weight      = 1.0,
+        weight      = weight,
         message     = f"Aucun {field} dupliqué détecté",
         total_count = len(df),
     )
 
 
-def _check_color_contrast(df: pd.DataFrame) -> CheckResult:
+def _check_color_contrast(df: pd.DataFrame, weight: float) -> CheckResult:
     """
     Checks WCAG contrast ratio (>= 4.5:1) between route_color and route_text_color.
 
@@ -216,7 +221,7 @@ def _check_color_contrast(df: pd.DataFrame) -> CheckResult:
             label    = "Contraste WCAG entre route_color et route_text_color",
             category = "accessibility",
             status   = "skip",
-            weight   = 1.0,
+            weight   = weight,
             message  = "Colonnes route_color et/ou route_text_color absentes",
         )
 
@@ -273,7 +278,7 @@ def _check_color_contrast(df: pd.DataFrame) -> CheckResult:
             label          = "Contraste WCAG entre route_color et route_text_color",
             category       = "accessibility",
             status         = "warning",
-            weight         = 1.0,
+            weight         = weight,
             message        = f"{len(affected_ids)} route(s) avec un ratio de contraste insuffisant (< 4.5:1)",
             affected_ids   = affected_ids,
             affected_count = len(affected_ids),
@@ -286,7 +291,7 @@ def _check_color_contrast(df: pd.DataFrame) -> CheckResult:
         label       = "Contraste WCAG entre route_color et route_text_color",
         category    = "accessibility",
         status      = "pass",
-        weight      = 1.0,
+        weight      = weight,
         message     = "Tous les contrastes de couleur sont suffisants (>= 4.5:1)",
         total_count = total_count,
     )

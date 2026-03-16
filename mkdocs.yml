@@ -27,17 +27,22 @@ plugins:
             show_source: true
             filters: null
 
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
 nav:
   - Accueil: index.md
-  - Architecture: architecture.md
+  - Scoring system: scoring.md
+  - Weight system: weight.md
   - API:
-    - Agency: api/audit_agency.md
-    - Calendar Dates: api/audit_calendar_dates.md
-    - Calendar: api/audit_calendar.md
     - Fonctions génériques: api/audit_generic_functions.md
-    - Models: api/audit_models.md
-    - Orchestrators: api/audit_orchestrators.md
+    - Agency: api/audit_agency.md
     - Routes: api/audit_routes.md
-    - Stop Times: api/audit_stop_times.md
     - Stops: api/audit_stops.md
     - Trips: api/audit_trips.md
+    - Stop Times: api/audit_stop_times.md
+    - Calendar Dates: api/audit_calendar_dates.md
+    - Calendar: api/audit_calendar.md
+    - Orchestrators: api/audit_orchestrators.md

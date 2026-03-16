@@ -2,6 +2,7 @@
 import pandas as pd
 from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids, check_unused_ids, check_at_least_one_field_presence, check_accessibility_metrics
+from scoring_config import SCORING_CONFIG
 
 
 format_config = {'cars_allowed':{'genre':'optional','description':"Validité de l'autorisation de prendre une voiture à bord",'type':'listing', 'valid_fields':{'0', '1','2'}},
@@ -21,14 +22,15 @@ def _check_mandatory_fields(df: pd.DataFrame, routes_df: pd.DataFrame, calendar_
     :param calendar_df: calendar.txt DataFrame, or None if absent.
     :param calendar_dates_df: calendar_dates.txt DataFrame, or None if absent.
     """
+    cfg = SCORING_CONFIG.get("trips.txt", {})
     return [
-        check_id_presence(df, "trip_id", weight=3.0),
-        check_id_unicity(df,  "trip_id", weight=3.0),
-        check_field_presence(df, "route_id", "trip_id", weight=1.0),
-        check_field_presence(df, "service_id", "trip_id", weight=1.0),
-        check_orphan_ids(routes_df, "route_id", df, "route_id", weight=3.0, category = "mandatory"),
-        _check_service_id_existence(df, calendar_df, calendar_dates_df, weight=3.0),
-        check_at_least_one_field_presence(df, ["trip_short_name","trip_headsign"], "trip_id", weight=3.0),
+        check_id_presence(df, "trip_id", weight=cfg.get("trips.mandatory.trip_id_presence", 3.0)),
+        check_id_unicity(df,  "trip_id", weight=cfg.get("trips.mandatory.trip_id_unicity", 3.0)),
+        check_field_presence(df, "route_id", "trip_id", weight=cfg.get("trips.mandatory.route_id_presence", 3.0)),
+        check_field_presence(df, "service_id", "trip_id", weight=cfg.get("trips.mandatory.service_id_presence", 3.0)),
+        check_orphan_ids(routes_df, "route_id", df, "route_id", weight=cfg.get("trips.mandatory.route_id_no_orphan", 2.0), category = "mandatory"),
+        _check_service_id_existence(df, calendar_df, calendar_dates_df, weight=cfg.get("trips.mandatory.service_id_existence", 2.0)),
+        check_at_least_one_field_presence(df, ["trip_short_name","trip_headsign"], "trip_id", weight=cfg.get("trips.mandatory.trip_short_or_headsign", 2.0)),
     ]
 
 
@@ -38,9 +40,10 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: trips.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("trips.txt", {})
     return [
-        check_format_field(df, "direction_id", format_config["direction_id"], "trip_id", weight=1.0),
-        check_format_field(df, "bikes_allowed", format_config["bikes_allowed"], "trip_id", weight=1.0),
+        check_format_field(df, "direction_id", format_config["direction_id"], "trip_id", weight=cfg.get("format.direction_id_valid", 1.0)),
+        check_format_field(df, "bikes_allowed", format_config["bikes_allowed"], "trip_id", weight=cfg.get("format.bikes_allowed_valid", 1.0)),
     ]
 
 
@@ -52,19 +55,20 @@ def _check_data_consistency(df: pd.DataFrame, shapes_df: pd.DataFrame, stop_time
     :param shapes_df: shapes.txt DataFrame, or None if absent.
     :param stop_times_df: stop_times.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("trips.txt", {})
     checks = [
-        check_unused_ids(df, "trip_id", stop_times_df, "trip_id", weight=2.0),
+        check_unused_ids(df, "trip_id", stop_times_df, "trip_id", weight=cfg.get("trips.consistency.trip_id_no_unused", 1.0)),
     ]
 
     if shapes_df is not None:
-        checks.append(check_orphan_ids(shapes_df, "shape_id", df, "shape_id", weight=2.0))
+        checks.append(check_orphan_ids(shapes_df, "shape_id", df, "shape_id", weight=cfg.get("trips.consistency.shape_id_no_orphan", 2.0)))
     else:
         checks.append(CheckResult(
             check_id = "trips.consistency.shape_id_existence",
             label    = "Existence des shape_id dans shapes.txt",
             category = "consistency",
             status   = "skip",
-            weight   = 2.0,
+            weight   = cfg.get("trips.consistency.shape_id_no_orphan", 2.0),
             message  = "shapes.txt absent, vérification non applicable",
         ))
     return checks
@@ -76,13 +80,14 @@ def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: trips.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("trips.txt", {})
     return [
-        check_format_field(df, "wheelchair_accessible", format_config["wheelchair_accessible"], "trip_id", weight=1.0, category="accessibility"),
-        check_accessibility_metrics(df, "wheelchair_accessible", "trip_id", weight=1.0),
+        check_format_field(df, "wheelchair_accessible", format_config["wheelchair_accessible"], "trip_id", weight=cfg.get("format.wheelchair_accessible_valid", 1.0), category="accessibility"),
+        check_accessibility_metrics(df, "wheelchair_accessible", "trip_id", weight=cfg.get("accessibility.wheelchair_accessible_metrics", 3.0)),
     ]
 
 
-def _check_service_id_existence(df: pd.DataFrame, calendar_df: pd.DataFrame | None, calendar_dates_df: pd.DataFrame | None, weight: float = 3.0) -> CheckResult:
+def _check_service_id_existence(df: pd.DataFrame, calendar_df: pd.DataFrame | None, calendar_dates_df: pd.DataFrame | None, weight: float) -> CheckResult:
     """
     Checks that all service_id values in trips.txt exist in calendar.txt and/or calendar_dates.txt.
     Skipped if both files are absent.

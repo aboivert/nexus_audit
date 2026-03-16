@@ -1,7 +1,8 @@
 """Audit functions for calendar_dates.txt: mandatory fields, format validation and consistency checks."""
 import pandas as pd
 from audit_models import CheckResult
-from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids
+from audit_generic_functions import check_id_presence, check_id_unicity, check_format_field, check_orphan_ids
+from scoring_config import SCORING_CONFIG
 
 
 format_config = {'exception_type':{'genre':'required','description':"Validité du champ exception_type",'type':'listing', 'valid_fields':{'1', '2'}},
@@ -16,20 +17,21 @@ def _check_mandatory_fields(df: pd.DataFrame, calendar_df: pd.DataFrame) -> list
     :param df: calendar_dates.txt DataFrame.
     :param calendar_df: calendar.txt DataFrame, or None if absent.
     """
+    cfg = SCORING_CONFIG.get("calendar_dates.txt", {})
     checks = [
-        check_id_presence(df, "service_id", weight=3.0),
-        check_id_presence(df, "date", weight=3.0),
-        check_id_unicity(df, ["service_id", "date"], weight=3.0),
+        check_id_presence(df, "service_id", weight=cfg.get("calendar_dates.mandatory.service_id_presence", 1.0)),
+        check_id_presence(df, "date", weight=cfg.get("calendar_dates.mandatory.date_presence", 1.0)),
+        check_id_unicity(df, ["service_id", "date"], weight=cfg.get("calendar_dates.mandatory.service_id_date_unicity", 1.0)),
     ]
     if calendar_df is not None:
-        checks.append(check_orphan_ids(calendar_df, "service_id", df, "service_id", weight=3.0, category="mandatory"))
+        checks.append(check_orphan_ids(calendar_df, "service_id", df, "service_id", weight=cfg.get("calendar_dates.mandatory.service_id_consistency", 1.0)))
     else:
         checks.append(CheckResult(
             check_id = "calendar_dates.mandatory.service_id_consistency",
             label    = "Cohérence des service_id avec calendar.txt",
             category = "mandatory",
             status   = "skip",
-            weight   = 3.0,
+            weight   = 1.0,
             message  = "calendar.txt absent, vérification non applicable",
         ))
     return checks
@@ -41,9 +43,10 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: calendar_dates.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("calendar_dates.txt", {})
     return [
-        check_format_field(df, "date", format_config["date"], "service_id", weight=1.0),
-        check_format_field(df, "exception_type", format_config["exception_type"], ["service_id", "date"], weight=1.0),
+        check_format_field(df, "date", format_config["date"], "service_id", weight=cfg.get("format.date_valid", 1.0)),
+        check_format_field(df, "exception_type", format_config["exception_type"], ["service_id", "date"], weight=cfg.get("format.exception_type_valid", 1.0)),
     ]
 
 
@@ -54,13 +57,14 @@ def _check_data_consistency(df: pd.DataFrame, calendar_df: pd.DataFrame | None) 
     :param df: calendar_dates.txt DataFrame.
     :param calendar_df: calendar.txt DataFrame, or None if absent.
     """
+    cfg = SCORING_CONFIG.get("calendar_dates.txt", {})
     return [
-        _check_dates_in_calendar_period(df, calendar_df),
-        _check_no_conflicting_exceptions(df),
+        _check_dates_in_calendar_period(df, calendar_df, weight=cfg.get("calendar_dates.consistency.dates_in_period", 1.0)),
+        _check_no_conflicting_exceptions(df, weight=cfg.get("calendar_dates.consistency.no_conflicting_exceptions", 1.0)),
     ]
 
 
-def _check_dates_in_calendar_period(df: pd.DataFrame, calendar_df: pd.DataFrame | None) -> CheckResult:
+def _check_dates_in_calendar_period(df: pd.DataFrame, calendar_df: pd.DataFrame | None, weight: float) -> CheckResult:
     """
     Checks that each date in calendar_dates.txt falls within the start_date/end_date
     range of its service_id in calendar.txt.
@@ -74,7 +78,7 @@ def _check_dates_in_calendar_period(df: pd.DataFrame, calendar_df: pd.DataFrame 
             label    = "Dates dans la période start_date/end_date du calendar.txt",
             category = "consistency",
             status   = "skip",
-            weight   = 2.0,
+            weight   = weight,
             message  = "calendar.txt absent, vérification non applicable",
         )
 
@@ -85,7 +89,7 @@ def _check_dates_in_calendar_period(df: pd.DataFrame, calendar_df: pd.DataFrame 
             label    = "Dates dans la période start_date/end_date du calendar.txt",
             category = "consistency",
             status   = "skip",
-            weight   = 2.0,
+            weight   = weight,
             message  = "Colonnes date, service_id, start_date ou end_date absentes",
         )
 
@@ -114,7 +118,7 @@ def _check_dates_in_calendar_period(df: pd.DataFrame, calendar_df: pd.DataFrame 
             label          = "Dates dans la période start_date/end_date du calendar.txt",
             category       = "consistency",
             status         = "warning",
-            weight         = 2.0,
+            weight         = weight,
             message        = f"{len(affected_ids)} date(s) hors de la période de leur service_id",
             affected_ids   = affected_ids,
             affected_count = len(affected_ids),
@@ -126,13 +130,13 @@ def _check_dates_in_calendar_period(df: pd.DataFrame, calendar_df: pd.DataFrame 
         label       = "Dates dans la période start_date/end_date du calendar.txt",
         category    = "consistency",
         status      = "pass",
-        weight      = 2.0,
+        weight      = weight,
         message     = "Toutes les dates sont dans la période de leur service_id",
         total_count = len(df),
     )
 
 
-def _check_no_conflicting_exceptions(df: pd.DataFrame) -> CheckResult:
+def _check_no_conflicting_exceptions(df: pd.DataFrame, weight: float) -> CheckResult:
     """
     Checks that no (service_id, date) pair has both exception_type 1 and 2 simultaneously.
 
@@ -144,7 +148,7 @@ def _check_no_conflicting_exceptions(df: pd.DataFrame) -> CheckResult:
             label    = "Absence de conflits d'exceptions",
             category = "consistency",
             status   = "skip",
-            weight   = 2.0,
+            weight   = weight,
             message  = "Colonnes service_id, date ou exception_type absentes",
         )
 
@@ -159,7 +163,7 @@ def _check_no_conflicting_exceptions(df: pd.DataFrame) -> CheckResult:
             label          = "Absence de conflits d'exceptions",
             category       = "consistency",
             status         = "error",
-            weight         = 2.0,
+            weight         = weight,
             message        = f"{len(conflicts)} couple(s) (service_id, date) avec des exceptions contradictoires",
             affected_ids   = affected_ids,
             affected_count = len(conflicts),
@@ -171,7 +175,7 @@ def _check_no_conflicting_exceptions(df: pd.DataFrame) -> CheckResult:
         label       = "Absence de conflits d'exceptions",
         category    = "consistency",
         status      = "pass",
-        weight      = 2.0,
+        weight      = weight,
         message     = "Aucun conflit d'exceptions détecté",
         total_count = len(df["service_id"].unique()),
     )

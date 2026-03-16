@@ -3,6 +3,8 @@ import pandas as pd
 from audit_models import CheckResult
 from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_accessibility_metrics, check_orphan_ids, check_unused_ids
 import pytz
+from scoring_config import SCORING_CONFIG
+
 
 format_config = {'stop_timezone':{'genre':'optional','description':"Validité des fuseaux horaires", 'type':'listing', 'valid_fields':set(pytz.all_timezones)},
           'stop_url':{'genre':'optional','description':"Validité des URL",'type':'url'},
@@ -19,12 +21,13 @@ def _check_mandatory_fields(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: stops.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("stops.txt", {})
     return [
-        check_id_presence(df, "stop_id", weight=3.0),
-        check_id_unicity(df,  "stop_id", weight=3.0),
-        check_field_presence(df, "stop_name", "stop_id", weight=1.0),
-        check_field_presence(df, "stop_lat", "stop_id", weight=1.0),
-        check_field_presence(df, "stop_lon", "stop_id", weight=1.0),
+        check_id_presence(df, "stop_id", weight=cfg.get("stops.mandatory.stop_id_presence", 2.0)),
+        check_id_unicity(df,  "stop_id", weight=cfg.get("stops.mandatory.stop_id_unicity", 2.0)),
+        check_field_presence(df, "stop_name", "stop_id", weight=cfg.get("stops.mandatory.stop_name_presence", 1.0)),
+        check_field_presence(df, "stop_lat", "stop_id", weight=cfg.get("stops.mandatory.stop_lat_presence", 1.0)),
+        check_field_presence(df, "stop_lon", "stop_id", weight=cfg.get("stops.mandatory.stop_lon_presence", 1.0)),
     ]
 
 
@@ -34,11 +37,12 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: stops.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("stops.txt", {})
     return [
-        check_format_field(df, "stop_url", format_config["stop_url"], "stop_id", weight=1.0),
-        check_format_field(df, "stop_timezone", format_config["stop_timezone"], "stop_id", weight=1.0),
-        check_format_field(df, "stop_lat", format_config["stop_lat"], "stop_id", weight=1.0),
-        check_format_field(df, "stop_lon", format_config["stop_lon"], "stop_id", weight=1.0),
+        check_format_field(df, "stop_url", format_config["stop_url"], "stop_id", weight=cfg.get("format.stop_url_valid", 1.0)),
+        check_format_field(df, "stop_timezone", format_config["stop_timezone"], "stop_id", weight=cfg.get("format.stop_timezone_valid", 2.0)),
+        check_format_field(df, "stop_lat", format_config["stop_lat"], "stop_id", weight=cfg.get("format.stop_lat_valid", 3.0)),
+        check_format_field(df, "stop_lon", format_config["stop_lon"], "stop_id", weight=cfg.get("format.stop_lon_valid", 3.0)),
     ]
 
 
@@ -49,9 +53,10 @@ def _check_data_consistency(df: pd.DataFrame, stop_times_df: pd.DataFrame) -> li
     :param df: stops.txt DataFrame.
     :param stop_times_df: stop_times.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("stops.txt", {})
     return [
-        check_orphan_ids(df, "stop_id", stop_times_df, "stop_id", weight=2.0),
-        check_unused_ids(df, "stop_id", stop_times_df, "stop_id", weight=2.0),
+        check_orphan_ids(df, "stop_id", stop_times_df, "stop_id", weight=cfg.get("stops.consistency.stop_id_no_orphan", 2.0)),
+        check_unused_ids(df, "stop_id", stop_times_df, "stop_id", weight=cfg.get("stops.consistency.stop_id_no_unused", 1.0)),
     ]
 
 
@@ -61,6 +66,7 @@ def _check_stops_hierarchy(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: stops.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("stops.txt", {})
     stations_df = df[df["location_type"].astype(str).str.strip() == "1"] if "location_type" in df.columns else pd.DataFrame()
     df_with_parent = df[
         df["parent_station"].notna() &
@@ -68,12 +74,12 @@ def _check_stops_hierarchy(df: pd.DataFrame) -> list[CheckResult]:
         (df["parent_station"].astype(str).str.strip() != "nan")
     ] if "parent_station" in df.columns else pd.DataFrame()
     return [
-        check_format_field(df, "location_type", format_config["location_type"], "stop_id", weight=2.0, category="stops_hierarchy"),
-        _check_station_no_parent(df),
-        check_orphan_ids(df, "stop_id", df_with_parent, "parent_station", weight=2.0, category="stops_hierarchy"),
-        _check_parent_station_is_station(df),
-        check_unused_ids(stations_df, "stop_id", df, "parent_station", weight=1.0, category="stops_hierarchy"),
-        _check_stop_distance_from_station(df),
+        check_format_field(df, "location_type", format_config["location_type"], "stop_id", weight=cfg.get("stops.stops_hierarchy.location_type_valid", 2.0), category="stops_hierarchy"),
+        _check_station_no_parent(df, weight=cfg.get("stops.stops_hierarchy.station_no_parent", 4.0)),
+        check_orphan_ids(df, "stop_id", df_with_parent, "parent_station", weight=cfg.get("stops.stops_hierarchy.parent_station_exists", 4.0), category="stops_hierarchy"),
+        _check_parent_station_is_station(df, weight=cfg.get("stops.stops_hierarchy.parent_station_is_station", 4.0)),
+        check_unused_ids(stations_df, "stop_id", df, "parent_station", weight=cfg.get("stops.stops_hierarchy.stop_id_no_unused", 2.0), category="stops_hierarchy"),
+        _check_stop_distance_from_station(df, weight=cfg.get("stops.stops_hierarchy.stop_distance_from_station", 1.0)),
     ]
 
 
@@ -83,13 +89,14 @@ def _check_accessibility(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: stops.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("stops.txt", {})
     return [
-        check_format_field(df, "wheelchair_boarding", format_config["wheelchair_boarding"], "stop_id", weight=1.0, category="accessibility"),
-        check_accessibility_metrics(df, "wheelchair_boarding", "stop_id", weight=1.0),
+        check_format_field(df, "wheelchair_boarding", format_config["wheelchair_boarding"], "stop_id", weight=cfg.get("format.wheelchair_boarding_valid", 1.0), category="accessibility"),
+        check_accessibility_metrics(df, "wheelchair_boarding", "stop_id", weight=cfg.get("accessibility.wheelchair_boarding_metrics", 3.0)),
     ]
 
 
-def _check_station_no_parent(df: pd.DataFrame) -> CheckResult:
+def _check_station_no_parent(df: pd.DataFrame, weight: float) -> CheckResult:
     """
     Checks that stops with location_type=1 (stations) have no parent_station.
 
@@ -101,7 +108,7 @@ def _check_station_no_parent(df: pd.DataFrame) -> CheckResult:
             label    = "Les zones d'arrêt ne doivent pas avoir de parent_station",
             category = "stops_hierarchy",
             status   = "skip",
-            weight   = 2.0,
+            weight   = weight,
             message  = "Colonnes location_type et/ou parent_station absentes",
         )
 
@@ -114,7 +121,7 @@ def _check_station_no_parent(df: pd.DataFrame) -> CheckResult:
             label       = "Les zones d'arrêt ne doivent pas avoir de parent_station",
             category    = "stops_hierarchy",
             status      = "skip",
-            weight      = 2.0,
+            weight      = weight,
             message     = "Aucune zone d'arrêt (location_type=1) trouvée",
             total_count = 0,
         )
@@ -137,7 +144,7 @@ def _check_station_no_parent(df: pd.DataFrame) -> CheckResult:
             label          = "Les zones d'arrêt ne doivent pas avoir de parent_station",
             category       = "stops_hierarchy",
             status         = "error",
-            weight         = 2.0,
+            weight         = weight,
             message        = f"{len(invalid)} zone(s) d'arrêt avec un parent_station renseigné",
             affected_ids   = affected_ids,
             affected_count = len(invalid),
@@ -149,13 +156,13 @@ def _check_station_no_parent(df: pd.DataFrame) -> CheckResult:
         label       = "Les zones d'arrêt ne doivent pas avoir de parent_station",
         category    = "stops_hierarchy",
         status      = "pass",
-        weight      = 2.0,
+        weight      = weight,
         message     = "Aucune zone d'arrêt avec un parent_station renseigné",
         total_count = len(stations),
     )
 
 
-def _check_parent_station_is_station(df: pd.DataFrame) -> CheckResult:
+def _check_parent_station_is_station(df: pd.DataFrame, weight: float) -> CheckResult:
     """
     Checks that each parent_station reference points to a location_type=1 stop.
 
@@ -167,7 +174,7 @@ def _check_parent_station_is_station(df: pd.DataFrame) -> CheckResult:
             label    = "parent_station pointe vers une zone d'arrêt (location_type=1)",
             category = "stops_hierarchy",
             status   = "skip",
-            weight   = 2.0,
+            weight   = weight,
             message  = "Colonnes parent_station, location_type et/ou stop_id absentes",
         )
 
@@ -187,7 +194,7 @@ def _check_parent_station_is_station(df: pd.DataFrame) -> CheckResult:
             label       = "parent_station pointe vers une zone d'arrêt (location_type=1)",
             category    = "stops_hierarchy",
             status      = "skip",
-            weight      = 2.0,
+            weight      = weight,
             message     = "Aucun parent_station renseigné",
             total_count = 0,
         )
@@ -213,7 +220,7 @@ def _check_parent_station_is_station(df: pd.DataFrame) -> CheckResult:
             label          = "parent_station pointe vers une zone d'arrêt (location_type=1)",
             category       = "stops_hierarchy",
             status         = "error",
-            weight         = 2.0,
+            weight         = weight,
             message        = f"{len(affected_ids)} arrêt(s) dont le parent_station n'est pas une zone d'arrêt",
             affected_ids   = affected_ids,
             affected_count = len(affected_ids),
@@ -225,13 +232,13 @@ def _check_parent_station_is_station(df: pd.DataFrame) -> CheckResult:
         label       = "parent_station pointe vers une zone d'arrêt (location_type=1)",
         category    = "stops_hierarchy",
         status      = "pass",
-        weight      = 2.0,
+        weight      = weight,
         message     = "Tous les parent_station pointent vers des zones d'arrêt",
         total_count = total_count,
     )
 
 
-def _check_stop_distance_from_station(df: pd.DataFrame) -> CheckResult:
+def _check_stop_distance_from_station(df: pd.DataFrame, weight: float) -> CheckResult:
     """
     Checks that each stop is within 2000m of its parent_station.
 
@@ -244,7 +251,7 @@ def _check_stop_distance_from_station(df: pd.DataFrame) -> CheckResult:
             label    = "Distance géographique entre arrêt et zone",
             category = "stops_hierarchy",
             status   = "skip",
-            weight   = 1.0,
+            weight   = weight,
             message  = "Colonnes parent_station, stop_lat, stop_lon et/ou stop_id absentes",
         )
 
@@ -279,7 +286,7 @@ def _check_stop_distance_from_station(df: pd.DataFrame) -> CheckResult:
             label       = "Distance géographique entre arrêt et zone",
             category    = "stops_hierarchy",
             status      = "skip",
-            weight      = 1.0,
+            weight      = weight,
             message     = "Aucun arrêt avec parent_station renseigné",
             total_count = 0,
         )
@@ -316,7 +323,7 @@ def _check_stop_distance_from_station(df: pd.DataFrame) -> CheckResult:
             label          = "Distance géographique entre arrêt et zone",
             category       = "stops_hierarchy",
             status         = "error",
-            weight         = 1.0,
+            weight         = weight,
             message        = f"{len(affected_ids)} arrêt(s) à plus de 2000m de leur zone",
             affected_ids   = affected_ids,
             affected_count = len(affected_ids),
@@ -329,7 +336,7 @@ def _check_stop_distance_from_station(df: pd.DataFrame) -> CheckResult:
         label       = "Distance géographique entre arrêt et zone",
         category    = "stops_hierarchy",
         status      = "pass",
-        weight      = 1.0,
+        weight      = weight,
         message     = "Tous les arrêts sont à moins de 2000m de leur zone",
         total_count = total_count,
     )

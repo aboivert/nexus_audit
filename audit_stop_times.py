@@ -1,7 +1,8 @@
 """Audit functions for stop_times.txt: mandatory fields, format validation and temporal consistency checks."""
 import pandas as pd
 from audit_models import CheckResult
-from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids, check_unused_ids, check_at_least_one_field_presence
+from audit_generic_functions import check_id_presence, check_id_unicity, check_field_presence, check_format_field, check_orphan_ids
+from scoring_config import SCORING_CONFIG
 
 
 format_config = {'pickup_type':{'genre':'optional','description':"Validité du champ pickup_type",'type':'listing', 'valid_fields':{'0', '1', '2' ,'3'}},
@@ -20,15 +21,16 @@ def _check_mandatory_fields(df: pd.DataFrame, trips_df: pd.DataFrame, stops_df: 
     :param trips_df: trips.txt DataFrame.
     :param stops_df: stops.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("stop_times.txt", {})
     return [
-        check_id_presence(df, "trip_id", weight=3.0),
-        check_id_presence(df, "stop_sequence", weight=3.0),
-        check_id_unicity(df,  ["trip_id", "stop_sequence"], weight=3.0),
-        check_orphan_ids(trips_df, "trip_id", df, "trip_id", weight=3.0, category="mandatory"),
-        check_field_presence(df, "stop_id", ["trip_id", "stop_sequence"], weight=1.0),
-        check_field_presence(df, "departure_time", ["trip_id", "stop_sequence"], weight=1.0),
-        check_field_presence(df, "arrival_time", ["trip_id", "stop_sequence"], weight=1.0),
-        check_orphan_ids(stops_df, "stop_id", df, "stop_id", weight=3.0, category = "mandatory"),
+        check_id_presence(df, "trip_id", weight=cfg.get("stop_times.mandatory.trip_id_presence", 2.0)),
+        check_id_presence(df, "stop_sequence", weight=cfg.get("stop_times.mandatory.stop_sequence_presence", 2.0)),
+        check_id_unicity(df,  ["trip_id", "stop_sequence"], weight=cfg.get("stop_times.mandatory.trip_id_stop_sequence_unicity", 2.0)),
+        check_orphan_ids(trips_df, "trip_id", df, "trip_id", weight=cfg.get("stop_times.mandatory.trip_id_no_orphan", 2.0), category="mandatory"),
+        check_field_presence(df, "stop_id", ["trip_id", "stop_sequence"], weight=cfg.get("stop_times.mandatory.stop_id_presence", 1.0)),
+        check_field_presence(df, "departure_time", ["trip_id", "stop_sequence"], weight=cfg.get("stop_times.mandatory.departure_time_presence", 1.0)),
+        check_field_presence(df, "arrival_time", ["trip_id", "stop_sequence"], weight=cfg.get("stop_times.mandatory.arrival_time_presence", 1.0)),
+        check_orphan_ids(stops_df, "stop_id", df, "stop_id", weight=cfg.get("stop_times.mandatory.stop_id_no_orphan", 2.0), category = "mandatory"),
     ]
 
 
@@ -38,9 +40,10 @@ def _check_data_format(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: stop_times.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("stop_times.txt", {})
     return [
-        check_format_field(df, "pickup_type", format_config["pickup_type"], ["trip_id", "stop_sequence"], weight=1.0),
-        check_format_field(df, "drop_off_type", format_config["drop_off_type"], ["trip_id", "stop_sequence"], weight=1.0),
+        check_format_field(df, "pickup_type", format_config["pickup_type"], ["trip_id", "stop_sequence"], weight=cfg.get("format.pickup_type_valid", 1.0)),
+        check_format_field(df, "drop_off_type", format_config["drop_off_type"], ["trip_id", "stop_sequence"], weight=cfg.get("format.drop_off_type_valid", 1.0)),
     ]
 
 
@@ -50,12 +53,13 @@ def _check_temporality(df: pd.DataFrame) -> list[CheckResult]:
 
     :param df: stop_times.txt DataFrame.
     """
+    cfg = SCORING_CONFIG.get("stop_times.txt", {})
     return [
-        check_format_field(df, "arrival_time",   format_config["arrival_time"],   ["trip_id", "stop_sequence"], weight=1.0, category="temporal"),
-        check_format_field(df, "departure_time", format_config["departure_time"], ["trip_id", "stop_sequence"], weight=1.0, category="temporal"),
-        _check_arrival_before_departure(df),
-        _check_sequential_consistency(df),
-        _check_excessive_dwell_time(df),
+        check_format_field(df, "arrival_time",   format_config["arrival_time"],   ["trip_id", "stop_sequence"], weight=cfg.get("stop_times.temporal.arrival_time_valid", 2.0), category="temporal"),
+        check_format_field(df, "departure_time", format_config["departure_time"], ["trip_id", "stop_sequence"], weight=cfg.get("stop_times.temporal.departure_time_valid", 2.0), category="temporal"),
+        _check_arrival_before_departure(df, weight=cfg.get("stop_times.temporal.arrival_before_departure", 3.0)),
+        _check_sequential_consistency(df, weight=cfg.get("stop_times.temporal.sequential_consistency", 3.0)),
+        _check_excessive_dwell_time(df, weight=cfg.get("stop_times.temporal.excessive_dwell_time", 1.0)),
     ]
 
 
@@ -81,7 +85,7 @@ def _parse_time_to_seconds(time_str: str) -> int | None:
         return None
     
 
-def _check_arrival_before_departure(df: pd.DataFrame) -> CheckResult:
+def _check_arrival_before_departure(df: pd.DataFrame, weight: float) -> CheckResult:
     """
     Checks that arrival_time <= departure_time for each stop.
 
@@ -93,7 +97,7 @@ def _check_arrival_before_departure(df: pd.DataFrame) -> CheckResult:
             label    = "Cohérence intra-arrêt : arrival_time ≤ departure_time",
             category = "temporal",
             status   = "skip",
-            weight   = 2.0,
+            weight   = weight,
             message  = "Colonnes arrival_time et/ou departure_time absentes",
         )
 
@@ -117,7 +121,7 @@ def _check_arrival_before_departure(df: pd.DataFrame) -> CheckResult:
             label          = "Cohérence intra-arrêt : arrival_time ≤ departure_time",
             category       = "temporal",
             status         = "error",
-            weight         = 2.0,
+            weight         = weight,
             message        = f"{len(affected_ids)} arrêt(s) avec arrival_time > departure_time",
             affected_ids   = affected_ids,
             affected_count = len(affected_ids),
@@ -129,13 +133,13 @@ def _check_arrival_before_departure(df: pd.DataFrame) -> CheckResult:
         label       = "Cohérence intra-arrêt : arrival_time ≤ departure_time",
         category    = "temporal",
         status      = "pass",
-        weight      = 2.0,
+        weight      = weight,
         message     = "Tous les arrival_time sont antérieurs ou égaux aux departure_time",
         total_count = len(df),
     )
 
 
-def _check_sequential_consistency(df: pd.DataFrame) -> CheckResult:
+def _check_sequential_consistency(df: pd.DataFrame, weight: float) -> CheckResult:
     """
     Checks that each stop's departure_time is <= the next stop's arrival_time, for each trip.
 
@@ -148,7 +152,7 @@ def _check_sequential_consistency(df: pd.DataFrame) -> CheckResult:
             label    = "Cohérence séquentielle des horaires",
             category = "temporal",
             status   = "skip",
-            weight   = 2.0,
+            weight   = weight,
             message  = "Colonnes trip_id, stop_sequence, departure_time ou arrival_time absentes",
         )
 
@@ -181,7 +185,7 @@ def _check_sequential_consistency(df: pd.DataFrame) -> CheckResult:
             label          = "Cohérence séquentielle des horaires",
             category       = "temporal",
             status         = "error",
-            weight         = 2.0,
+            weight         = weight,
             message        = f"{len(affected_ids)} transition(s) avec departure_time > arrival_time suivant",
             affected_ids   = affected_ids,
             affected_count = len(affected_ids),
@@ -193,13 +197,13 @@ def _check_sequential_consistency(df: pd.DataFrame) -> CheckResult:
         label       = "Cohérence séquentielle des horaires",
         category    = "temporal",
         status      = "pass",
-        weight      = 2.0,
+        weight      = weight,
         message     = "Tous les horaires sont séquentiellement cohérents",
         total_count = total_pairs,
     )
 
 
-def _check_excessive_dwell_time(df: pd.DataFrame) -> CheckResult:
+def _check_excessive_dwell_time(df: pd.DataFrame, weight: float) -> CheckResult:
     """
     Detects stops where dwell time (departure - arrival) exceeds 1 hour.
 
@@ -211,7 +215,7 @@ def _check_excessive_dwell_time(df: pd.DataFrame) -> CheckResult:
             label    = "Détection des temps d'arrêt excessifs (> 1h)",
             category = "temporal",
             status   = "skip",
-            weight   = 1.0,
+            weight   = weight,
             message  = "Colonnes arrival_time et/ou departure_time absentes",
         )
 
@@ -247,7 +251,7 @@ def _check_excessive_dwell_time(df: pd.DataFrame) -> CheckResult:
             label          = "Détection des temps d'arrêt excessifs (> 1h)",
             category       = "temporal",
             status         = "warning",
-            weight         = 1.0,
+            weight         = weight,
             message        = f"{len(affected_ids)} arrêt(s) avec un temps d'arrêt supérieur à 1h",
             affected_ids   = affected_ids,
             affected_count = len(affected_ids),
@@ -260,7 +264,7 @@ def _check_excessive_dwell_time(df: pd.DataFrame) -> CheckResult:
         label       = "Détection des temps d'arrêt excessifs (> 1h)",
         category    = "temporal",
         status      = "pass",
-        weight      = 1.0,
+        weight      = weight,
         message     = "Aucun temps d'arrêt excessif détecté",
         total_count = total_count,
     )
